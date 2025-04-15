@@ -1,0 +1,10 @@
+notepad .gitignore
+*.class
+*.log
+*.war
+.settings/
+.classpath
+.project
+target/
+build/
+bin/
