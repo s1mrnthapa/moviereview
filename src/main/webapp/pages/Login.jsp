@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Workshop 2</title>
+    <title> CineCritique </title>
     <style>
       *{
             font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
@@ -15,10 +15,9 @@
             border: 12px soild black;
     	}
       .form-container{
-            display: grid;
-  		grid-template-columns: 1fr 1fr;
-            row-gap: 30px;
-            column-gap: 80px;
+       		display: flex;
+            flex-direction: column;
+            row-gap: 20px;
       }
     	.form-group{
             display: flex;
@@ -42,17 +41,10 @@
     </style>
 </head>
 <body>
-      <div class = "container">
+<div class = "container">
             <div class="heading1">
                   <h2>Login Form</h2>
             </div>
-            <%
-            String error = request.getParameter("error");
-            if (error != null) {
-                if (error.equals("username")) { out.println("<p class='error'>Username must be at least 6 characters long and cannot contain special characters.</p>"); }
-                else if (error.equals("password")) { out.println("<p class='error'>Password must have 1 uppercase letter, 1 number, and 1 special character.</p>"); }
-            }
-            	%>
             <form class="form-container" action="../LogInController" method="post">
             <div class="form-group">
                   <label class="label_name">UserName: </label>
