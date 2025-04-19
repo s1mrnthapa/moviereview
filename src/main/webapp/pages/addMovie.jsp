@@ -152,7 +152,7 @@
 <body>
 
   <header>
-    <h1>CINECRITIQUE</h1>
+    <h1>CINECRITIQUE - AddMovies</h1>
   </header>
 
   <nav>
@@ -163,7 +163,7 @@
   </nav>
 
   <main>
-    <form class="movie-form" action="addMovie.jsp" method="POST" enctype="multipart/form-data">
+    <form class="movie-form" action="${pageContext.request.contextPath}/AddMovieServlet" method="POST">
       <div class="left-form">
         <label>Movie Title <input type="text" name="title" required /></label>
         <label>Release Date <input type="date" name="releaseDate" required /></label>

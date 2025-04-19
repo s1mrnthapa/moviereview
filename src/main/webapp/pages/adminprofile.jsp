@@ -1,4 +1,3 @@
-<%@ page contentType="text/html; charset=UTF-8" language="java" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -214,7 +213,7 @@
 <body>
 
   <header>
-    <h1>CINECRITIQUE – ADMIN PROFILE</h1>
+    <h1>CINECRITIQUE  ADMIN PROFILE</h1>
   </header>
 
   <nav>
@@ -224,7 +223,7 @@
     <a href="moviedatabase.jsp">Movies Database</a>
     <a href="#">Logout</a>
   </nav>
-
+  
   <main>
     <form action="#" method="POST" enctype="multipart/form-data">
       <div class="profile-header">
@@ -237,31 +236,31 @@
         </div>
 
         <div class="profile-info">
-          <p><span>Name:</span> <input type="text" name="name" value="<%= session.getAttribute('name') %>" /></p>
-          <p><span>Email:</span> <input type="email" name="email" value="<%= session.getAttribute('email') %>" /></p>
-          <p><span>Username:</span> <input type="text" name="username" value="<%= session.getAttribute('username') %>" /></p>
+          <p><span>Name:</span> <input type="text" name="name" value="<%= session.getAttribute("name") %>" /></p>
+          <p><span>Email:</span> <input type="email" name="email" value="<%= session.getAttribute("email") %>" /></p>
+          <p><span>Username:</span> <input type="text" name="username" value="<%= session.getAttribute("username") %>" /></p>
           <p><span>Role:</span> 
             <select name="role">
               <option value="admin" <%= "admin".equals(session.getAttribute("role")) ? "selected" : "" %>>Admin</option>
               <option value="user" <%= "user".equals(session.getAttribute("role")) ? "selected" : "" %>>User</option>
             </select>
           </p>
-          <p><span>Joined:</span> <input type="date" name="joined" value="<%= session.getAttribute('joined') %>" /></p>
-          <p><span>Last Login:</span> <input type="date" name="last-login" value="<%= session.getAttribute('lastLogin') %>" /></p>
+          <p><span>Joined:</span> <input type="date" name="joined" value="<%= session.getAttribute("joined") %>" /></p>
+          <p><span>Last Login:</span> <input type="date" name="last-login" value="<%= session.getAttribute("lastLogin") %>" /></p>
         </div>
       </div>
 
       <div class="stats">
         <div class="stat-box">
-          <h3><%= session.getAttribute("moviesAdded") %></h3>
+          <h3>[#]</h3>
           <p>Movies Added</p>
         </div>
         <div class="stat-box">
-          <h3><%= session.getAttribute("reviewsModerated") %></h3>
+          <h3>[#]</h3>
           <p>Reviews Moderated</p>
         </div>
         <div class="stat-box">
-          <h3><%= session.getAttribute("usersManaged") %></h3>
+          <h3>[#]</h3>
           <p>Users Managed</p>
         </div>
       </div>
@@ -275,3 +274,16 @@
   <footer>
     &copy; 2025 CineCritique. All Rights Reserved.
   </footer>
+
+  <script>
+    function loadPreview(event) {
+      const img = document.getElementById('preview');
+      const label = document.getElementById('upload-label');
+      img.src = URL.createObjectURL(event.target.files[0]);
+      img.style.display = "block";
+      label.style.display = "none";
+    }
+  </script>
+
+</body>
+</html>
