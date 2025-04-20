@@ -1,60 +1,56 @@
 package com.moviereview.controller.servlet;
 
+import com.moviereview.controller.dao.UserDAO;
+import com.moviereview.controller.database.DatabaseConnection;
+import com.moviereview.model.User;
+
+import javax.servlet.*;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.*;
 import java.io.IOException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.sql.Connection;
 
-import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.*;
-
-import com.moviereview.controller.dao.UserDAO;
-import com.moviereview.controller.database.DatabaseConnection;
-import com.moviereview.model.User;
-
 @WebServlet("/LogInController")
 public class LogInController extends HttpServlet {
-    private static final long serialVersionUID = 1L;
 
-    public LogInController() {
-        super();
-    }
-
-    @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
         String username = request.getParameter("username").trim();
-        String password = request.getParameter("password").trim();
+        String password = request.getParameter("password").trim(); // Optionally hash this if stored hashed
 
         try (Connection conn = DatabaseConnection.getConnection()) {
             UserDAO userDAO = new UserDAO(conn);
             String hashedPassword = hashPassword(password); // hash input password
-            User user = userDAO.loginUser(username, hashedPassword);
+            User loggedInUser = userDAO.loginUser(username, hashedPassword);
 
-            if (user != null) {
-                HttpSession session = request.getSession();
-                session.setAttribute("user", user);
+            HttpSession session = request.getSession();
 
-                String role = user.getRole().trim();
-                if ("Admin".equalsIgnoreCase(role)) {
+            if (loggedInUser != null) {
+                session.removeAttribute("error");
+                session.setMaxInactiveInterval(20 * 60); // Set session timeout to 20 mins
+
+                if ("admin".equalsIgnoreCase(loggedInUser.getRole())) {
+                    session.setAttribute("Admin", loggedInUser);
                     response.sendRedirect(request.getContextPath() + "/pages/AdminDashboard.jsp");
-                } else if ("User".equalsIgnoreCase(role)) {
-                    response.sendRedirect(request.getContextPath() + "/pages/UserProfile.jsp");
                 } else {
-                    response.sendRedirect(request.getContextPath() + "/pages/Login.jsp?error=unknownRole");
+                    session.setAttribute("user", loggedInUser);
+                    response.sendRedirect(request.getContextPath() + "/pages/Home.jsp");
                 }
+
             } else {
-                response.sendRedirect(request.getContextPath() + "/pages/Login.jsp?error=invalid");
+                session.setAttribute("error", "Invalid username or password");
+                response.sendRedirect(request.getContextPath() + "/pages/Login.jsp");
             }
 
         } catch (Exception e) {
             e.printStackTrace();
-            response.sendRedirect(request.getContextPath() + "/pages/Login.jsp?error=exception");
+            request.getSession().setAttribute("error", "Something went wrong!");
+            response.sendRedirect(request.getContextPath() + "/pages/Login.jsp");
         }
     }
-
     private String hashPassword(String password) throws NoSuchAlgorithmException {
         MessageDigest digest = MessageDigest.getInstance("SHA-256");
         byte[] hashBytes = digest.digest(password.getBytes());
@@ -65,9 +61,4 @@ public class LogInController extends HttpServlet {
         return hexString.toString();
     }
 
-    @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        response.sendRedirect(request.getContextPath() + "/pages/Login.jsp");
-    }
 }

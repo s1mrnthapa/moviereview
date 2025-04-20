@@ -8,7 +8,7 @@ public class DatabaseConnection {
 	private final static String databaseName = "moviereview";
 	private final static String username = "root";
 	private final static String password = "";
-	private final static String jdbcURL = "jdbc:mysql://localhost:3308/moviereview?useSSL=false";
+	private final static String jdbcURL = "jdbc:mysql://localhost:3306/moviereview?useSSL=false";
 
 	public static Connection getConnection() throws SQLException, ClassNotFoundException {
 		Class.forName("com.mysql.cj.jdbc.Driver");

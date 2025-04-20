@@ -6,8 +6,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import com.moviereview.model.User;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 
 public class UserDAO {
     private Connection conn;
@@ -20,7 +18,7 @@ public class UserDAO {
     // Registers a new user
     public boolean registerUser(User user) {
         boolean isUserRegistered = false;
-        String query = "INSERT INTO user (username, firstName, lastName, email, password, role) VALUES (?, ?, ?, ?, ?, ?)";
+        String query = "INSERT INTO user (username, firstName, lastName, email, password) VALUES (?, ?, ?, ?, ?)";
         if (conn != null) {
             try {
                 ps = conn.prepareStatement(query);
@@ -28,56 +26,55 @@ public class UserDAO {
                 ps.setString(2, user.getFirstName());
                 ps.setString(3, user.getLastName());
                 ps.setString(4, user.getEmail());
-                ps.setString(5, hashPassword(user.getPassword()));  // Hashing password here ✅
-                ps.setString(6, user.getRole());
+                ps.setString(5, user.getPassword());
                 if (ps.executeUpdate() > 0) {
                     isUserRegistered = true;
                 }
-            } catch (SQLException | NoSuchAlgorithmException e) {
+            } catch (SQLException e) {
                 e.printStackTrace();
             }
         }
         return isUserRegistered;
     }
 
-    // User login authentication
-    public User loginUser(String usernameToCheck, String passwordToCheck) {
+    public User loginUser(String username, String hashedPassword) {
         User user = null;
-        String query = "SELECT * FROM user WHERE username = ?";
+        String query = "SELECT * FROM user WHERE username = ? AND password = ?";
         if (conn != null) {
             try {
                 ps = conn.prepareStatement(query);
-                ps.setString(1, usernameToCheck);
-                ResultSet userSet = ps.executeQuery();
-                if (userSet.next()) {
-                    String storedPassword = userSet.getString("password");
-                    if (storedPassword.equals(hashPassword(passwordToCheck))) {
+                ps.setString(1, username);
+                ps.setString(2, hashedPassword);
+                try (ResultSet userSet = ps.executeQuery()) {
+                    if (userSet.next()) {
                         user = new User();
                         user.setUserId(userSet.getInt("userID"));
                         user.setUsername(userSet.getString("username"));
                         user.setFirstName(userSet.getString("firstName"));
                         user.setLastName(userSet.getString("lastName"));
                         user.setEmail(userSet.getString("email"));
-                        user.setPassword(storedPassword);
+                        user.setPassword(userSet.getString("password"));
                         user.setRegisterDate(userSet.getTimestamp("registerDate"));
                         user.setRole(userSet.getString("role"));
                     }
                 }
-            } catch (SQLException | NoSuchAlgorithmException e) {
+            } catch (SQLException e) {
                 e.printStackTrace();
             }
         }
         return user;
     }
-
-    // Method to hash the password using SHA-256
-    private String hashPassword(String password) throws NoSuchAlgorithmException {
-        MessageDigest digest = MessageDigest.getInstance("SHA-256");
-        byte[] hashBytes = digest.digest(password.getBytes());
-        StringBuilder hexString = new StringBuilder();
-        for (byte b : hashBytes) {
-            hexString.append(String.format("%02x", b));
+    public boolean isEmailTaken(String email) throws Exception {
+        String sql = "SELECT COUNT(*) FROM user WHERE email = ?";
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, email);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt(1) > 0; // true if email exists
+                }
+            }
         }
-        return hexString.toString();
+        return false;
     }
+
 }
