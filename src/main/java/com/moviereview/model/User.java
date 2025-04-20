@@ -1,25 +1,21 @@
 package com.moviereview.model;
 
-import java.time.LocalDate;
-
-import java.sql.Timestamp;
-
 public class User {
-	private int userId;
+    private int userId;
     private String username;
     private String firstName;
     private String lastName;
     private String email;
     private String password;
-    private Timestamp registerDate;
     private String role;
+    private java.sql.Timestamp registerDate;
 
     // Empty constructor
     public User() {}
 
-    // Full constructor
+    // Constructor 
     public User(int userId, String username, String firstName, String lastName,
-                String email, String password, Timestamp registerDate, String role) {
+            String email, String password, java.sql.Timestamp registerDate, String role){
     	this.userId = userId;
         this.username = username;
         this.firstName = firstName;
@@ -32,12 +28,12 @@ public class User {
 
     // Getters and Setters
     public int getUserId() {
-		return userId;
-	}
+        return userId;
+    }
 
-	public void setUserId(int userId) {
-		this.userId = userId;
-	}
+    public void setUserId(int userId) {
+        this.userId = userId;
+    }
 
     public String getUsername() {
         return username;
@@ -79,11 +75,11 @@ public class User {
         this.password = password;
     }
 
-    public Timestamp getRegisterDate() {
+    public java.sql.Timestamp getRegisterDate() {
         return registerDate;
     }
 
-    public void setRegisterDate(Timestamp registerDate) {
+    public void setRegisterDate(java.sql.Timestamp registerDate) {
         this.registerDate = registerDate;
     }
 
