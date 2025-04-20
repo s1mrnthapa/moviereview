@@ -1,8 +1,6 @@
 package com.moviereview.controller.servlet;
 
 import java.io.IOException;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.sql.Connection;
 
 import javax.servlet.ServletException;
@@ -30,39 +28,24 @@ public class LogInController extends HttpServlet {
 
         try (Connection conn = DatabaseConnection.getConnection()) {
             UserDAO userDAO = new UserDAO(conn);
-            String hashedPassword = hashPassword(password); // hash input password
-            User user = userDAO.loginUser(username, hashedPassword);
+            
+            // Check if the username and password match in the database
+            User user = userDAO.loginUser(username, password);
 
             if (user != null) {
+                // If login is successful, redirect to success page
                 HttpSession session = request.getSession();
                 session.setAttribute("user", user);
-
-                String role = user.getRole().trim();
-                if ("Admin".equalsIgnoreCase(role)) {
-                    response.sendRedirect(request.getContextPath() + "/pages/AdminDashboard.jsp");
-                } else if ("User".equalsIgnoreCase(role)) {
-                    response.sendRedirect(request.getContextPath() + "/pages/UserProfile.jsp");
-                } else {
-                    response.sendRedirect(request.getContextPath() + "/pages/Login.jsp?error=unknownRole");
-                }
+                response.sendRedirect(request.getContextPath() + "/pages/UserProfile.jsp?success=true");
             } else {
-                response.sendRedirect(request.getContextPath() + "/pages/Login.jsp?error=invalid");
+                // If login failed, redirect to login page with error
+                response.sendRedirect(request.getContextPath() + "/pages/Login.jsp?error=true");
             }
 
         } catch (Exception e) {
             e.printStackTrace();
-            response.sendRedirect(request.getContextPath() + "/pages/Login.jsp?error=exception");
+            response.sendRedirect(request.getContextPath() + "/pages/Login.jsp?error=true");
         }
-    }
-
-    private String hashPassword(String password) throws NoSuchAlgorithmException {
-        MessageDigest digest = MessageDigest.getInstance("SHA-256");
-        byte[] hashBytes = digest.digest(password.getBytes());
-        StringBuilder hexString = new StringBuilder();
-        for (byte b : hashBytes) {
-            hexString.append(String.format("%02x", b));
-        }
-        return hexString.toString();
     }
 
     @Override
