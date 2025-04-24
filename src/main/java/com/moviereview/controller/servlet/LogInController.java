@@ -1,5 +1,15 @@
 package com.moviereview.controller.servlet;
 
+<<<<<<< HEAD
+import java.io.IOException;
+import java.sql.Connection;
+
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.*;
+
+=======
+>>>>>>> origin/main
 import com.moviereview.controller.dao.UserDAO;
 import com.moviereview.controller.database.DatabaseConnection;
 import com.moviereview.model.User;
@@ -23,6 +33,20 @@ public class LogInController extends HttpServlet {
 
         try (Connection conn = DatabaseConnection.getConnection()) {
             UserDAO userDAO = new UserDAO(conn);
+<<<<<<< HEAD
+            
+            // Check if the username and password match in the database
+            User user = userDAO.loginUser(username, password);
+
+            if (user != null) {
+                // If login is successful, redirect to success page
+                HttpSession session = request.getSession();
+                session.setAttribute("user", user);
+                response.sendRedirect(request.getContextPath() + "/pages/UserProfile.jsp?success=true");
+            } else {
+                // If login failed, redirect to login page with error
+                response.sendRedirect(request.getContextPath() + "/pages/Login.jsp?error=true");
+=======
             String hashedPassword = hashPassword(password); // hash input password
             User loggedInUser = userDAO.loginUser(username, hashedPassword);
 
@@ -47,10 +71,23 @@ public class LogInController extends HttpServlet {
             	System.out.println("Role: " + (loggedInUser != null ? loggedInUser.getRole() : "N/A"));
                 session.setAttribute("error", "Invalid username or password");
                 response.sendRedirect(request.getContextPath() + "/pages/Login.jsp");
+>>>>>>> origin/main
             }
 
         } catch (Exception e) {
             e.printStackTrace();
+<<<<<<< HEAD
+            response.sendRedirect(request.getContextPath() + "/pages/Login.jsp?error=true");
+        }
+    }
+
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        response.sendRedirect(request.getContextPath() + "/pages/Login.jsp");
+    }
+}
+=======
             request.getSession().setAttribute("error", "Something went wrong!");
             response.sendRedirect(request.getContextPath() + "/pages/Login.jsp");
         }
@@ -65,9 +102,15 @@ public class LogInController extends HttpServlet {
         }
         return hexString.toString();
     }
+<<<<<<< HEAD
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.sendRedirect(request.getContextPath() + "/pages/Login.jsp");
     }
 }
+=======
+
+}
+>>>>>>> origin/main
+>>>>>>> 2ef7d46b290dd8b387813b6cf362697203a3d819

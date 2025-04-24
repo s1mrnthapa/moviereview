@@ -1,5 +1,9 @@
+<<<<<<< HEAD
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 
+=======
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+>>>>>>> 2ef7d46b290dd8b387813b6cf362697203a3d819
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -268,7 +272,6 @@
 
     </div>
   </div>
-
 </body>
 </html>
 
