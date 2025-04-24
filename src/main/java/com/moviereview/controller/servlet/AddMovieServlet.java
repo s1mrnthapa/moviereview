@@ -18,11 +18,10 @@ public class AddMovieServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         // Get form data from request
         String title = request.getParameter("title");
-        String releaseDate = request.getParameter("releaseDate");
-        String genre = String.join(", ", request.getParameterValues("genres"));
+        String release_date = request.getParameter("releaseDate");
+        String genre = String.join(", ", request.getParameterValues("genre"));
         String duration = request.getParameter("duration");
         String country = request.getParameter("country");
-        String language = request.getParameter("language");
         String director = request.getParameter("director");
         String cast = request.getParameter("cast");
         String description = request.getParameter("description");
@@ -31,17 +30,16 @@ public class AddMovieServlet extends HttpServlet {
         try {
             // Establish DB connection
             Class.forName("com.mysql.cj.jdbc.Driver");
-            Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3308/moviereview", "root", "");
+            Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/moviereview", "root", "");
 
             // Prepare SQL statement to insert movie
-            String sql = "INSERT INTO movies (title, releaseDate, genre, duration, country, language, director, cast, description) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            String sql = "INSERT INTO movie (title, release_date, genre, duration, country, director, cast, description) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
             PreparedStatement stmt = conn.prepareStatement(sql);
             stmt.setString(1, title);
-            stmt.setString(2, releaseDate);
+            stmt.setString(2, release_date);
             stmt.setString(3, genre);
             stmt.setString(4, duration);
             stmt.setString(5, country);
-            stmt.setString(6, language);
             stmt.setString(7, director);
             stmt.setString(8, cast);
             stmt.setString(9, description);

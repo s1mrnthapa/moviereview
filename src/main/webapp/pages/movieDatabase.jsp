@@ -139,9 +139,9 @@
 
   <nav>
     <a href="dashboard.jsp">Dashboard</a>
-    <a href="addmovies.jsp">Add Movies</a>
-    <a href="adminprofile.jsp">Admin Profile</a>
-    <a href="moviedatabase.jsp">Movies Database</a>
+    <a href="${pageContext.request.contextPath}/pages/addmovies.jsp">Add Movies</a>
+    <a href="${pageContext.request.contextPath}/pages/adminprofile.jsp">Admin Profile</a>
+    <a href="${pageContext.request.contextPath}/pages/moviedatabase.jsp">Movies Database</a>
     <a href="#">Logout</a>
   </nav>
 

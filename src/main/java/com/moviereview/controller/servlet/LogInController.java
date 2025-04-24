@@ -30,17 +30,21 @@ public class LogInController extends HttpServlet {
 
             if (loggedInUser != null) {
                 session.removeAttribute("error");
-                session.setMaxInactiveInterval(20 * 60); // Set session timeout to 20 mins
+                session.setMaxInactiveInterval(60 * 60); // Set session timeout to 30 mins
 
-                if ("admin".equalsIgnoreCase(loggedInUser.getRole())) {
+                if ("Admin".equalsIgnoreCase(loggedInUser.getRole())) {
                     session.setAttribute("Admin", loggedInUser);
-                    response.sendRedirect(request.getContextPath() + "/pages/AdminDashboard.jsp");
+                    response.sendRedirect(request.getContextPath() + "/pages/adminprofile.jsp");
                 } else {
                     session.setAttribute("user", loggedInUser);
                     response.sendRedirect(request.getContextPath() + "/pages/Home.jsp");
                 }
 
             } else {
+            	System.out.println("Username: " + username);
+            	System.out.println("Hashed Password: " + hashedPassword);
+            	System.out.println("User Retrieved: " + (loggedInUser != null ? loggedInUser.getUsername() : "null"));
+            	System.out.println("Role: " + (loggedInUser != null ? loggedInUser.getRole() : "N/A"));
                 session.setAttribute("error", "Invalid username or password");
                 response.sendRedirect(request.getContextPath() + "/pages/Login.jsp");
             }
@@ -51,6 +55,7 @@ public class LogInController extends HttpServlet {
             response.sendRedirect(request.getContextPath() + "/pages/Login.jsp");
         }
     }
+    
     private String hashPassword(String password) throws NoSuchAlgorithmException {
         MessageDigest digest = MessageDigest.getInstance("SHA-256");
         byte[] hashBytes = digest.digest(password.getBytes());
@@ -60,5 +65,9 @@ public class LogInController extends HttpServlet {
         }
         return hexString.toString();
     }
-
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        response.sendRedirect(request.getContextPath() + "/pages/Login.jsp");
+    }
 }

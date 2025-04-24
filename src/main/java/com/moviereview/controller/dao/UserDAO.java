@@ -64,14 +64,27 @@ public class UserDAO {
         }
         return user;
     }
-    public boolean isEmailTaken(String email) throws Exception {
+ // Method to check if the email already exists
+    public boolean isEmailExist(String email) throws SQLException {
         String sql = "SELECT COUNT(*) FROM user WHERE email = ?";
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, email);
-            try (ResultSet rs = stmt.executeQuery()) {
-                if (rs.next()) {
-                    return rs.getInt(1) > 0; // true if email exists
-                }
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                return rs.getInt(1) > 0; // If count > 0, email exists
+            }
+        }
+        return false;
+    }
+
+    // Method to check if the username already exists
+    public boolean isUsernameExist(String username) throws SQLException {
+        String sql = "SELECT COUNT(*) FROM user WHERE username = ?";
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, username);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                return rs.getInt(1) > 0; // If count > 0, username exists
             }
         }
         return false;

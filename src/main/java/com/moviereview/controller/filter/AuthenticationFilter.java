@@ -34,7 +34,8 @@ public class AuthenticationFilter implements Filter {
 		
 		// Check if logged in
 		HttpSession session = req.getSession(false);
-		boolean loggedIn = session != null && session.getAttribute("user") != null;
+		boolean loggedIn = session != null && (session.getAttribute("user") != null || session.getAttribute("Admin") != null);
+		boolean isAdminPage = uri.contains("adminprofile");
 
 		if (!loggedIn && (uri.endsWith("Register.jsp") || uri.endsWith("RegisterController") || uri.endsWith("Login.jsp") || uri.endsWith("LogInController"))) {
 			chain.doFilter(request, response);
@@ -42,6 +43,11 @@ public class AuthenticationFilter implements Filter {
 		}
 		// Skipping filter for login page and login controller
 		if (loggedIn) {
+			// 🚫 If a normal user tries to access an admin-only page
+            if (isAdminPage && session.getAttribute("Admin") == null) {
+                res.sendRedirect(req.getContextPath() + "/pages/Unauthorized.jsp");
+                return;
+            }
 	        chain.doFilter(request, response); // proceed to requested resource
 	    } else {
 	        // 🚨 Only try to setAttribute if session is not null, else create one
@@ -51,5 +57,6 @@ public class AuthenticationFilter implements Filter {
 	        session.setAttribute("error", "Please login first");
 	        res.sendRedirect(req.getContextPath() + "/pages/Login.jsp");
 	    }
+		
 	}
 }

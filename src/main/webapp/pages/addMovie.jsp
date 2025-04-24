@@ -156,10 +156,10 @@
   </header>
 
   <nav>
-    <a href="dashboard.jsp">Dashboard</a>
-    <a href="addMovie.jsp">Add Movies</a>
-    <a href="adminProfile.jsp">Admin Profile</a>
-    <a href="movieDatabase.jsp">Movies Database</a>
+    <a href="${pageContext.request.contextPath}/pages/dashboard.jsp">Dashboard</a>
+    <a href="${pageContext.request.contextPath}/pages/addMovie.jsp">Add Movies</a>
+    <a href="${pageContext.request.contextPath}/pages/adminProfile.jsp">Admin Profile</a>
+    <a href="${pageContext.request.contextPath}/pages/movieDatabase.jsp">Movies Database</a>
   </nav>
 
   <main>

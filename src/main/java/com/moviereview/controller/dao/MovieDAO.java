@@ -15,7 +15,7 @@ public class MovieDAO {
 
     public List<moviereview> getAllMovies() {
         List<moviereview> movieList = new ArrayList<>();
-        String query = "SELECT * FROM movies";
+        String query = "SELECT * FROM movie";
 
         try (Connection conn = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
              Statement stmt = conn.createStatement();

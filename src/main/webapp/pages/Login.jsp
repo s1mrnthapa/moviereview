@@ -1,3 +1,5 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -5,17 +7,17 @@
   <style>
     @font-face {
       font-family: 'MyCustomFont';
-      src: url('Amarante-Regular.ttf') format('truetype');
+      src: url('images/Amarante-Regular.ttf') format('truetype');
     }
 
     @font-face {
       font-family: 'MyCustomFont2';
-      src: url('Aboreto-Regular.ttf') format('truetype');
+      src: url('images/Aboreto-Regular.ttf') format('truetype');
     }
 
     @font-face {
       font-family: 'MyCustomFont3';
-      src: url('BodoniModa_9pt-Regular.ttf') format('truetype');
+      src: url('images/BodoniModa_9pt-Regular.ttf') format('truetype');
     }
 
     * {
@@ -72,7 +74,7 @@
 
     /* Left side - white form */
     .form-side {
-      background-color: white;
+      background-color: black;
       padding: 60px 30px; 
       display: flex;
       flex-direction: column;
@@ -85,7 +87,7 @@
       display: flex;
       flex-direction: column;
       gap: 20px;
-      width: 80%;
+      width: 100%;
       transform: translateY(20px);
     }
 
@@ -94,14 +96,18 @@
       flex-direction: column;
       gap: 10px;
     }
+    label{
+    color: white;
+    }
 
     .placeholder {
-      width: 120%;
+      width: 100%;
       border-top: none;
-	border-left: none;
-	border-right: none;
+		border-left: none;
+		border-right: none;
       border-bottom-width: 1px;
 		transition: all 1000ms;
+		background: transparent;
 	&:focus{
 		outline: none;
 		color:red;
@@ -110,7 +116,7 @@
 	}}
       .buttons{
             display: grid;
-            grid-template-columns: 1fr 1fr;
+            grid-template-columns: 1fr 2fr;
       }
 
     input[type="submit"] {
@@ -156,15 +162,25 @@
       height: 100%;
       object-fit: cover;
     }
-    .logouut{
-      font-family: 'MyCustomFont2'; 
-      margin-left: 185px;
-      margin-top: 8px;
+    .register{
+    padding-button: 100px;
+    
     }
-    .logouut:hover{
-      text-decoration: underline;
-      color: darkred;
-    }
+    .error-message {
+            color: #b30000;
+            background-color: #ffe6e6;
+            border: 1px solid #ff4d4d;
+            padding: 10px 15px;
+            margin: 15px 0;
+            width: 100%;
+            border-radius: 5px;
+            font-weight: bold;
+            text-align: center;
+        }
+      a.button-link {
+	  right: 0;
+	}
+	
 
     @media (max-width: 768px) {
       .card {
@@ -182,7 +198,7 @@
 
   <!-- Background Image -->
   <div class="blurry-bg">
-    <img src="Chungking Express.jpg" alt="Blurry Background">
+    <img src="images/chungking-express.jpg" alt="Blurry Background">
   </div>
 
   <!-- Centered Card Grid -->
@@ -193,9 +209,9 @@
       <div class="form-side">
             <div style="transform: translateY(20px);">
                   <div class="heading1">
-                        <h1 style="color: black; font-size: 50px;">Welcome Back</h1>
+                        <h1 style="color: yellow; font-size: 50px;">Welcome Back</h1>
                   </div>
-                  <div class="heading2" style="margin-top: 15px;">
+                  <div class="heading2" style="margin-top: 15px; color: white;">
                         <p>Enter the scene, your story begins here. </p>
                   </div>
                   <% 
@@ -209,6 +225,18 @@
 			    session.removeAttribute("error");
 			    }
 			%>
+			<%
+			    String logoutMessage = (String) session.getAttribute("logoutMessage");
+			    if (logoutMessage != null) {
+			%>
+			    <div class="error-message">
+			        <%= logoutMessage %>
+			    </div>
+			<%
+			        session.removeAttribute("logoutMessage"); // Clear it after displaying
+			    }
+			%>
+			
             </div>
 
         <form class="form-container" action="${pageContext.request.contextPath}/LogInController" method="post">
@@ -224,16 +252,18 @@
             <div>
                   <input type="submit" value="Login" style="color: white; font-family: 'MyCustomFont2';">
             </div>
-            <div class="logouut">
-                  <a href="${pageContext.request.contextPath}/LogOutController" style="color: black;">Logout</a>
-              </div>
+            <div class="register" style="margin-left: 50px; font-size:14px;">
+	            <p style="text-align: center; color: white;">
+	                  Don't have an account?
+	                  <a href="${pageContext.request.contextPath}/pages/Register.jsp" class="button-link" style="color: darkred; text-decoration: underline;"> Register here </a>
+	            </p>
+	        </div>
         </div>
         </form>
       </div>
-
       <!-- Right Side: Static Image -->
       <div class="image-side">
-        <img src="Chungkingg Express.jpg" alt="Right Image">
+        <img src="images/chungkingg-express.jpg" alt="Right Image">
       </div>
 
     </div>
@@ -241,3 +271,4 @@
 
 </body>
 </html>
+

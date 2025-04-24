@@ -67,26 +67,50 @@ public class RegisterController extends HttpServlet {
             return;
         }
 
+     // Check if the email or username already exists
         try {
+            // Hash the password before saving
             String hashedPassword = hashPassword(password);
+
+            // Create User object
             User user = new User(0, username, firstName, lastName, email, hashedPassword, null, null);
 
+            // Create UserDAO and check for existing username and email
             Connection conn = DatabaseConnection.getConnection();
             UserDAO userDAO = new UserDAO(conn);
+
+            // Check if email or username exists
+            if (userDAO.isEmailExist(email)) {
+                request.setAttribute("error", "Email is already registered.");
+                request.getRequestDispatcher("/pages/Register.jsp").forward(request, response);
+                return;
+            }
+
+            if (userDAO.isUsernameExist(username)) {
+                request.setAttribute("error", "Username is already taken.");
+                request.getRequestDispatcher("/pages/Register.jsp").forward(request, response);
+                return;
+            }
+
+            // Proceed to register the user
             boolean success = userDAO.registerUser(user);
 
             if (success) {
+                // Redirect to login page if registration is successful
                 response.sendRedirect(request.getContextPath() + "/pages/Login.jsp");
             } else {
-                request.setAttribute("error", "Registration failed. Username or email may already exist.");
+                // Error message if registration failed
+                request.setAttribute("error", "Registration failed. Please try again later.");
                 request.getRequestDispatcher("/pages/Register.jsp").forward(request, response);
             }
 
         } catch (Exception e) {
+            // Handle unexpected exceptions
             e.printStackTrace();
             request.setAttribute("error", "An unexpected error occurred. Please try again later.");
             request.getRequestDispatcher("/pages/Register.jsp").forward(request, response);
         }
+        
     }
 
     private String hashPassword(String password) throws NoSuchAlgorithmException {
@@ -97,5 +121,10 @@ public class RegisterController extends HttpServlet {
             hexString.append(String.format("%02x", b));
         }
         return hexString.toString();
+    }
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        response.sendRedirect(request.getContextPath() + "/pages/Register.jsp");
     }
 }
