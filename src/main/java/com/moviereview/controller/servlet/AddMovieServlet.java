@@ -18,13 +18,8 @@ public class AddMovieServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         // Get form data from request
         String title = request.getParameter("title");
-<<<<<<< HEAD
         String release_date = request.getParameter("releaseDate");
         String genre = String.join(", ", request.getParameterValues("genre"));
-=======
-        String release_date = request.getParameter("release_date");
-        String genre = String.join(", ", request.getParameterValues("genres"));
->>>>>>> 2ef7d46b290dd8b387813b6cf362697203a3d819
         String duration = request.getParameter("duration");
         String country = request.getParameter("country");
         String director = request.getParameter("director");
@@ -38,11 +33,7 @@ public class AddMovieServlet extends HttpServlet {
             Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/moviereview", "root", "");
 
             // Prepare SQL statement to insert movie
-<<<<<<< HEAD
             String sql = "INSERT INTO movie (title, release_date, genre, duration, country, director, cast, description) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
-=======
-            String sql = "INSERT INTO movie (title, release_date, genre, duration, country, language, director, cast, description) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
->>>>>>> 2ef7d46b290dd8b387813b6cf362697203a3d819
             PreparedStatement stmt = conn.prepareStatement(sql);
             stmt.setString(1, title);
             stmt.setString(2, release_date);
