@@ -220,7 +220,7 @@
     <a href="${pageContext.request.contextPath}/pages/dashboard.jsp">Dashboard</a>
     <a href="${pageContext.request.contextPath}/pages/addMovie.jsp">Add Movies</a>
     <a href="${pageContext.request.contextPath}/pages/adminprofile.jsp">Admin Profile</a>
-    <a href="${pageContext.request.contextPath}/pages/moviedatabase.jsp">Movies Database</a>
+    <a href="${pageContext.request.contextPath}/pages/Movies.jsp">Movies</a>
     <a href="#">Logout</a>
   </nav>
     <main>

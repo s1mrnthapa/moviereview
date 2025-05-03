@@ -159,41 +159,66 @@
     <a href="${pageContext.request.contextPath}/pages/dashboard.jsp">Dashboard</a>
     <a href="${pageContext.request.contextPath}/pages/addMovie.jsp">Add Movies</a>
     <a href="${pageContext.request.contextPath}/pages/adminProfile.jsp">Admin Profile</a>
-    <a href="${pageContext.request.contextPath}/pages/movieDatabase.jsp">Movies Database</a>
+    <a href="${pageContext.request.contextPath}/pages/Movies.jsp">Movies</a>
+    
   </nav>
 
   <main>
-    <form class="movie-form" action="${pageContext.request.contextPath}/AddMovieServlet" method="POST">
-      <div class="left-form">
-        <label>Movie Title <input type="text" name="title" required /></label>
-        <label>Release Date <input type="date" name="releaseDate" required /></label>
+    <form class="movie-form" action="${pageContext.request.contextPath}/AddMovieServlet" method="post" enctype="multipart/form-data">
+  <div class="left-form">
+    <label>Movie Title 
+      <input type="text" name="title" required />
+    </label>
 
-        <label>Genre(s)</label>
-        <div class="genres">
-          <label><input type="checkbox" name="genres" value="Action" /> Action</label>
-          <label><input type="checkbox" name="genres" value="Comedy" /> Comedy</label>
-          <label><input type="checkbox" name="genres" value="Drama" /> Drama</label>
-          <label><input type="checkbox" name="genres" value="Thriller" /> Thriller</label>
-          <label><input type="checkbox" name="genres" value="Adventure" /> Adventure</label>
-          <label><input type="checkbox" name="genres" value="Romantic" /> Romantic</label>
-        </div>
+    <label>Release Date 
+      <input type="date" name="release_date" required />
+    </label>
 
-        <label>Duration <input type="text" name="duration" placeholder="e.g., 2h 15m" /></label>
-        <label>Country <input type="text" name="country" /></label>
-        <label>Language <input type="text" name="language" /></label>
-        <label>Director <input type="text" name="director" /></label>
-        <label>Cast <input type="text" name="cast" /></label>
-        <label>Storyline / Description
-          <textarea name="description" rows="4" placeholder="Write a short summary..."></textarea>
-        </label>
-      </div>
+    <label>Genre</label>
+    <div class="genres">
+      <label><input type="checkbox" name="genre" value="1" /> Action</label>
+      <label><input type="checkbox" name="genre" value="2" /> Comedy</label>
+      <label><input type="checkbox" name="genre" value="3" /> Drama</label>
+      <label><input type="checkbox" name="genre" value="4" /> Thriller</label>
+      <label><input type="checkbox" name="genre" value="5" /> Adventure</label>
+      <label><input type="checkbox" name="genre" value="6" /> Romantic</label>
+      <label><input type="checkbox" name="genre" value="7" /> Science Fiction</label>
+    </div>
 
-      <div class="right-form">
-        <label>Poster Image <input type="file" name="poster" accept="image/*" /></label>
-        <label>Trailer Link <input type="url" name="trailerLink" placeholder="https://youtube.com/..." /></label>
-        <button type="submit">Submit</button>
-      </div>
-    </form>
+    <label>Duration 
+      <input type="text" name="duration" placeholder="e.g., 2h 15m" />
+    </label>
+
+    <label>Country 
+      <input type="text" name="country" />
+    </label>
+
+    <label>Director 
+      <input type="text" name="director" />
+    </label>
+
+    <label>Cast Members 
+      <input type="text" name="cast" placeholder="Casts" />
+    </label>
+
+    <label>Storyline / Description
+      <textarea name="description" rows="4" placeholder="Write a short summary..."></textarea>
+    </label>
+
+    <label>Upload Movie Image
+      <input type="file" name="image" required />
+    </label>
+
+  </div>
+
+  <div class="right-form">
+    <button type="submit">Upload Movie</button>
+  </div>
+</form>
+    
+    <%-- Display success or error messages --%>
+    <p style="color: green;"><%= request.getAttribute("successMessage") != null ? request.getAttribute("successMessage") : "" %></p>
+    <p style="color: red;"><%= request.getAttribute("errorMessage") != null ? request.getAttribute("errorMessage") : "" %></p>
   </main>
 
   <footer>
