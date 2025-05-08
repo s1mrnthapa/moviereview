@@ -142,6 +142,37 @@ public class MovieDAO {
         }
         return castList;
     }
+    public Movies getMovieById(int movieId) {
+        Movies movie = null;
+        String sql = "SELECT * FROM movie WHERE movieID = ?";
+
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setInt(1, movieId);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    movie = new Movies();
+                    movie.setMovieID(rs.getInt("movieID"));
+                    movie.setTitle(rs.getString("title"));
+                    movie.setDescription(rs.getString("description"));
+                    movie.setDuration(rs.getString("duration"));
+                    movie.setReleaseDate(rs.getDate("release_date"));
+                    movie.setCountry(rs.getString("country"));
+                    movie.setDirector(rs.getString("director"));
+                    movie.setImagePath(rs.getString("image_path"));
+
+                    // Fetch and set genres and cast
+                    movie.setGenre(getGenresByMovieId(movieId));
+                    movie.setCast(getCastFromMovieTable(movieId));
+                }
+            }
+        } catch (SQLException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        return movie;
+    }
 
     public List<Movies> getAllMovies() throws SQLException {
         List<Movies> movies = new ArrayList<>();
