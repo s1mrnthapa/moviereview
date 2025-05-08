@@ -30,7 +30,7 @@ public class LogInController extends HttpServlet {
 
             if (loggedInUser != null) {
                 session.removeAttribute("error");
-                session.setMaxInactiveInterval(30 * 60); // Set session timeout to 30 mins
+                session.setMaxInactiveInterval(10); // Set session timeout to 30 mins
 
                 if ("Admin".equalsIgnoreCase(loggedInUser.getRole())) {
                     session.setAttribute("Admin", loggedInUser);

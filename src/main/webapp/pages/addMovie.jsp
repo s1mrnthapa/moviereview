@@ -183,8 +183,11 @@
       <label><input type="checkbox" name="genre" value="5" /> Adventure</label>
       <label><input type="checkbox" name="genre" value="6" /> Romantic</label>
       <label><input type="checkbox" name="genre" value="7" /> Science Fiction</label>
+      <label><input type="checkbox" name="genre" value="8" /> Music </label>
+      <label><input type="checkbox" name="genre" value="9" /> Crime </label>
+      <label><input type="checkbox" name="genre" value="10" /> Horror </label>
+      <label><input type="checkbox" name="genre" value="11" /> Animation </label>
     </div>
-
     <label>Duration 
       <input type="text" name="duration" placeholder="e.g., 2h 15m" />
     </label>
