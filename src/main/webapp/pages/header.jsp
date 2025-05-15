@@ -40,7 +40,11 @@
   
   
       body{
+<<<<<<< HEAD
           background-color: rgb(17, 17, 17);
+=======
+          background-color: red;
+>>>>>>> origin/branch_simsim
           
       }
   
@@ -213,7 +217,11 @@
 			<img src = "resources/index/icon/logo.png" class="logo">
 			<p class="logo_text">CINECRITIQUE</p>
 		</div>
+<<<<<<< HEAD
 		
+=======
+		<button> Review.. </button>
+>>>>>>> origin/branch_simsim
 
 		
 

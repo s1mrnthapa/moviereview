@@ -53,13 +53,15 @@ public class MovieListServlet extends HttpServlet {
                 movie.setGenre(genres);
 
                 moviesList.add(movie);
-
-                System.out.println(movie);
             }
             connection.close();
         } catch (Exception e) {
             e.printStackTrace();
         }
+<<<<<<< HEAD
+=======
+        
+>>>>>>> origin/branch_simsim
         request.setAttribute("movies", moviesList);
         RequestDispatcher dispatcher = request.getRequestDispatcher("/pages/Movies.jsp");
         dispatcher.forward(request, response);
