@@ -66,7 +66,6 @@ public class MovieDetailServlet extends HttpServlet {
                 
                 ReviewDAO reviewDAO = new ReviewDAO(connection);
                 List<Review> reviews = reviewDAO.getReviewsByMovie(movieID); // Fetch reviews by movieID
-                movie.setReviews(reviews); // Set reviews for the movie
 
                 connection.close();
             }

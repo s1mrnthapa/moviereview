@@ -40,7 +40,7 @@
   
   
       body{
-          background-color: red;
+          background-color: black;
           
       }
   
@@ -213,8 +213,6 @@
 			<img src = "resources/index/icon/logo.png" class="logo">
 			<p class="logo_text">CINECRITIQUE</p>
 		</div>
-		<button> Review.. </button>
-
 		
 
         <div class="sub_header right_header">
