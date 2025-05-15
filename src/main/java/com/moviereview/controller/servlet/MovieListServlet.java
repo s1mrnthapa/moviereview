@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.sql.*;
 import java.sql.Date;
 import java.util.*;
-
 import javax.servlet.*;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
@@ -38,8 +37,7 @@ public class MovieListServlet extends HttpServlet {
                 String imagePath = movieResultSet.getString("image_path");
 
                 Movies movie = new Movies(movieID, title, releaseDate, duration, country, director, description, castString, imagePath);
-
-                // 👉 Now fetch genres separately from the junction table
+                
                 String genreSql = "SELECT g.genre_name FROM genre g "
                         + "INNER JOIN movie_genre_table mg ON g.genreID = mg.genreID "
                         + "WHERE mg.movieID = ?";
@@ -55,15 +53,12 @@ public class MovieListServlet extends HttpServlet {
                 movie.setGenre(genres);
 
                 moviesList.add(movie);
-
-                System.out.println(movie);
             }
-
             connection.close();
         } catch (Exception e) {
             e.printStackTrace();
         }
-
+        
         request.setAttribute("movies", moviesList);
         RequestDispatcher dispatcher = request.getRequestDispatcher("/pages/Movies.jsp");
         dispatcher.forward(request, response);
