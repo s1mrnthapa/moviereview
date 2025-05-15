@@ -213,7 +213,6 @@
 			<img src = "resources/index/icon/logo.png" class="logo">
 			<p class="logo_text">CINECRITIQUE</p>
 		</div>
-		<button> Review.. </button>
 
 		
 
