@@ -202,9 +202,9 @@
 	<header>
 
 		<div class="left_header sub_header">
-            <a href="Home.jsp" class = "page">HOME</a>
-            <a href="Movies.jsp" class = "page">MOVIE</a>
-            <a href="Upcoming.jsp" class = "page">UPCOMING</a>
+            <a href="${pageContext.request.contextPath}/pages/Home.jsp" class = "page">HOME</a>
+            <a href="${pageContext.request.contextPath}/pages/Movies.jsp" class = "page">MOVIE</a>
+            <a href="${pageContext.request.contextPath}/pages/UpcomingMovies.jsp" class = "page">UPCOMING</a>
         </div>
 
 		<div class = "sub_header logo_header logo_wrapper" style="
@@ -213,8 +213,6 @@
 			<img src = "resources/index/icon/logo.png" class="logo">
 			<p class="logo_text">CINECRITIQUE</p>
 		</div>
-
-		
 
         <div class="sub_header right_header">
 			<div class = "sub_header search_bar">
