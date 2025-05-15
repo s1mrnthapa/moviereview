@@ -40,7 +40,7 @@
   
   
       body{
-          background-color: rgb(17, 17, 17);
+          background-color: red;
           
       }
   
@@ -213,7 +213,7 @@
 			<img src = "resources/index/icon/logo.png" class="logo">
 			<p class="logo_text">CINECRITIQUE</p>
 		</div>
-		
+		<button> Review.. </button>
 
 		
 
