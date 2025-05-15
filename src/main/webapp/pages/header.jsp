@@ -49,7 +49,7 @@
       header{
           display: grid;
           grid-template-columns: 1fr 1fr 1fr;
-          background-color: transparent;
+          background-color: red;
           font-size: medium;
           /* justify-content: center;
           justify-items: center; */
@@ -242,6 +242,7 @@
 				</svg>
 			  </div>
         </div>
+        <button>new button</button>
     	</header>
 
 	<!--starting of main container-->
