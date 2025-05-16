@@ -179,6 +179,21 @@
           <option value="Horror" ${param.genre == 'Horror' ? 'selected' : ''}>Horror</option>
           <option value="Animation" ${param.genre == 'Animation' ? 'selected' : ''}>Animation</option>
         </select>
+        
+         <select class="filter-select" id="genre" name="genre">
+          <option value="" ${empty param.genre ? 'selected' : ''}>All Genres</option>
+          <option value="Action" ${param.genre == 'Action' ? 'selected' : ''}>Action</option>
+          <option value="Drama" ${param.genre == 'Drama' ? 'selected' : ''}>Drama</option>
+          <option value="Comedy" ${param.genre == 'Comedy' ? 'selected' : ''}>Comedy</option>
+          <option value="Thriller" ${param.genre == 'Thriller' ? 'selected' : ''}>Thriller</option>
+          <option value="Adventure" ${param.genre == 'Adventure' ? 'selected' : ''}>Adventure</option>
+          <option value="Romance" ${param.genre == 'Romance' ? 'selected' : ''}>Romance</option>
+          <option value="Science Fiction" ${param.genre == 'Science Fiction' ? 'selected' : ''}>Science Fiction</option>
+          <option value="Music" ${param.genre == 'Music' ? 'selected' : ''}>Music</option>
+          <option value="Crime" ${param.genre == 'Crime' ? 'selected' : ''}>Crime</option>
+          <option value="Horror" ${param.genre == 'Horror' ? 'selected' : ''}>Horror</option>
+          <option value="Animation" ${param.genre == 'Animation' ? 'selected' : ''}>Animation</option>
+        </select>
 	</div>
 	</div>
 	<!-- Right: Search box -->
