@@ -199,4 +199,51 @@ public class MovieDAO {
 
         return movies;  // Return the list of movies
     }
+    
+    public List<Movies> getMoviesByFilter(String yearPrefix, String genre) throws SQLException {
+        List<Movies> moviesList = new ArrayList<>();
+        String sql = "SELECT DISTINCT m.* FROM movie m " +
+                     "JOIN movie_genre_table mg ON m.movieID = mg.movieID " +
+                     "JOIN genre g ON mg.genreID = g.genreID " +
+                     "WHERE (? IS NULL OR YEAR(m.release_date) LIKE ?) " +
+                     "AND (? IS NULL OR g.genre = ?)";
+
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            String yearLike = (yearPrefix != null && !yearPrefix.isEmpty()) ? yearPrefix + "%" : null;
+            String genreVal = (genre != null && !genre.isEmpty()) ? genre : null;
+
+            stmt.setString(1, yearLike);
+            stmt.setString(2, yearLike);
+            stmt.setString(3, genreVal);
+            stmt.setString(4, genreVal);
+
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                Movies movie = new Movies(
+                    rs.getInt("movieID"),
+                    rs.getString("title"),
+                    rs.getDate("release_date"),
+                    rs.getString("duration"),
+                    rs.getString("country"),
+                    rs.getString("director"),
+                    rs.getString("description"),
+                    rs.getString("cast"),
+                    rs.getString("image_path")
+                );
+
+                // Fetch genres and cast
+                movie.setGenre(getGenresByMovieId(movie.getMovieID()));
+                movie.setCast(getCastFromMovieTable(movie.getMovieID()));
+
+                moviesList.add(movie);
+            }
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        return moviesList;
+    }
+
 }
