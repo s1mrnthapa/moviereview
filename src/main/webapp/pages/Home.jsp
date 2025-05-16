@@ -11,188 +11,17 @@
 <title>CINECRITIQUE</title>
 <link rel="stylesheet" href="https://use.typekit.net/your-kit-id.css">
 <style>
-	
-	* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
-	body{
-		background-color: rgb(17, 17, 17);
-	}
-
-	header{
-		display: grid;
-        grid-template-columns: 1fr 1fr 1fr;
-		background-color: rgb(0, 0, 0);
-        font-size: medium;
-		/* justify-content: center;
-		justify-items: center; */
-		font-family: Cinzel Decorative, Amarante, Bodoni Moda,Viaoda Libre, arial;
-		letter-spacing: 0.25cap;
-		font-size: small;
-		font-weight:100;
-        width: 100%;
-		z-index: 1000;
-		position: fixed;
-	}
-	
-    .sub_header{
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        column-gap: 55px
-    }
-    .right_header{
-		column-gap: 20px;
-    }
-	
-	.right_header{
-		justify-content: right;
-		padding-right: 100px;
-	} 
-	.left_header{
-		justify-content: left;
-		padding-left: 100px;
-	}
-
-	.logo{
-		height: 55px;
-		transition: all 1000ms;
-
-	}
-	.logo:hover{
-		filter: invert(1);
-		transition: 300ms;
-	}
-	.logo_text{
-		position: absolute;
-		top: 50%;
-		left: 25%;
-		transform: translate(-50%, -50%);
-		margin: 0;
-		color: white; /* or whatever color you want */
-		font-size: 1.2rem;
-		font-weight: bold;
-		pointer-events: none;
-		transition: all 1000ms;
-			
-		opacity: 0;
-	}
-	.logo_wrapper:hover .logo{
-		opacity: 0;
-	}
-	.logo_wrapper:hover .logo_text{
-		opacity: 1;
-	}
-	.page{
-		text-decoration: none;
-		color: white;
-        text-align: center;
-        align-items: center;
-		transition: 10	00ms;
-	}
-	.page:hover{
-		color: red;
-		text-decoration: underline;
-		transition: all 1000ms;
-
-	
-	}
-	.search_bar{
-		gap: 12px;
-	}
-
-	.search_box{
-		/* width: 90px; */
-	}
-
-	.search_icon{
-		height: 16px;
-		fill: white;
-	}
-
-	.search_box{
-		height:16px;
-		background-color: transparent;
-		border-top: none;
-		border-left: none;
-		border-right: none;
-		border-color: white;
-		border-bottom-width: 1px;
-		transition: all 1000ms;
-	&:focus{
-		outline: none;
-		color:red;
-	}&:hover{
-		border-bottom-color:red;
-	}}
-
-
-	.search_box:active, .search_box:focus{
-		background-color: transparent;
-		color: red;
-		outline: red;
-	}
-	.search_box::placeholder{
-		font-family:  Bodoni Moda, Amarante, Cinzel Decorative, Viaoda Libre, arial;
-		/* font-size: 1rem; */
-		font-style: italic;
-		color: #888;
-	}
-    .user_icon{
-        height: 25px;
-		transition: 300ms;
-		display: block;
-    }
-	.icon path{
-		transition: all 1000ms;
-	}
-	.icon:hover path {
-        stroke: red; /* On hover, change stroke to red */
-		transition: all 1000ms;
-	}
-	.search_svg:hover path{
-		fill: red;
-	}
-	.poster_grid{
-		display: flex;
-		justify-content: right;
-		gap: 10px;
-	}
-	.left_grid{
-		display: flex;
-		gap: 10px;
-		background-color: rgb(17, 17, 17);
-	}
-	.posters_line_1{
-		display: flex;
-		flex-direction: column;
-		gap: 10px;
-		width: 168px;
-	}
-	.poster{
-		width: 168px;
-		border-radius: 6px;
-	}
-	.main_container{
-		display: grid;
-		grid-template-columns: 50% 50%;
-	}
 </style>
 
 
 </head>
+
+
 <body>
-	<header>
-		<div class = "sub_header left_header logo_wrapper" style="
-		position:relative;
-		">
-			<img src = "/cinecritique logo only.png" class="logo">
-			<p class="logo_text">CINECRITIQUE</p>
-		</div>
+	<%@ include file = "header.jsp" %>
+	<section>
 		
+<<<<<<< HEAD
 
 		<div class="left_headers sub_header">
             <a href="homepage.html" class = "page">HOME</a>
@@ -272,6 +101,10 @@
 		</div>
 	</div> 
 	
+=======
+	</section>
+	<%@ include file = "footer.jsp" %>
+>>>>>>> header-footer
 </body>
 
 </html>

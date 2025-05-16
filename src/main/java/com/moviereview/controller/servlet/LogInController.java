@@ -35,7 +35,7 @@ public class LogInController extends HttpServlet {
                 // Set both user attributes
                 session.setAttribute("user", loggedInUser);
                 session.setAttribute("userProfile", loggedInUser);
-                
+
                 if ("Admin".equalsIgnoreCase(loggedInUser.getRole())) {
                     session.setAttribute("Admin", loggedInUser);
                     response.sendRedirect(request.getContextPath() + "/pages/adminprofile.jsp");
