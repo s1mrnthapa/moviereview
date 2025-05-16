@@ -4,6 +4,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+
+import com.moviereview.controller.database.DatabaseConnection;
 import com.moviereview.model.User;
 public class UserDAO {
         private Connection conn;
@@ -89,4 +91,51 @@ public class UserDAO {
             }
             return false;
         }
+     // Updates an existing user's profile details including username
+        public boolean updateUser(User user) {
+            String query = "UPDATE user SET username=?, firstName=?, lastName=?, email=? WHERE userID=?";
+            
+            try (Connection conn = DatabaseConnection.getConnection();
+                 PreparedStatement ps = conn.prepareStatement(query)) {
+                
+                // Debug output
+                System.out.println("Updating userID: " + user.getUserId());
+                
+                ps.setString(1, user.getUsername());
+                ps.setString(2, user.getFirstName());
+                ps.setString(3, user.getLastName());
+                ps.setString(4, user.getEmail());
+                ps.setInt(5, user.getUserId());
+                
+                int rowsAffected = ps.executeUpdate();
+                System.out.println("Rows affected: " + rowsAffected);
+                
+                return rowsAffected > 0;
+            } catch (SQLException e) {
+                System.err.println("Update failed for userID: " + user.getUserId());
+                e.printStackTrace();
+                return false;
+            }
+        }
+        public User getUserById(int userId) throws SQLException {
+            String query = "SELECT * FROM user WHERE userID = ?";
+            try (PreparedStatement ps = conn.prepareStatement(query)) {
+                ps.setInt(1, userId);
+                try (ResultSet rs = ps.executeQuery()) {
+                    if (rs.next()) {
+                        User user = new User();
+                        user.setUserId(rs.getInt("userID"));
+                        user.setUsername(rs.getString("username"));
+                        user.setFirstName(rs.getString("firstName"));
+                        user.setLastName(rs.getString("lastName"));
+                        user.setEmail(rs.getString("email"));
+                        // Add other fields as needed
+                        return user;
+                    }
+                }
+            }
+            return null;
+        }
+
+		
     }

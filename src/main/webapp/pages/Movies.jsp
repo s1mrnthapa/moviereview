@@ -53,6 +53,7 @@
 <!-- Check if movies is null or empty -->
 <c:if test="${empty movies}">
     <p>No movies available.</p>
+    <c:redirect url='${request.contextPath}/MovieListServlet'/>
 </c:if>
 
 <!-- Loop through movies if not empty -->
