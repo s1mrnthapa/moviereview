@@ -40,6 +40,9 @@
     nav {
       background-color: var(--black);
       padding: 12px 40px;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
     }
 
     nav a {
@@ -81,7 +84,7 @@
       width: 130px;
       height: 130px;
       border-radius: 50%;
-      border: 3px dashed var(--dark-red);
+      border: 3px solid var(--dark-red);
       background-color: var(--black);
       display: flex;
       justify-content: center;
@@ -90,27 +93,10 @@
       overflow: hidden;
     }
 
-    .circle-wrapper span {
-      position: absolute;
-      color: var(--white);
-      text-align: center;
-      font-size: 14px;
-      padding: 10px;
-      z-index: 1;
-    }
-
     .circle-wrapper img {
       width: 100%;
       height: 100%;
       object-fit: cover;
-      display: none;
-      z-index: 2;
-    }
-
-    .profile-img-placeholder input[type="file"] {
-      margin-top: 12px;
-      color: var(--white);
-      font-size: 13px;
     }
 
     .profile-info p {
@@ -118,25 +104,20 @@
       font-size: 15px;
     }
 
-    .profile-info span {
+    .profile-info span.label {
       font-weight: bold;
+      color: var(--dark-red);
+      min-width: 100px;
+      display: inline-block;
     }
 
-    .profile-info input,
-    .profile-info select {
-      margin-top: 6px;
-      padding: 8px;
-      width: 100%;
-      border: 1px solid #444;
-      border-radius: 6px;
-      background-color: #1c1c1c;
-      color: var(--white);
-    }
-
-    .profile-info input:focus,
-    .profile-info select:focus {
-      border-color: var(--dark-red);
-      outline: none;
+    .profile-info .value {
+      display: inline-block;
+      margin-left: 10px;
+      padding: 5px 10px;
+      background-color: #2a2a2a;
+      border-radius: 4px;
+      min-width: 200px;
     }
 
     .stats {
@@ -155,39 +136,24 @@
       text-align: center;
       border-radius: 10px;
       border: 1px solid #333;
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+
+    .stat-box:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 5px 15px rgba(139, 0, 0, 0.3);
     }
 
     .stat-box h3 {
       font-size: 32px;
       color: var(--dark-red);
+      margin-bottom: 5px;
     }
 
     .stat-box p {
       font-size: 14px;
       color: #ccc;
-    }
-
-    .actions {
-      text-align: center;
-      margin-top: 20px;
-    }
-
-    .actions button,
-    .actions a {
-      background: var(--dark-red);
-      color: var(--white);
-      padding: 10px 20px;
-      margin: 5px;
-      border-radius: 6px;
-      text-decoration: none;
-      border: none;
-      cursor: pointer;
-      font-weight: bold;
-    }
-
-    .actions button:hover,
-    .actions a:hover {
-      background-color: var(--red-hover);
+      margin: 0;
     }
 
     footer {
@@ -204,8 +170,16 @@
         text-align: center;
       }
 
+      .profile-info .value {
+        min-width: 150px;
+      }
+
       .stats {
         flex-direction: column;
+      }
+      
+      nav {
+        padding: 12px 20px;
       }
     }
   </style>
@@ -213,7 +187,7 @@
 <body>
 
   <header>
-    <h1>CINECRITIQUE  ADMIN PROFILE</h1>
+    <h1>CINECRITIQUE ADMIN PROFILE</h1>
   </header>
 
   <nav>
@@ -221,68 +195,50 @@
     <a href="${pageContext.request.contextPath}/pages/addMovie.jsp">Add Movies</a>
     <a href="${pageContext.request.contextPath}/pages/adminprofile.jsp">Admin Profile</a>
     <a href="${pageContext.request.contextPath}/pages/Movies.jsp">Movies</a>
-    <a href="#">Logout</a>
+    <a href="${pageContext.request.contextPath}/logout">Logout</a>
   </nav>
-    <main>
-    <form action="#" method="POST" enctype="multipart/form-data">
-      <div class="profile-header">
-        <div class="profile-img-placeholder">
-          <div class="circle-wrapper">
-            <span id="upload-label">Upload Photo</span>
-            <img id="preview" alt="Preview" />
-          </div>
-          <input type="file" id="profile-photo" name="profile-photo" accept="image/*" onchange="loadPreview(event)" />
-        </div>
-
-        <div class="profile-info">
-          <p><span>Name:</span> <input type="text" name="name" value="<%= session.getAttribute("name") %>" /></p>
-          <p><span>Email:</span> <input type="email" name="email" value="<%= session.getAttribute("email") %>" /></p>
-          <p><span>Username:</span> <input type="text" name="username" value="<%= session.getAttribute("username") %>" /></p>
-          <p><span>Role:</span> 
-            <select name="role">
-              <option value="admin" <%= "admin".equals(session.getAttribute("role")) ? "selected" : "" %>>Admin</option>
-              <option value="user" <%= "user".equals(session.getAttribute("role")) ? "selected" : "" %>>User</option>
-            </select>
-          </p>
-          <p><span>Joined:</span> <input type="date" name="joined" value="<%= session.getAttribute("joined") %>" /></p>
-          <p><span>Last Login:</span> <input type="date" name="last-login" value="<%= session.getAttribute("lastLogin") %>" /></p>
+  
+  <main>
+    <div class="profile-header">
+      <div class="profile-img-placeholder">
+        <div class="circle-wrapper">
+          <% if (session.getAttribute("profileImage") != null) { %>
+            <img src="<%= session.getAttribute("profileImage") %>" alt="Admin Profile" />
+          <% } else { %>
+            <img src="${pageContext.request.contextPath}/images/default-admin.png" alt="Default Profile" />
+          <% } %>
         </div>
       </div>
 
-      <div class="stats">
-        <div class="stat-box">
-          <h3>[#]</h3>
-          <p>Movies Added</p>
-        </div>
-        <div class="stat-box">
-          <h3>[#]</h3>
-          <p>Reviews Moderated</p>
-        </div>
-        <div class="stat-box">
-          <h3>[#]</h3>
-          <p>Users Managed</p>
-        </div>
+      <div class="profile-info">
+        <p><span class="label">Name:</span> <span class="value"><%= session.getAttribute("name") %></span></p>
+        <p><span class="label">Email:</span> <span class="value"><%= session.getAttribute("email") %></span></p>
+        <p><span class="label">Username:</span> <span class="value"><%= session.getAttribute("username") %></span></p>
+        <p><span class="label">Role:</span> <span class="value"><%= session.getAttribute("role") %></span></p>
+        <p><span class="label">Joined:</span> <span class="value"><%= session.getAttribute("joined") %></span></p>
+        <p><span class="label">Last Login:</span> <span class="value"><%= session.getAttribute("lastLogin") != null ? session.getAttribute("lastLogin") : "Never" %></span></p>
       </div>
+    </div>
 
-      <div class="actions">
-        <button type="submit">Save Changes</button>
+    <div class="stats">
+      <div class="stat-box">
+        <h3><%= session.getAttribute("moviesAdded") != null ? session.getAttribute("moviesAdded") : "0" %></h3>
+        <p>Movies Added</p>
       </div>
-    </form>
+      <div class="stat-box">
+        <h3><%= session.getAttribute("reviewsModerated") != null ? session.getAttribute("reviewsModerated") : "0" %></h3>
+        <p>Reviews Moderated</p>
+      </div>
+      <div class="stat-box">
+        <h3><%= session.getAttribute("usersManaged") != null ? session.getAttribute("usersManaged") : "0" %></h3>
+        <p>Users Managed</p>
+      </div>
+    </div>
   </main>
 
   <footer>
     &copy; 2025 CineCritique. All Rights Reserved.
   </footer>
-
-  <script>
-    function loadPreview(event) {
-      const img = document.getElementById('preview');
-      const label = document.getElementById('upload-label');
-      img.src = URL.createObjectURL(event.target.files[0]);
-      img.style.display = "block";
-      label.style.display = "none";
-    }
-  </script>
 
 </body>
 </html>

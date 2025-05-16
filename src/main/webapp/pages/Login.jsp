@@ -230,7 +230,7 @@
 			%>
 			    <div class="error-message">
 			        <%= logoutMessage %>
-			    </div>
+			    </div> 
 			<%
 			        session.removeAttribute("logoutMessage"); // Clear it after displaying
 			    }
