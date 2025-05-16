@@ -1,114 +1,134 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
-
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+<%@ page import="java.util.regex.*" %>
 <html>
 <head>
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Aboreto&family=Amarante&family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..900;1,6..96,400..900&family=Bona+Nova+SC:ital,wght@0,400;0,700;1,400&family=Cinzel+Decorative:wght@400;700;900&family=Cinzel:wght@400..900&family=Cormorant+Unicase:wght@300;400;500;600;700&family=Eagle+Lake&family=El+Messiri:wght@400..700&family=Julius+Sans+One&family=Kalnia:wght@100..700&family=Metamorphous&family=Slackey&family=Texturina:ital,opsz,wght@0,12..72,100..900;1,12..72,100..900&family=Viaoda+Libre&display=swap" rel="stylesheet">
     <title>${movie.title} | Movie Detail</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" />
     <style>
         body {
-            font-family: 'Helvetica Neue', Arial, sans-serif;
-            background-color: #181818;
-            color: #E0E0E0;
-            margin: 0;
+        color: white;
         }
         .movie-detail-container {
-            display: flex;
-            gap: 30px;
-            max-width: 1200px;
-            margin: 80px 200px;
-            background-color: #1c1c1c;
-            padding: 30px;
-            border-radius: 10px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+        	padding-top: 140px;
+        	display: flex;
+            gap: 70px;
+            justify-content: center;
+			margin-left: 60px;
+			margin-right: 100px;
         }
         .movie-poster img {
-            width: 300px;
-            height: 450px;
+            width: 280px;
+            height: 400px;
             object-fit: cover;
             border-radius: 10px;
         }
-        .movie-info {
-            flex: 1;
+       	.review-btn {
+			  font-family: 'Cinzel Decorative', serif;
+			  background-color: transparent;
+			  color: rgb(34, 255, 244);
+			  border: 1px solid rgb(34, 255, 244);
+			  padding: 8px 80px;
+			  border-radius: 5px;
+			  font-size: 1em;
+			  cursor: pointer;
+			  transition: background-color 0.3s ease, color 0.3s ease;
+			}
+			
+			.review-btn:hover {
+			  background-color: rgba(34, 255, 244, 0.1);
+			}
+
+        .right{
+        	width: 400px;
         }
+
+        .movie-info {
+		    display: flex;
+		    align-items: center;
+		    gap: 10px; /* Adjust spacing between items */
+		    flex-wrap: wrap; /* Allows wrapping on smaller screens */
+		    margin-bottom: 10px;
+		}
         .movie-info h1 {
-            margin-top: 0;
             font-size: 2em;
-            color: #ffffff;
         }
         .info-item {
-            margin: 8px 0;
             font-size: 1em;
         }
-        .genre-tags {
-            margin: 10px 0;
+        .tab-buttons {
+		    display: flex;
+		    gap: 25px;
+		    margin: 20px 0;
+		    justify-content: center;
+		}
+		
+		.tab-text {
+		    color: rgba(34, 255, 244, 0.7); /* soft cyan */
+		    font-family: 'Cinzel Decorative', serif;
+		    font-weight: 600;
+		    font-size: 1.2em;
+		    cursor: pointer;
+		    position: relative;
+		    padding-bottom: 5px;
+		    transition: color 0.3s ease;
+		    user-select: none;
+		}
+		
+		.tab-text:hover {
+		    color: rgb(34, 255, 244);
+		}
+		
+		.tab-text.active {
+		    color: rgb(34, 255, 244);
+		}
+		
+		/* subtle underline for active tab */
+		.tab-text.active::after {
+		    content: "";
+		    position: absolute;
+		    bottom: 0;
+		    left: 10%;
+		    width: 80%;
+		    height: 2px;
+		    background-color: rgb(34, 255, 244);
+		    border-radius: 1px;
+		}
+        
+        .tab-pane {
+            display: none;
+            margin-buttom: 20px;
         }
-        .genre-tag {
+        .tab-pane.active {
+            display: block;
+            margin-buttom: 20px;
+        }
+        .genre-tag, .cast-pill {
             display: inline-block;
-            background-color: #333;
-            color: #ddd;
-            padding: 5px 10px;
-            margin: 3px;
+            background-color: #444;
+            color: white;
+            padding: 6px 12px;
             border-radius: 20px;
+            margin: 5px 5px 0 0;
             font-size: 0.9em;
         }
         .watchlist-section, .review-section {
-            margin-top: 10px;
+            margin-top: 20px;
         }
-        .watchlist-section button {
-        	margin-button: 40px;
-        }
-       	.rating{
-       		margin-left: 60px;
-       		text-align: center;
-       	} 
-        .rating .stars {
-	        display: flex;
-	        align-items: center;
-	        gap: 10px;
-	   	}
-        .stars i {
-	        color: #e6e6e6;
-	        font-size: 20px;
-	        cursor: pointer;
-	        transition: color 0.2s ease;
-        }
-        .stars i:hover {
-        	color: #ff9c1a;
-        }
-        .stars i.active {
-        	color: #ff9c1a;
-        }  
-        textarea {
-            width: 100%;
-            height: 100px;
+        .user-review {
             background-color: #2c2c2c;
-            color: #ccc;
-            border: 1px solid #555;
-            border-radius: 5px;
-            padding: 10px;
-            resize: none;
-            margin-top: 10px;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 20px;
         }
-        .quote-text h2{
-	        font-size: 18px;
-	        margin-top: 34px;
+        .review-author strong {
+            color: #00a86b;
         }
-        button {
-            background-color: #00A86B;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            margin-top: 10px;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-        button:hover {
-            background-color: #007A53;
-        }
-        /* Modal Styles */
         .modal {
-            position: fixed; /* Fixed typo: was 'postion' */
+            position: fixed;
             top: 0;
             left: 0;
             width: 100%;
@@ -117,17 +137,12 @@
             display: none;
             justify-content: center;
             align-items: center;
-            z-index: 1000;
         }
         .modal-content {
             background: #1c1c1c;
             padding: 20px;
             border-radius: 10px;
-            width: 800px;
-            height: 500px;
-            text-align: center;
-            color: #fff;
-            position: relative;
+            width: 700px;
         }
         .close {
             position: absolute;
@@ -136,264 +151,105 @@
             font-size: 28px;
             cursor: pointer;
         }
-	        .movie-container{
-	        display: flex;
-	        gap: 60px;
-	        margin: 30px;
-	        
-	    }
-	    .quote-text h2{
-	     	margin-left: 30px;
-	     }
-        
-        .movie-container img {
-            border-radius: 6px;
-            margin-bottom: 15px;
-            width: 200px;
-            height: 280px;
-            object-fit: cover;
-        }
-        .contents-movie{
-        	text-align: left;
-        }
-        .review-text textarea{
-        	width: 450px;
-        	height: 200px;
-        }
-        .sec-rating{
-        	display: flex;
-        }
-        .save-button {
-        	text-align: right;
-        	margin-top: 50px;
-        }
-       /* User Reviews Section */
-		.user-review {
-		    background-color: #2c2c2c;
-		    padding: 20px;
-		    border-radius: 8px;
-		    margin-top: 20px;
-		    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
-		    color: #e0e0e0;
-		}
-		
-		.user-review-header {
-		    display: flex;
-		    gap: 15px;
-		    align-items: center;
-		}
-		
-		.user-avatar {
-		    width: 40px;
-		    height: 40px;
-		    border-radius: 50%;
-		    overflow: hidden;
-		}
-		
-		.user-avatar img {
-		    width: 100%;
-		    height: 100%;
-		    object-fit: cover;
-		}
-		
-		.review-author {
-		    color: #fff;
-		}
-		
-		.review-author strong {
-		    font-size: 1.1em;
-		    color: #00a86b;
-		}
-		
-		.review-date {
-		    font-size: 0.9em;
-		    color: #ccc;
-		}
-		
-		.stars {
-		    margin-top: 10px;
-		}
-		
-		.stars i {
-		    font-size: 18px;
-		    color: #e6e6e6;
-		    transition: color 0.2s ease;
-		}
-		
-		.stars i.active {
-		    color: #ff9c1a;
-		}
-		
-		.review-text {
-		    margin-top: 10px;
-		}
-		
-		.review-text p {
-		    font-size: 1em;
-		    line-height: 1.6;
-		}
-		
-		.review-divider {
-		    margin-top: 15px;
-		    border-top: 1px solid #444;
-		    margin-bottom: 10px;
-		}
-       
-
     </style>
 </head>
-
 <body>
-
+<%@ include file ="header.jsp" %>
 <div class="movie-detail-container">
-    <!-- Movie Poster -->
-    <div class="movie-poster">
-        <img src="${movie.imagePath}" alt="${movie.title}" />
+	<div class="left">
+	    <div class="movie-poster">
+	        <img src="${movie.imagePath}" alt="${movie.title}" />
+	    </div>
+	    <div class="review-section">
+	        <button class="review-btn" onclick="openReviewModal('${movie.movieID}', '${movie.title}', '${movie.imagePath}')">Review or Log</button>
+	    </div>
+    </div>
+    <div class="right">
+	    <div class="movie-info">
+	        <div class="info-item"><h1>${movie.title}</h1></div>
+	        <div class="info-item"><fmt:formatDate value="${movie.releaseDate}" pattern="yyyy" /></div>
+	        <div class="info-item"><b>Directed by</b> ${movie.director}</div>
+	    </div>
+	    <div class="info-item" style="line-height: 1.6;">
+		    <div style="font-style: italic; margin-bottom: 10px; margin-top: 25px">
+		        <c:out value="${firstSentence}" />
+		    </div>
+		    <div>
+		        <c:out value="${restDescription}" />
+		    </div>
+		</div>
+	    
+    <div class="tab-buttons">
+    	<span class="tab-text active" onclick="switchTab(event, 'cast')">Cast</span>
+	    <span class="tab-text" onclick="switchTab(event, 'genre')">Genre</span>
+	    <span class="tab-text" onclick="switchTab(event, 'details')">Details</span>
     </div>
 
-    <!-- Movie Info -->
-    <div class="movie-info">
-        <h1>${movie.title}</h1>
-        <div class="info-item"><b>Description:</b> ${movie.description}</div>
+    <div id="cast" class="tab-pane active">
+	    <c:forEach var="castMember" items="${fn:split(fn:replace(fn:replace(movie.cast, '[', ''), ']', ''), ',')}">
+	        <span class="cast-pill">${fn:trim(castMember)}</span>
+	    </c:forEach>
+	</div>
+
+    <div id="details" class="tab-pane">
         <div class="info-item"><b>Release Date:</b> <fmt:formatDate value="${movie.releaseDate}" pattern="yyyy-MM-dd" /></div>
-        <div class="info-item"><b>Duration:</b> ${movie.duration}</div>
         <div class="info-item"><b>Country:</b> ${movie.country}</div>
         <div class="info-item"><b>Director:</b> ${movie.director}</div>
+    </div>
+    
+    <div id="genre" class="tab-pane">
+        <c:forEach var="g" items="${movie.genre}">
+            <span class="genre-tag">${g}</span>
+        </c:forEach>
+    </div>
+  </div>
 
-        <!-- Genres -->
-        <div class="genre-tags">
-            <c:forEach var="g" items="${movie.genre}">
-                <span class="genre-tag">${g}</span>
-            </c:forEach>
-        </div>
-
-        <!-- Cast -->
-        <div class="info-item"><b>Cast:</b> <c:out value="${movie.cast}" /></div>
-
-        <!-- Watchlist Section -->
-        <div class="watchlist-section">
-            <h3>Add to Watchlist:</h3>
-            <form action="/" method="post">
+    <div id="reviewModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeReviewModal()">&times;</span>
+            <form action="${pageContext.request.contextPath}/ReviewServlet" method="post">
                 <input type="hidden" name="movieID" value="${movie.movieID}" />
-                <button type="submit">+ Add to Watchlist</button>
+                <input type="hidden" name="userID" value="${sessionScope.user.userId}" />
+                <textarea name="reviewDescription" placeholder="Write your review here..." required></textarea>
+                <div>
+                    <label>Rating: <input type="number" name="rating" min="1" max="5" required></label>
+                </div>
+                <button type="submit">Save</button>
             </form>
         </div>
-
-        <!-- Review Section -->
-        <div class="review-section">
-            <h3>Write a Review:</h3>
-            <button onclick="openReviewModal('${movie.movieID}', '${movie.title}', '${movie.imagePath}')">Review or Log</button>
-        </div>
-    </div>
-    <!-- Modal Overlay -->
-<div id="reviewModal" class="modal">
-    <div class="modal-content">
-        <span class="close" onclick="closeReviewModal()">&times;</span>
-        
-        <div class="movie-container">
-            <div class="poster-movie">
-                <img id="modalMoviePoster" src="" alt="Movie Poster" />
-            </div>
-            <div class="contents-movie">
-                <h2 id="modalMovieTitle"></h2>
-                <!-- Form starts here -->
-                <form id="reviewForm" action="${pageContext.request.contextPath}/ReviewServlet" method="post">
-                    <input type="hidden" name="movieID" id="modalMovieID" />
-                    <input type="hidden" name="userID" id="userID" value="${sessionScope.user.userId}" />
-
-                    <!-- Review Description -->
-                    <div class="review-text">
-                        <textarea name="reviewDescription" placeholder="Write your review here..." required></textarea>
-                    </div>
-                    <div class="sec-rating">
-                        <div class="quote-text">
-                            <h2> A frame in your story. </h2>
-                        </div>
-                        <!-- Star Rating -->
-                        <div class="rating">
-                            <h3>Rating</h3>
-                            <div class="stars">
-                                <i class="fa-solid fa-star"></i>
-                                <i class="fa-solid fa-star"></i>
-                                <i class="fa-solid fa-star"></i>
-                                <i class="fa-solid fa-star"></i>
-                                <i class="fa-solid fa-star"></i>
-                            </div>
-                            <input type="hidden" name="rating" id="ratingValue" />
-                        </div>
-                    </div>
-                    <!-- Submit Button -->
-                    <div class="save-button">
-                        <button type="submit">Save</button>
-                    </div>
-                </form>
-            </div>
-        </div>
     </div>
 </div>
-</div>
-
-<!-- User Reviews Section Below Movie Details -->
-<h2>User Reviews</h2>
-
-<c:forEach var="review" items="${movie.reviews}">
-    <div class="user-review">
-        <div class="user-review-header">
-            <div class="user-avatar">
-                <img src="path-to-avatar.jpg" alt="User Avatar" class="avatar-img" />
-            </div>
-            <div class="review-author">
-                <strong>User ${review.userID}</strong>
-                <p class="review-date">
-                    Reviewed on <fmt:formatDate value="${review.reviewDate}" pattern="yyyy-MM-dd" />
-                </p>
-            </div>
-        </div>
-
-        <!-- Numeric Rating -->
-		<div class="rating">
-		    <p><strong>Rated:</strong> ${review.rating} / 5</p>
-		</div>
-        
-
-        <!-- Review Description -->
-        <div class="review-text">
-            <p>${review.reviewDescription}</p>
-        </div>
-
-        <hr class="review-divider" />
+<div class= "reviews">
+	    <h2>User Reviews</h2>
+	    <c:forEach var="review" items="${movie.reviews}">
+	        <div class="user-review">
+	            <div class="review-author">
+	                <strong>User ${review.userID}</strong>
+	                <div>Reviewed on <fmt:formatDate value="${review.reviewDate}" pattern="yyyy-MM-dd" /></div>
+	            </div>
+	            <div><strong>Rated:</strong> ${review.rating} / 5</div>
+	            <div>${review.reviewDescription}</div>
+	        </div>
+	    </c:forEach>
     </div>
-</c:forEach>
 
 <script>
-		function openReviewModal(movieID, title, imagePath) {
-		    document.getElementById('reviewModal').style.display = 'flex';
-		    document.getElementById('modalMovieID').value = movieID;
-		    document.getElementById('modalMovieTitle').innerText = title;
-		    document.getElementById('modalMoviePoster').src = imagePath;
-		}
-		
-		function closeReviewModal() {
-		    document.getElementById('reviewModal').style.display = 'none';
-		}
-		
-		function setRating(value) {
-		    document.getElementById('ratingValue').value = value;
-		}
-		const stars = document.querySelectorAll(".stars i");
-
-		stars.forEach((star, index1) => {
-		    star.addEventListener("click", () => {
-		        // Update stars' visual
-		        stars.forEach((star, index2) => {
-		            index1 >= index2 ? star.classList.add("active") : star.classList.remove("active");
-		        });
-		        
-		        document.getElementById('ratingValue').value = index1 + 1;
-		    });
-		});
-
+	function switchTab(evt, tabName) {
+	    // Remove active class from all tabs
+	    document.querySelectorAll(".tab-text").forEach(tab => tab.classList.remove("active"));
+	    // Hide all tab panes
+	    document.querySelectorAll(".tab-pane").forEach(pane => pane.classList.remove("active"));
+	    // Add active class to clicked tab
+	    evt.currentTarget.classList.add("active");
+	    // Show the selected tab pane
+	    document.getElementById(tabName).classList.add("active");
+	}
+    function openReviewModal(id, title, imagePath) {
+        document.getElementById("reviewModal").style.display = "flex";
+    }
+    function closeReviewModal() {
+        document.getElementById("reviewModal").style.display = "none";
+    }
 </script>
-
 </body>
 </html>

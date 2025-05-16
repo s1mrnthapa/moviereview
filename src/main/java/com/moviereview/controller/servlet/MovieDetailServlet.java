@@ -69,6 +69,22 @@ public class MovieDetailServlet extends HttpServlet {
                 movie.setReviews(reviews); // Set reviews for the movie
 
                 connection.close();
+                if (description != null) {
+                    int firstPeriodIndex = description.indexOf('.');
+                    if (firstPeriodIndex != -1 && firstPeriodIndex < description.length() - 1) {
+                        String firstSentence = description.substring(0, firstPeriodIndex + 1);
+                        String restDescription = description.substring(firstPeriodIndex + 1).trim();
+                        request.setAttribute("firstSentence", firstSentence);
+                        request.setAttribute("restDescription", restDescription);
+                    } else {
+                        // No period found or period at the end: entire description is the first sentence
+                        request.setAttribute("firstSentence", description);
+                        request.setAttribute("restDescription", "");
+                    }
+                } else {
+                    request.setAttribute("firstSentence", "");
+                    request.setAttribute("restDescription", "");
+                }
             }
 
             if (movie == null) {
