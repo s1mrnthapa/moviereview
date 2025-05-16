@@ -179,7 +179,6 @@
           <option value="Horror" ${param.genre == 'Horror' ? 'selected' : ''}>Horror</option>
           <option value="Animation" ${param.genre == 'Animation' ? 'selected' : ''}>Animation</option>
         </select>
-
 	</div>
 	</div>
 	<!-- Right: Search box -->
