@@ -167,8 +167,8 @@
 
         <select class="filter-select" id="genre" name="genre">
           <option value="" ${empty param.genre ? 'selected' : ''}>All Genres</option>
-          <option value="Action" ${param.genre == 'Action' ? 'selected' : ''}>Action</option>
-          <option value="Drama" ${param.genre == 'Drama' ? 'selected' : ''}>Drama</option>
+          <option value="Action" ${param.genre == 'PG13' ? 'selected' : ''}>Action</option>
+          <option value="Drama" ${param.genre == 'Family Drama' ? 'selected' : ''}>Drama</option>
           <option value="Comedy" ${param.genre == 'Comedy' ? 'selected' : ''}>Comedy</option>
           <option value="Thriller" ${param.genre == 'Thriller' ? 'selected' : ''}>Thriller</option>
           <option value="Adventure" ${param.genre == 'Adventure' ? 'selected' : ''}>Adventure</option>
