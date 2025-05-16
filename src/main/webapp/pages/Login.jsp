@@ -6,17 +6,17 @@
   <style>
     @font-face {
       font-family: 'MyCustomFont';
-      src: url('images/Amarante-Regular.ttf') format('truetype');
+      src: url('fonts/Amarante-Regular.ttf') format('truetype');
     }
 
     @font-face {
       font-family: 'MyCustomFont2';
-      src: url('images/Aboreto-Regular.ttf') format('truetype');
+      src: url('fonts/Aboreto-Regular.ttf') format('truetype');
     }
 
     @font-face {
       font-family: 'MyCustomFont3';
-      src: url('images/BodoniModa_9pt-Regular.ttf') format('truetype');
+      src: url('fonts/BodoniModa_9pt-Regular.ttf') format('truetype');
     }
 
     * {
@@ -197,7 +197,7 @@
 
   <!-- Background Image -->
   <div class="blurry-bg">
-    <img src="images/chungking-express.jpg" alt="Blurry Background">
+    <img src="images/loginPic.jpg" alt="Blurry Background">
   </div>
 
   <!-- Centered Card Grid -->
@@ -262,7 +262,7 @@
       </div>
       <!-- Right Side: Static Image -->
       <div class="image-side">
-        <img src="images/chungkingg-express.jpg" alt="Right Image">
+        <img src="resources/login/img01.jpg" alt="Right Image">
       </div>
 
     </div>

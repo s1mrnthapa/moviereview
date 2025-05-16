@@ -13,6 +13,7 @@ public class Movies {
     private String country;
     private String director;
     private String description;
+    private List<Review> reviews;
     
     // Lists to hold associated genre and casts
     private List<String> genre;
@@ -53,6 +54,20 @@ public class Movies {
         this.cast = splitCastString(castString);
         this.imagePath = imagePath;
     }
+    public Movies(int movieID, String title, Date releaseDate, String duration, String country, String director, String description, String castString, String genreString, String imagePath, List<Review> reviews) {
+        this.movieID = movieID;
+        this.title = title;
+        this.releaseDate = releaseDate;
+        this.duration = duration;
+        this.country = country;
+        this.director = director;
+        this.description = description;
+        this.cast = splitCastString(castString);
+        this.genre = splitGenreString(genreString);
+        this.imagePath = imagePath;
+        this.reviews = reviews;
+    }
+
     
     private List<String> splitCastString(String castString) {
         if (castString != null && !castString.trim().isEmpty()) {
@@ -143,6 +158,13 @@ public class Movies {
     public void setImagePath(String imagePath) {
         this.imagePath = imagePath;
     }
+    public List<Review> getReviews() {
+        return reviews;
+    }
+
+    public void setReviews(List<Review> reviews) {
+        this.reviews = reviews;
+    }
 
     // Utility methods for genres and cast
     public void addGenre(String genre) {
@@ -151,6 +173,13 @@ public class Movies {
 
     public void addCast(String castMember) {
         this.cast.add(castMember);
+    }
+    private List<String> splitGenreString(String genreString) {
+        if (genreString != null && !genreString.trim().isEmpty()) {
+            return Arrays.asList(genreString.split("\\s*,\\s*"));
+        } else {
+            return new ArrayList<>();
+        }
     }
 
     @Override

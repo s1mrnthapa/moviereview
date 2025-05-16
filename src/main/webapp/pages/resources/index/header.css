@@ -1,0 +1,207 @@
+
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  /* ::-webkit-scrollbar {
+      width: 2em;
+  }
+  ::-webkit-scrollbar-track{
+      background: hsl(120 75% 50% / 1);
+      border-radius: 100vw;
+      margin-block: .5em;
+  }
+  
+  ::-webkit-scrollbar-thumb{
+      background: hsl(120 100% 20%);
+      border: .25em soild hsl(120 75% 50% / 1);
+      border-radius: 100vw;
+  }
+  ::-webkit-scrollbar-thumb:hover{
+      background: hsl(120 100% 50% / 1);
+  } */
+  
+  ::-webkit-scrollbar {
+      width: 5px;
+  }
+  ::-webkit-scrollbar-track{
+      background: rgb(0, 0, 0);
+      /* border-radius: 100vw; */
+  }
+  
+  ::-webkit-scrollbar-thumb{
+      background: linear-gradient(red,purple, blue);
+      border: .25em soild hsl(0, 0%, 100%);
+      border-radius: 100vw;
+  }
+  ::-webkit-scrollbar-thumb:hover{
+      background: hsl(0, 0%, 100%);
+  }
+  
+  
+      body{
+          background-color: rgb(17, 17, 17);
+          
+      }
+  
+  
+  
+      header{
+          display: grid;
+          grid-template-columns: 1fr 1fr 1fr;
+          background-color: transparent;
+          font-size: medium;
+          /* justify-content: center;
+          justify-items: center; */
+          font-family: Cinzel Decorative, Viaoda Libre, Bodoni Moda,  Amarante, arial;
+          letter-spacing: 0.25cap;
+          font-size: small;
+          font-weight:100;
+          width: 100%;
+          padding-bottom: 150px;
+          z-index: 1000;
+          position: fixed;
+          background: linear-gradient(black, transparent);
+      }
+      
+      .sub_header{
+          display: flex;
+          justify-content: left;
+          align-items: center;
+          column-gap: 30px;
+      }
+      .left_header{
+          padding-left: 72px;
+      }
+      .right_header{
+          column-gap: 20px;
+          padding-right: 72px;
+      }
+      
+      .right_header{
+          justify-content: right;
+          /* padding-right: 100px; */
+      } 
+      .logo_header{
+          justify-content: center;
+          /* padding-left: 100px; */
+      }
+  
+      .logo{
+          height: 55px;
+          transition: all 1000ms;
+  
+      }
+      .logo:hover{
+          filter: invert(1);
+          transition: 300ms;
+      }
+      .logo_text{
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+          margin: 0;
+          color: white; /* or whatever color you want */
+          font-size: 1.2rem;
+          font-weight: bold;
+          pointer-events: none;
+          transition: all 1000ms;
+          opacity: 0;
+      }
+      
+      .logo_wrapper:hover .logo{
+          opacity: 0;
+      }
+      .logo_wrapper:hover .logo_text{
+          opacity: 1;
+      }
+      .search_bar{
+          gap: 12px;
+      }
+  
+      .search_box{
+          /* width: 90px; */
+      }
+  
+      .search_icon{
+          height: 16px;
+          fill: white;
+      }
+  
+      .search_box{
+          height:16px;
+          background-color: transparent;
+          border-top: none;
+          border-left: none;
+          border-right: none;
+          border-color: white;
+          border-bottom-width: 1px;
+          transition: all 1000ms;
+      &:focus{
+          outline: none;
+          color:rgb(36, 212, 236);
+      }&:hover{
+          border-bottom-color:rgb(36, 212, 236);
+      }}
+  
+  
+      .search_box:active, .search_box:focus{
+          background-color: transparent;
+          color: rgb(36, 212, 236);
+          outline: rgb(36, 212, 236);
+      }
+      .search_box::placeholder{
+          font-family:  Cinzel Decorative, Bodoni Moda, Amarante,  Viaoda Libre, arial;
+          /* font-size: 1rem; */
+          font-style: italic;
+          color: #888;
+      }
+      .user_icon{
+          height: 25px;
+          transition: 300ms;
+          display: block;
+      }
+      .icon path{
+          transition: all 1000ms;
+      }
+      .icon:hover path {
+          stroke: rgb(36, 212, 236);
+          transition: all 1000ms;
+      }
+      .search_svg path{
+          transition: all 1000ms;
+      }
+  
+      .search_svg:hover path{
+          fill: rgb(36, 212, 236);
+          stroke: rgb(36, 212, 236);
+          transition: all 1000ms;
+      }
+  
+      .page{
+          text-decoration: none;
+          color: white;
+          text-align: center;
+          align-items: center;
+          transition: linear 100ms;
+      }
+      .page:hover{
+          color: rgb(34, 255, 244);
+          /* text-decoration: underline; */		
+          scale: 1.1;
+          font-weight: bold;
+      }
+      .page:active{
+          color: rgb(36, 212, 236);
+          opacity: 0.5;
+      }
+      
+      .left_grid{
+          display: flex;
+          gap: 10px;
+          background-color: rgb(17, 17, 17);
+      }
