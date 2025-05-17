@@ -1,162 +1,30 @@
-package com.moviereview.model;
+package model;
 
-import java.sql.Date;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
-public class Movies {
-    private int movieID;
+public class UpcomingMovie {
+    private int id;
     private String title;
-    private Date releaseDate;
-    private String duration;
-    private String country;
-    private String director;
     private String description;
-    
-    // Lists to hold associated genre and casts
-    private List<String> genre;
-    private List<String> cast;
+    private String releaseDate;
+    private String posterUrl;
 
-    // Field for image path
-    private String imagePath;
-    
-    // No-argument constructor
-    public Movies() {
-        this.genre = new ArrayList<>();
-        this.cast = new ArrayList<>();
-    }
-
-    // Constructor to initialize a movie object with image path
-    public Movies(String title, Date releaseDate, String duration, String country, String director, String description, String castString, String imagePath) {
+    public UpcomingMovie(int id, String title, String description, String releaseDate, String posterUrl) {
+        this.id = id;
         this.title = title;
-        this.releaseDate = releaseDate;
-        this.duration = duration;
-        this.country = country;
-        this.director = director;
         this.description = description;
-        this.genre = new ArrayList<>();
-        this.cast = splitCastString(castString);
-        this.imagePath = imagePath;
-    }
-
-    // Constructor to initialize a movie object with image path
-    public Movies(int movieID, String title, Date releaseDate, String duration, String country, String director, String description, String castString, String imagePath) {
-        this.movieID = movieID;
-        this.title = title;
         this.releaseDate = releaseDate;
-        this.duration = duration;
-        this.country = country;
-        this.director = director;
-        this.description = description;
-        this.genre = new ArrayList<>();
-        this.cast = splitCastString(castString);
-        this.imagePath = imagePath;
-    }
-    
-    private List<String> splitCastString(String castString) {
-        if (castString != null && !castString.trim().isEmpty()) {
-            return Arrays.asList(castString.split("\\s*,\\s*"));
-        } else {
-            return new ArrayList<>();
-        }
+        this.posterUrl = posterUrl;
     }
 
     // Getters and Setters
-    public int getMovieID() {
-        return movieID;
-    }
+    public int getId() { return id; }
+    public String getTitle() { return title; }
+    public String getDescription() { return description; }
+    public String getReleaseDate() { return releaseDate; }
+    public String getPosterUrl() { return posterUrl; }
 
-    public void setMovieID(int movieID) {
-        this.movieID = movieID;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public Date getReleaseDate() {
-        return releaseDate;
-    }
-
-    public void setReleaseDate(Date releaseDate) {
-        this.releaseDate = releaseDate;
-    }
-
-    public String getDuration() {
-        return duration;
-    }
-
-    public void setDuration(String duration) {
-        this.duration = duration;
-    }
-
-    public String getCountry() {
-        return country;
-    }
-
-    public void setCountry(String country) {
-        this.country = country;
-    }
-
-    public String getDirector() {
-        return director;
-    }
-
-    public void setDirector(String director) {
-        this.director = director;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public List<String> getGenre() {
-        return genre;
-    }
-
-    public void setGenre(List<String> genre) {
-        this.genre = genre;
-    }
-
-    public List<String> getCast() {
-        return cast;
-    }
-
-    public void setCast(List<String> cast) {
-        this.cast = cast;
-    }
-
-    // Getter and Setter for imagePath
-    public String getImagePath() {
-        return imagePath;
-    }
-
-    public void setImagePath(String imagePath) {
-        this.imagePath = imagePath;
-    }
-
-    // Utility methods for genres and cast
-    public void addGenre(String genre) {
-        this.genre.add(genre);
-    }
-
-    public void addCast(String castMember) {
-        this.cast.add(castMember);
-    }
-
-    @Override
-    public String toString() {
-        return "Movies [movieID=" + movieID + ", title=" + title + ", releaseDate=" + releaseDate + ", duration=" + duration
-                + ", country=" + country + ", director=" + director + ", description=" + description + ", genre=" + genre
-                + ", cast=" + cast + ", imagePath=" + imagePath + "]";
-    }
+    public void setId(int id) { this.id = id; }
+    public void setTitle(String title) { this.title = title; }
+    public void setDescription(String description) { this.description = description; }
+    public void setReleaseDate(String releaseDate) { this.releaseDate = releaseDate; }
+    public void setPosterUrl(String posterUrl) { this.posterUrl = posterUrl; }
 }

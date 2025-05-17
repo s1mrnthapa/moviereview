@@ -197,7 +197,7 @@
 		<div class="left_headers sub_header">
             <a href="homepage.html" class = "page">HOME</a>
             <a href="homepage.html" class = "page">MOVIE</a>
-            <a href="homepage.html" class = "page">UPCOMING</a>
+            <a href="${pageContext.request.contextPath}/pages/UpcomingMovies.jsp" class = "page">UPCOMING</a>
         </div>
 
         <div class="sub_header right_header">
