@@ -105,15 +105,19 @@
       display: flex;
       align-items: center;
       justify-content: center;
+      overflow: hidden;
     }
 
     .profile-pic {
-      width: 80px;
-      height: 80px;
-      border-radius: 50%;
-      border: 2px solid #ff3c3c;
-      object-fit: cover;
-    }
+	   width: 100%;
+	   height: 100%;
+	   object-fit: cover;
+	   background-color: #1a1a1a; 
+	   background-image: url('../../../images/default-profile.png');
+	   background-size: cover;
+	   background-position: center;
+	   background-repeat: no-repeat;
+	}
 
     .user-info h1 {
       margin: 0 0 10px 0;
@@ -132,6 +136,8 @@
       margin-top: 10px;
       border-radius: 4px;
       cursor: pointer;
+      display: inline-block;
+      text-decoration: none;
     }
 
     .error-message {
@@ -232,30 +238,32 @@
 
   <!-- Header -->
   <header>
-	  <div class="logo">
-	    <a href="${pageContext.request.contextPath}/Home.jsp" style="display: flex; align-items: center; text-decoration: none; color: white;">
-	      <img src="${pageContext.request.contextPath}/images/cinecritique-logo-only.png" alt="CineCritique Logo" />
-	      <h1>CINECRITIQUE</h1>
-	    </a>
-	  </div>
-	
-	  <div class="search-bar">
-	    <input type="text" placeholder="Search" />
-	    <button>Search</button>
-	  </div>
-	  
-	  <nav>
-	    <a href="${pageContext.request.contextPath}/Home.jsp">Home</a>
-	    <a href="${pageContext.request.contextPath}/Movies.jsp">Films</a>
-	    <a href="${pageContext.request.contextPath}/UpcomingMovies.jsp">Upcoming</a>
-	    <a href="${pageContext.request.contextPath}/WatchlistServlet">Watchlist</a>
-	  </nav>
-	</header>
+    <div class="logo">
+      <a href="${pageContext.request.contextPath}/Home.jsp" style="display: flex; align-items: center; text-decoration: none; color: white;">
+        <img src="${pageContext.request.contextPath}/images/cinecritique-logo-only.png" alt="CineCritique Logo" />
+        <h1>CINECRITIQUE</h1>
+      </a>
+    </div>
+
+    <div class="search-bar">
+      <input type="text" placeholder="Search" />
+      <button>Search</button>
+    </div>
+    
+    <nav>
+      <a href="${pageContext.request.contextPath}/Home.jsp">Home</a>
+      <a href="${pageContext.request.contextPath}/Movies.jsp">Films</a>
+      <a href="${pageContext.request.contextPath}/UpcomingMovies.jsp">Upcoming</a>
+      <a href="${pageContext.request.contextPath}/WatchlistServlet">Watchlist</a>
+    </nav>
+  </header>
 
   <!-- Dynamic Profile Section -->
   <div class="profile-section">
     <div class="avatar">
-  		<img src="images/default-profile.png" alt="Profile Picture" class="profile-pic" />
+    	<img src="${pageContext.request.contextPath}/${not empty userProfile.profilePicturePath and userProfile.profilePicturePath.contains('.') ? userProfile.profilePicturePath : 'images/default-profile.png'}" 
+         alt="Profile Picture" 
+         class="profile-pic" />
 	</div>
     <div class="user-info">
       <h1><c:out value="${userProfile.username}" /></h1>

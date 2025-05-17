@@ -73,7 +73,7 @@ public class RegisterController extends HttpServlet {
             String hashedPassword = hashPassword(password);
 
             // Create User object
-            User user = new User(0, username, firstName, lastName, email, hashedPassword, null, null);
+            User user = new User(0, username, firstName, lastName, email, hashedPassword, null, null, hashedPassword);
 
             // Create UserDAO and check for existing username and email
             Connection conn = DatabaseConnection.getConnection();

@@ -4,6 +4,9 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Types;
+
+import com.moviereview.controller.database.DatabaseConnection;
 import com.moviereview.model.User;
 public class UserDAO {
         private Connection conn;
@@ -89,4 +92,69 @@ public class UserDAO {
             }
             return false;
         }
+        // Updates an existing user's profile details including username
+        public boolean updateUser(User user) throws SQLException {
+            // Validate profile picture path format if present
+            if (user.getProfilePicturePath() != null && 
+                !user.getProfilePicturePath().isEmpty() &&
+                !user.getProfilePicturePath().contains(".")) {
+                throw new SQLException("Invalid profile picture path - missing file extension");
+            }
+
+            String query = "UPDATE user SET username=?, firstName=?, lastName=?, email=?, profilePicturePath=? WHERE userID=?";
+            
+            try (Connection conn = DatabaseConnection.getConnection();
+                 PreparedStatement ps = conn.prepareStatement(query)) {
+                
+                // Set parameters with null checks
+                ps.setString(1, user.getUsername());
+                ps.setString(2, user.getFirstName());
+                ps.setString(3, user.getLastName());
+                ps.setString(4, user.getEmail());
+                
+                // Handle potential null profile picture path
+                if (user.getProfilePicturePath() != null && !user.getProfilePicturePath().isEmpty()) {
+                    ps.setString(5, user.getProfilePicturePath());
+                } else {
+                    ps.setNull(5, Types.VARCHAR);
+                }
+                
+                ps.setInt(6, user.getUserId());
+                
+                int rowsAffected = ps.executeUpdate();
+                
+                // Detailed logging
+                System.out.println("Updated user ID: " + user.getUserId() + 
+                                 ", Rows affected: " + rowsAffected +
+                                 ", New profile path: " + user.getProfilePicturePath());
+                
+                return rowsAffected > 0;
+                
+            } catch (SQLException e) {
+                // Enhanced error logging
+                System.err.println("Error updating user ID " + user.getUserId() + ": " + e.getMessage());
+                throw e; // Re-throw to let caller handle
+            }
+        }
+        public User getUserById(int userId) throws SQLException {
+            String query = "SELECT * FROM user WHERE userID = ?";
+            try (PreparedStatement ps = conn.prepareStatement(query)) {
+                ps.setInt(1, userId);
+                try (ResultSet rs = ps.executeQuery()) {
+                    if (rs.next()) {
+                        User user = new User();
+                        user.setUserId(rs.getInt("userID"));
+                        user.setUsername(rs.getString("username"));
+                        user.setFirstName(rs.getString("firstName"));
+                        user.setLastName(rs.getString("lastName"));
+                        user.setEmail(rs.getString("email"));
+                        // Add other fields as needed
+                        return user;
+                    }
+                }
+            }
+            return null;
+        }
+        
+
     }

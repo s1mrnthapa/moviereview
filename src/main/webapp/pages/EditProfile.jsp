@@ -141,6 +141,36 @@
     .back-link a:hover {
       text-decoration: underline;
     }
+
+    .profile-picture-container {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      margin: 15px 0;
+    }
+
+    .profile-picture-preview {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      overflow: hidden;
+      border: 2px solid #ff3c3c;
+    }
+
+    .profile-picture-preview img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .picture-actions {
+      display: flex;
+      gap: 10px;
+    }
+
+    .remove-btn {
+      background-color: #444 !important;
+    }
   </style>
 </head>
 <body>
@@ -158,7 +188,7 @@
       <a href="${pageContext.request.contextPath}/LikesServlet">Likes</a>
       <a href="${pageContext.request.contextPath}/ProfileServlet" class="profile">
         <span><c:out value="${userProfile.username}" /></span>
-        <img src="${pageContext.request.contextPath}/image/images.png" alt="User Icon">
+        <img src="${pageContext.request.contextPath}/${not empty userProfile.profilePicturePath ? userProfile.profilePicturePath : 'images/default-profile.png'}" alt="User Icon">
       </a>
     </nav>
   </header>
@@ -167,7 +197,7 @@
   <div class="container">
     <h2>Edit Profile</h2>
 
-    <form action="${pageContext.request.contextPath}/UpdateProfileServlet" method="POST">
+    <form action="${pageContext.request.contextPath}/UpdateProfileServlet" method="POST" enctype="multipart/form-data">
       <!-- Error Message -->
       <c:if test="${not empty error}">
         <div class="error-message">
@@ -175,6 +205,30 @@
         </div>
       </c:if>
 
+      <!-- Profile Picture -->
+      <div class="form-group">
+        <label>Profile Picture:</label>
+        <div class="profile-picture-container">
+          <div class="profile-picture-preview">
+    		<img id="profilePicturePreview" 
+         		src="${pageContext.request.contextPath}/${not empty userProfile.profilePicturePath and userProfile.profilePicturePath.contains('.') ? userProfile.profilePicturePath : 'images/default-profile.png'}" 
+         		alt="Profile Preview"/>
+		</div>
+          <div class="picture-actions">
+            <input type="file" id="profilePictureInput" name="profilePicture" accept="image/*" 
+                   style="display: none;" onchange="previewProfilePicture(this)"/>
+            <label for="profilePictureInput" class="submit-btn" style="cursor: pointer;">
+              Choose Image
+            </label>
+            <c:if test="${not empty userProfile.profilePicturePath}">
+              <button type="button" onclick="removeProfilePicture()" class="submit-btn remove-btn">
+                Remove
+              </button>
+              <input type="hidden" id="removePictureFlag" name="removePicture" value="false"/>
+            </c:if>
+          </div>
+        </div>
+      </div>
 
       <!-- Username (Editable) -->
       <div class="form-group">
@@ -209,6 +263,27 @@
       <a href="${pageContext.request.contextPath}/ProfileServlet">← Back to Profile</a>
     </div>
   </div>
+
+  <script>
+    function previewProfilePicture(input) {
+      if (input.files && input.files[0]) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          document.getElementById('profilePicturePreview').src = e.target.result;
+          if (document.getElementById('removePictureFlag')) {
+            document.getElementById('removePictureFlag').value = "false";
+          }
+        }
+        reader.readAsDataURL(input.files[0]);
+      }
+    }
+
+    function removeProfilePicture() {
+      document.getElementById('profilePicturePreview').src = '${pageContext.request.contextPath}/images/default-profile.png';
+      document.getElementById('profilePictureInput').value = '';
+      document.getElementById('removePictureFlag').value = "true";
+    }
+  </script>
 
 </body>
 </html>
