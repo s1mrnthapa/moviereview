@@ -1,38 +1,22 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.googleapis.com">
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Aboreto&display=swap" rel="stylesheet">
 	<link href="https://fonts.googleapis.com/css2?family=Aboreto&family=Amarante&family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..900;1,6..96,400..900&family=Bona+Nova+SC:ital,wght@0,400;0,700;1,400&family=Cinzel+Decorative:wght@400;700;900&family=Cinzel:wght@400..900&family=Cormorant+Unicase:wght@300;400;500;600;700&family=Eagle+Lake&family=El+Messiri:wght@400..700&family=Julius+Sans+One&family=Kalnia:wght@100..700&family=Metamorphous&family=Slackey&family=Texturina:ital,opsz,wght@0,12..72,100..900;1,12..72,100..900&family=Viaoda+Libre&display=swap" rel="stylesheet">
     <title> CineCritique </title>
     <link rel="stylesheet" href="https://use.typekit.net/your-kit-id.css">
     <style>
-      @font-face {
-      font-family: 'MyCustomFont';
-      src: url('fonts/Amarante-Regular.ttf') format('truetype');
-      }
-
-      @font-face {
-      font-family: 'MyCustomFont2';
-      src: url('fonts/Aboreto-Regular.ttf') format('truetype');
-      }
-      @font-face {
-      font-family: 'MyCustomFont3';
-      src: url('fonts/BodoniModa_9pt-Regular.ttf') format('truetype');
-      }
       * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
 
-        html, body {
-            height: 100%;
-            background-color: black;
-        }
-
         h1 {
-            font-family: 'MyCustomFont', sans-serif;
+            font-family: 'Amarante', cursive;
+			font-size: 60px;
         }
 
         p {
@@ -126,7 +110,7 @@
         .modal-content h1 {
             text-align: left;
             margin-bottom: 20px;
-            font-family: 'MyCustomFont2';
+            font-family: 'Aboreto', cursive;
             color: yellow;
             font-size: 28px;
         }
@@ -151,7 +135,7 @@
             margin-bottom: 5px;
             display: block;
             color: dar;
-            font-family: 'MyCustomFont3';
+            font-family: 'BodoniModa', serif;
             text-align: left;
             color: aliceblue;
         }
@@ -197,12 +181,12 @@
       <div class = "container"> 
             <div class="video-play">
                   <video autoplay muted loop id="bg-video">
-                      <source src="resources/login/mfl.mp4" type="video/mp4">  
+                      <source src="resources/video/vid01.mp4" type="video/mp4">  
                   </video>
             </div>
             <div class="contents">
                   <div class="card" style="width: 349px;">
-                        <img src="images/registerPic.jpg" alt="Image" style="width: 420px; height: 480px; border-radius: 20px; border: 2px solid black;" class="card-image">
+                        <img src="resources/login/download.jpg" alt="Image" style="width: 420px; height: 480px; border-radius: 20px; border: 2px solid black;" class="card-image">
                   </div>
                   <div class="main-quote">
                         <h1> Timeless cinema <br>
@@ -226,7 +210,7 @@
                   </div>
                   <div class="down-contents">
                         <div class="get-started">
-                              <a href="javascript:void(0);" class="sign-up-button" style="font-family: 'MyCustomFont2'; font-size: 20px;" onclick="openForm()">Get started - it's free</a>
+                              <a href="javascript:void(0);" class="sign-up-button" style="font-family: 'Aboreto', cursive;; font-size: 20px;" onclick="openForm()">Get started - it's free</a>
                         </div>
                         <div class="second-quote">
                               <p> Track, rate, and share your cinematic journey.<br>
@@ -273,7 +257,7 @@
                                     <input class="placeholder" type="password" name="confirm_password" required>
                               </div>
                         </div>
-                              <input type = "submit" value = "Register" style="background-color: darkred; font-family: 'MyCustomFont2';">  
+                              <input type = "submit" value = "Register" style="background-color: darkred; font-family: 'Aboreto', cursive;;">  
                               <p style="text-align: center; margin-top: 10px; color: white;">
                               Already have an account?
                               <a href="${pageContext.request.contextPath}/pages/Login.jsp" style="color: yellow;">Login here</a>

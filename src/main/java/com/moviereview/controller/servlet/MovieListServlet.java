@@ -15,15 +15,17 @@ import com.moviereview.controller.database.DatabaseConnection;
 @WebServlet("/MovieListServlet")
 public class MovieListServlet extends HttpServlet {
 
+    @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
         String yearParam = request.getParameter("year");
         String genreParam = request.getParameter("genre");
+        String keywordParam = request.getParameter("keyword");
 
-        // Normalize inputs
         String year = (yearParam != null && !yearParam.trim().isEmpty()) ? yearParam.trim() : null;
         String genre = (genreParam != null && !genreParam.trim().isEmpty()) ? genreParam.trim() : null;
+        String keyword = (keywordParam != null && !keywordParam.trim().isEmpty()) ? keywordParam.trim().toLowerCase() : null;
 
         List<Movies> moviesList = new ArrayList<>();
 
@@ -36,42 +38,40 @@ public class MovieListServlet extends HttpServlet {
                 "WHERE 1=1 "
             );
 
-            // Special handling for "Upcoming" in year filter (if you have that)
             boolean filterYearByUpcoming = "Upcoming".equalsIgnoreCase(year);
+            int paramIndex = 1;
+            List<Object> params = new ArrayList<>();
 
-         // Add the year filter clause first (but no parameters set here)
+            // Apply keyword filter
+            if (keyword != null) {
+                sql.append("AND LOWER(m.title) LIKE ? ");
+                params.add("%" + keyword + "%");
+            }
+
+            // Apply year filter
             if (year != null && !filterYearByUpcoming) {
                 try {
                     int yearInt = Integer.parseInt(year);
                     sql.append("AND YEAR(m.release_date) BETWEEN ? AND ? ");
+                    params.add(yearInt);
+                    params.add(yearInt + 9);
                 } catch (NumberFormatException e) {
-                    // Invalid year format - no filtering for year
+                    // Invalid year; ignore filter
                 }
             } else if (filterYearByUpcoming) {
                 sql.append("AND m.release_date > CURDATE() ");
             }
 
+            // Apply genre filter
             if (genre != null) {
                 sql.append("AND g.genre_name = ? ");
+                params.add(genre);
             }
 
             PreparedStatement ps = connection.prepareStatement(sql.toString());
 
-            int paramIndex = 1;
-
-            // Set year parameters after preparing statement
-            if (year != null && !filterYearByUpcoming) {
-                try {
-                    int yearInt = Integer.parseInt(year);
-                    ps.setInt(paramIndex++, yearInt);
-                    ps.setInt(paramIndex++, yearInt + 9);
-                } catch (NumberFormatException e) {
-                    // If invalid, skip setting params (or handle as needed)
-                }
-            }
-
-            if (genre != null) {
-            	ps.setString(paramIndex++, genre);
+            for (Object param : params) {
+                ps.setObject(paramIndex++, param);
             }
 
             ResultSet rs = ps.executeQuery();
@@ -116,6 +116,6 @@ public class MovieListServlet extends HttpServlet {
         RequestDispatcher dispatcher = request.getRequestDispatcher("/pages/Movies.jsp");
         dispatcher.forward(request, response);
 
-        System.out.println("Passing movies to JSP. Count: " + moviesList.size());
+        System.out.println("Movie list returned. Count: " + moviesList.size());
     }
 }

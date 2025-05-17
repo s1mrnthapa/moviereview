@@ -197,7 +197,7 @@
 
   <!-- Background Image -->
   <div class="blurry-bg">
-    <img src="images/loginPic.jpg" alt="Blurry Background">
+    <img src="resources/login/img02.jpg" alt="Blurry Background">
   </div>
 
   <!-- Centered Card Grid -->
@@ -262,7 +262,7 @@
       </div>
       <!-- Right Side: Static Image -->
       <div class="image-side">
-        <img src="resources/login/img01.jpg" alt="Right Image">
+        <img src="resources/login/chungkingg-express.jpg" alt="Right Image">
       </div>
 
     </div>
