@@ -14,12 +14,13 @@ public class ReviewDAO {
 
     // Insert a new review
     public boolean addReview(Review review) {
-        String sql = "INSERT INTO review (movieID, userID, reviewDescription, rating) VALUES (?, ?, ?, ?)";
+        String sql = "INSERT INTO review (movieID, userID, username, reviewDescription, rating) VALUES (?, ?, ?, ?, ?)";
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setInt(1, review.getMovieID());
             ps.setInt(2, review.getUserID());
-            ps.setString(3, review.getReviewDescription());
-            ps.setInt(4, review.getRating());
+            ps.setString(3, review.getUsername());
+            ps.setString(4, review.getReviewDescription());
+            ps.setInt(5, review.getRating());
             int rowsAffected = ps.executeUpdate();
             return rowsAffected > 0;
         } catch (SQLException e) {
@@ -40,6 +41,7 @@ public class ReviewDAO {
                     rs.getInt("reviewID"),
                     rs.getInt("movieID"),
                     rs.getInt("userID"),
+                    rs.getString("userName"),
                     rs.getString("reviewDescription"),
                     rs.getInt("rating"),
                     rs.getTimestamp("review_date")
@@ -63,6 +65,7 @@ public class ReviewDAO {
                     rs.getInt("reviewID"),
                     rs.getInt("movieID"),
                     rs.getInt("userID"),
+                    rs.getString("username"),
                     rs.getString("reviewDescription"),
                     rs.getInt("rating"),
                     rs.getTimestamp("review_date")

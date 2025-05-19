@@ -87,11 +87,6 @@ public class MovieDetailServlet extends HttpServlet {
                 }
             }
 
-            if (movie == null) {
-                response.sendRedirect(request.getContextPath() + "/pages/Movies.jsp"); // If no movie found
-                return;
-            }
-
             request.setAttribute("movie", movie);
             RequestDispatcher dispatcher = request.getRequestDispatcher("/pages/MovieDetail.jsp");
             dispatcher.forward(request, response);
