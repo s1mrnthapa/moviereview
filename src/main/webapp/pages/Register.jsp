@@ -30,30 +30,23 @@
             height: 100%;
             object-fit: cover;
             z-index: -1;
+            pointer-events: none;
         }
-
         .contents {
-            display: flex;
-            flex-direction: column;
-            transform: translateY(-340px);
-            text-align: right;
-            margin-right: 130px;
-            color: yellow;
+        	display: grid;
+        	gap: 30px;
+        	padding-top: 180px;
+        	padding-left: 70px;
+        	place-items: left;
         }
-
-        .card {
-            transform: translateY(30rem);
-            margin-left: 150px;
-            backdrop-filter: blur(8px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 1rem;
-            padding: 1.5rem;
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+        .main-quote h1{
+            font-size: 55px;
+            text-align: left;
+            margin-bottom: 230px;
+            color: white;
         }
-
-        .main-quote {
-            font-size: 30px;
-            margin-bottom: 200px;
+        .down-contents{
+        	text-align: left;
         }
 
         .get-started {
@@ -63,26 +56,24 @@
         .sign-up-button {
             padding: 12px 28px;
             font-size: 20px;
-            color: white;
-            background-color: darkred;
+            color: black;
+            background-color: rgb(36, 212, 236);
             border-radius: 25px;
             text-decoration: none;
         }
 
         .sign-up-button:hover {
-            background-color: #e6322e;
+            background-color: white;
         }
 
         .modal {
             display: none;
             position: fixed;
-            z-index: 9999;
-            left: 0;
-            top: 0;
             width: 100%;
             height: 100%;
             background-color: rgba(0, 0, 0, 0.6);
             overflow: auto;
+            z-index: 1000;
         }
 
         .modal-content {
@@ -95,12 +86,11 @@
 
         .close {
             position: absolute;
-            top: 15px;
-            right: 20px;
-            color: #ff3b3b;
-            font-size: 28px;
-            font-weight: bold;
-            cursor: pointer;
+		    top: 10px;
+		    right: 15px;
+		    font-size: 28px;
+		    color: rgb(34, 255, 244);
+		    cursor: pointer;
         }
 
         .close:hover {
@@ -110,8 +100,8 @@
         .modal-content h1 {
             text-align: left;
             margin-bottom: 20px;
-            font-family: 'Aboreto', cursive;
-            color: yellow;
+            font-family: Cinzel Decorative, Viaoda Libre, Bodoni Moda,  Amarante, arial;     
+            color: cyan;
             font-size: 28px;
         }
 
@@ -134,16 +124,15 @@
         .label_name {
             margin-bottom: 5px;
             display: block;
-            color: dar;
-            font-family: 'BodoniModa', serif;
+            font-family: Cinzel Decorative, Viaoda Libre, Bodoni Moda,  Amarante, arial;
             text-align: left;
-            color: aliceblue;
+            color: white;
         }
 
         .placeholder {
             width: 100%;
             padding: 10px;
-            border: 1px solid white;
+            border: 1px solid cyan;
             background-color: transparent;
             font-size: 14px;
             outline: none;
@@ -152,11 +141,11 @@
         }
 
         .placeholder:focus {
-            border: 1px solid #ff0000;
+            border: 1px solid cyan;
         }
 
         input[type="submit"] {
-            background-color: #000;
+            background-color: cyan;
             color: black;
             padding: 10px;
             height: 40px;
@@ -174,6 +163,7 @@
 		.hide {
 		  display: none !important;
 		}
+		
 		    </style>
 </head>
 <body>
@@ -181,39 +171,36 @@
       <div class = "container"> 
             <div class="video-play">
                   <video autoplay muted loop id="bg-video">
-                      <source src="resources/video/vid01.mp4" type="video/mp4">  
+                      <source src="resources/video/background.mp4" type="video/mp4">  
                   </video>
             </div>
             <div class="contents">
-                  <div class="card" style="width: 349px;">
-                        <img src="resources/login/download.jpg" alt="Image" style="width: 420px; height: 480px; border-radius: 20px; border: 2px solid black;" class="card-image">
-                  </div>
                   <div class="main-quote">
-                        <h1> Timeless cinema <br>
-                              stories that echo across<br>
-                              endless generations </h1>
+                        <h1> Timeless cinema stories that <br>
+                        	 echo across endless <br>
+                        	 generations </h1>
                         <% if (request.getAttribute("error") != null) { %>
 					    <div style="
-					        background-color: #ffdddd;
-					        color: #a94442;
-					        border: 1px solid #f5c6cb;
-					        border-radius: 6px;
-					        padding: 12px 15px;
+					    	color: darkred;
+						    border: 1px solid #ff4d4d;
+						    padding: 10px 10px;
+						    width: 100%;
+						    font-weight: bold;
+				            text-align: center;
+				            background-color: transparent;
 					        margin-bottom: 20px;
-					        font-weight: bold;
 					        font-family: 'Segoe UI', sans-serif;
-					        text-align: left;">
+					        text-align: center;">
 					        <%= request.getAttribute("error") %>
 					    </div>
-					<% } %>
-                              
+					<% } %>                              
                   </div>
                   <div class="down-contents">
                         <div class="get-started">
-                              <a href="javascript:void(0);" class="sign-up-button" style="font-family: 'Aboreto', cursive;; font-size: 20px;" onclick="openForm()">Get started - it's free</a>
+                              <a href="javascript:void(0);" class="sign-up-button" style="font-family: 'Aboreto', cursive; font-size: 15px;" onclick="openForm()">Get started - it's free</a>
                         </div>
                         <div class="second-quote">
-                              <p> Track, rate, and share your cinematic journey.<br>
+                              <p style="color: white; font-family: 'Aboreto', cursive;"> Track, rate, and share your cinematic journey.<br>
                                     CineCritique unveils cinema, where every film tells a story. </p>
                         </div>
                   </div>
@@ -224,11 +211,16 @@
                     <span class="close" onclick="closeForm()">&times;</span>
                     <h1>Join CineCritique</h1>
                     <form class="form-container" action="${pageContext.request.contextPath}/RegisterController" method="post">
-                    <% if (request.getAttribute("error") != null) { %>
+                    <%
+					    String error = request.getParameter("error");
+					    if (error != null) {
+					%>
 					    <div style="background-color: #ffdddd; color: #a94442; border: 1px solid #f5c6cb; border-radius: 6px; padding: 12px 15px; margin-bottom: 20px; font-weight: bold; font-family: 'Segoe UI', sans-serif; text-align: left;">
-					        <%= request.getAttribute("error") %>
+					        <%= error %>
 					    </div>
-					<% } %>
+					<%
+					    }
+					%>
                         <div class="form-group">
                               <label class="label_name"> User Name: </label>
                               <input class="placeholder" type="text" name="username" required>
@@ -257,38 +249,38 @@
                                     <input class="placeholder" type="password" name="confirm_password" required>
                               </div>
                         </div>
-                              <input type = "submit" value = "Register" style="background-color: darkred; font-family: 'Aboreto', cursive;;">  
-                              <p style="text-align: center; margin-top: 10px; color: white;">
+                              <input type = "submit" value = "Register" style="background-color: cyan; font-family: 'Aboreto', cursive;">  
+                              <p style="text-align: center; margin-top: 10px; color: white; font-family: 'Aboreto', cursive;">
                               Already have an account?
-                              <a href="${pageContext.request.contextPath}/pages/Login.jsp" style="color: yellow;">Login here</a>
+                              <a href="${pageContext.request.contextPath}/pages/Login.jsp" style="color: cyan;">Login here</a>
                         </p>
                   </form>
                   </div>
             </div>
             
                 <script>
-                function openForm() {
-                    console.log("Opening modal because error exists");
-                    document.getElementById("registerModal").style.display = "block";
-                    document.querySelector(".contents").classList.add("hide");
-                }
-
-                  function closeForm() {
-                        document.getElementById("registerModal").style.display = "none";
-                        document.querySelector(".contents").classList.remove("hide"); // Show main contents again
-                  }
-                
-                  window.onclick = function(event) {
-                    const modal = document.getElementById("registerModal");
-                    if (event.target === modal) {
-                      modal.style.display = "none";
-                    }
-                  }
-                  window.onload = function () {
-                      <% if (request.getAttribute("error") != null) { %>
-                          openForm();
-                      <% } %>
-                  };
+                <% if (request.getParameter("error") != null) { %>
+                window.onload = function () {
+                    openForm();
+                };
+            <% } %>
+	                function openForm() {
+	                    console.log("Opening modal because error exists");
+	                    document.getElementById("registerModal").style.display = "block";
+	                    document.querySelector(".contents").classList.add("hide");
+	                }
+	
+	                  function closeForm() {
+	                	  document.getElementById("registerModal").style.display = "none";
+	                	  document.querySelector(".contents").classList.remove("hide");
+	                  }
+	                
+	                  window.onclick = function(event) {
+	                    const modal = document.getElementById("registerModal");
+	                    if (event.target === modal) {
+	                      modal.style.display = "none";
+	                    }
+	                  } 
                 </script>
 </body>
 </html> 

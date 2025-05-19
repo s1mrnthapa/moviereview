@@ -42,13 +42,11 @@ public class MovieListServlet extends HttpServlet {
             int paramIndex = 1;
             List<Object> params = new ArrayList<>();
 
-            // Apply keyword filter
             if (keyword != null) {
                 sql.append("AND LOWER(m.title) LIKE ? ");
                 params.add("%" + keyword + "%");
             }
 
-            // Apply year filter
             if (year != null && !filterYearByUpcoming) {
                 try {
                     int yearInt = Integer.parseInt(year);
@@ -56,13 +54,12 @@ public class MovieListServlet extends HttpServlet {
                     params.add(yearInt);
                     params.add(yearInt + 9);
                 } catch (NumberFormatException e) {
-                    // Invalid year; ignore filter
+                    // Invalid year input
                 }
             } else if (filterYearByUpcoming) {
                 sql.append("AND m.release_date > CURDATE() ");
             }
 
-            // Apply genre filter
             if (genre != null) {
                 sql.append("AND g.genre_name = ? ");
                 params.add(genre);
@@ -89,7 +86,6 @@ public class MovieListServlet extends HttpServlet {
 
                 Movies movie = new Movies(movieID, title, releaseDate, duration, country, director, description, castString, imagePath);
 
-                // Fetch genres for the movie
                 String genreSql = "SELECT g.genre_name FROM genre g " +
                         "INNER JOIN movie_genre_table mg ON g.genreID = mg.genreID " +
                         "WHERE mg.movieID = ?";
@@ -110,6 +106,10 @@ public class MovieListServlet extends HttpServlet {
 
         } catch (Exception e) {
             e.printStackTrace();
+        }
+
+        if (moviesList.isEmpty()) {
+            request.setAttribute("error", "No movies found matching your filters.");
         }
 
         request.setAttribute("movies", moviesList);

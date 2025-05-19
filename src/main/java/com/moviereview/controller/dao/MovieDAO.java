@@ -165,7 +165,7 @@ public class MovieDAO {
                 // Fetch and set genres and cast
                 movie.setGenre(getGenresByMovieId(movie.getMovieID())); // Set genre
                 movie.setCast(getCastFromMovieTable(movie.getMovieID()));   // Set cast
-
+                
                 movies.add(movie);  // Add movie to the list
             }
         } catch (SQLException | ClassNotFoundException e) {
@@ -204,5 +204,53 @@ public class MovieDAO {
 
     	return movies;
     }
-    
+    public Movies getMovieByID(int movieID) {
+        Movies movie = null;
+        String sql = "SELECT * FROM movie WHERE movieID = ?";
+
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, movieID);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    movie = new Movies();
+                    movie.setMovieID(rs.getInt("movieID"));
+                    movie.setTitle(rs.getString("title"));
+                    movie.setDescription(rs.getString("description"));
+                    movie.setDuration(rs.getString("duration"));
+                    movie.setReleaseDate(rs.getDate("release_date"));
+                    movie.setCountry(rs.getString("country"));
+                    movie.setDirector(rs.getString("director"));
+                    movie.setImagePath(rs.getString("image_path"));
+
+                    // Fetch and set genres and cast
+                    movie.setGenre(getGenresByMovieId(movieID));
+                    movie.setCast(getCastFromMovieTable(movieID));
+                }
+            }
+        } catch (SQLException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        return movie;
+    }
+    public boolean updateMovie(Movies movie) {
+        String sql = "UPDATE movie SET title = ?, release_date = ?, duration = ?, country = ?, director = ?, description = ?, cast = ?, image_path = ? WHERE movieID = ?";
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, movie.getTitle());
+            ps.setDate(2, movie.getReleaseDate());
+            ps.setString(3, movie.getDuration());
+            ps.setString(4, movie.getCountry());
+            ps.setString(5, movie.getDirector());
+            ps.setString(6, movie.getDescription());
+            ps.setString(7, String.join(", ", movie.getCast()));
+            ps.setString(8, movie.getImagePath());
+            ps.setInt(9, movie.getMovieID());
+
+            return ps.executeUpdate() > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
 }

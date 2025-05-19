@@ -37,7 +37,7 @@ public class AuthenticationFilter implements Filter {
 		boolean loggedIn = session != null && (session.getAttribute("user") != null || session.getAttribute("Admin") != null);
 		boolean isAdminPage = uri.contains("adminprofile");
 
-		if (!loggedIn && (uri.endsWith("Register.jsp") || uri.endsWith("RegisterController") || uri.endsWith("Login.jsp") || uri.endsWith("LogInController"))) {
+		if (!loggedIn && (uri.endsWith("Register.jsp") || uri.endsWith("RegisterController") || uri.endsWith("Login.jsp") || uri.endsWith("LogInController") || uri.endsWith("background.mp4") || uri.endsWith("logo.png")|| uri.endsWith("photo2.jpg"))) {
 			chain.doFilter(request, response);
 			return;
 		}

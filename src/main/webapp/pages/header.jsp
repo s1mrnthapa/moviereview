@@ -43,8 +43,7 @@
           background-color: black;
           
       }
-  
-  
+
   
       header{
           display: grid;

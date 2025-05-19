@@ -11,13 +11,13 @@
       body {
          background-color: black;
      }
-     .title h1{
-     	padding-top: 100px;
-     	color: white;
-     	text-align: center;
-     	font-family: Cinzel Decorative;
-     	font-size: 30px;
-     }
+	     .title h1{
+	     	padding-top: 100px;
+	     	color: white;
+	     	text-align: center;
+	     	font-family: Cinzel Decorative;
+	     	font-size: 30px;
+	     }
 	     .search-section {
 		    display: flex;
 		    justify-content: space-between;
@@ -31,7 +31,7 @@
 			  gap: 1rem;
 			  flex-wrap: wrap;
 			  align-items: center;
-			  justify-content: flex-start;
+			  justify-content: space-between;
 			  margin-top: 1rem;
 			}
 		
@@ -46,6 +46,7 @@
 		}
 		/* Search Box */
 		.search-box {
+			margin-left: 51em;
 		}
 		
 		.search-input {
@@ -57,7 +58,7 @@
 		    color: white;
 		    width: 220px;
 		    font-family:  Cinzel Decorative, Bodoni Moda, Amarante,  Viaoda Libre, arial;
-	          font-style: italic;
+	        font-style: italic;
 		}
 		
 		.search-button {
@@ -118,12 +119,9 @@
 	         color: #888;
 	     }
  </style>
-    
 </head>
 <body>
 <%@ include file ="header.jsp" %>
-
-
 <c:if test="${empty movies}">
     <p>No movies available.</p>
     <c:redirect url='${request.contextPath}/MovieListServlet'/>
@@ -133,12 +131,13 @@
 </div>
 <div class="search-section">
   <form action="${pageContext.request.contextPath}/MovieListServlet" method="get">
-    <div>
-    	<h4 style="color: white;">Browse By</h4>
-    </div>
     
     <div class="filter-search-wrapper">
+	    <div>
+	    	<h4 style="color: white;">Browse By</h4>
+	    </div>
       <!-- Year Filter -->
+      <div>
       <select class="filter-select" id="year" name="year">
         <option value="" selected>Year</option>
         <option value="Upcoming" ${param.year == 'Upcoming' ? 'selected' : ''}>Upcoming</option>
@@ -154,11 +153,7 @@
         <option value="1930" ${param.year == '1930' ? 'selected' : ''}>1930s</option>
         <option value="1920" ${param.year == '1920' ? 'selected' : ''}>1920s</option>
         <option value="1910" ${param.year == '1910' ? 'selected' : ''}>1910s</option>
-        <option value="1900" ${param.year == '1900' ? 'selected' : ''}>1900s</option>
-        <option value="1890" ${param.year == '1890' ? 'selected' : ''}>1890s</option>
-        <option value="1880" ${param.year == '1880' ? 'selected' : ''}>1880s</option>
-        <option value="1870" ${param.year == '1870' ? 'selected' : ''}>1870s</option>
-        <option value="1860" ${param.year == '1860' ? 'selected' : ''}>1860s</option>
+        <option value="1900" ${param.year == '1900' ? 'selected' : ''}>1900s</option>      
       </select>
 
       <!-- Genre Filter -->
@@ -176,6 +171,7 @@
         <option value="Horror" ${param.genre == 'Horror' ? 'selected' : ''}>Horror</option>
         <option value="Animation" ${param.genre == 'Animation' ? 'selected' : ''}>Animation</option>
       </select>
+     </div>
 
       <!-- Search Box -->
       <div class="search-box">
