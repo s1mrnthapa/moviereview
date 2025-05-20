@@ -100,17 +100,36 @@ public class MovieDAO {
         }
         return false;
     }
-
-    private List<String> getGenresByMovieId(int movieId) throws SQLException {
+    
+    public List<String> getAllGenres() throws SQLException {
         List<String> genres = new ArrayList<>();
-        String sql = "SELECT g.genre FROM movie_genre_table mg JOIN genre g ON mg.genreID = g.genreID WHERE mg.movieID = ?";
+        String sql = "SELECT genre_name FROM genre";
+
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql);
+             ResultSet rs = stmt.executeQuery()) {
+
+            while (rs.next()) {
+                genres.add(rs.getString("genre_name"));
+            }
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        return genres;
+    }
+
+
+    public List<String> getGenresByMovieId(int movieId) throws SQLException {
+        List<String> genres = new ArrayList<>();
+        String sql = "SELECT g.genre_name FROM movie_genre_table mg JOIN genre g ON mg.genreID = g.genreID WHERE mg.movieID = ?";
 
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setInt(1, movieId);
             try (ResultSet rs = stmt.executeQuery()) {
                 while (rs.next()) {
-                    genres.add(rs.getString("genre"));
+                    genres.add(rs.getString("genre_name"));
                 }
             }
         } catch (ClassNotFoundException e) {
@@ -119,7 +138,7 @@ public class MovieDAO {
         return genres;
     }
 
-    private List<String> getCastFromMovieTable(int movieId) throws SQLException {
+    public List<String> getCastFromMovieTable(int movieId) throws SQLException {
         List<String> castList = new ArrayList<>();
         String sql = "SELECT cast FROM movie WHERE movieID = ?";
 
@@ -234,6 +253,29 @@ public class MovieDAO {
 
         return movie;
     }
+    public void deleteGenresByMovieID(int movieID) {
+        String sql = "DELETE FROM movie_genre_table WHERE movieID = ?";
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, movieID);
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+    public int getGenreIDByName(String genreName) throws Exception {
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement("SELECT genreID FROM genre WHERE genre_name = ?")) {
+            ps.setString(1, genreName);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt("genreID");
+                } else {
+                    throw new Exception("Genre not found: " + genreName);
+                }
+            }
+        }
+    }
+
     public boolean updateMovie(Movies movie) {
         String sql = "UPDATE movie SET title = ?, release_date = ?, duration = ?, country = ?, director = ?, description = ?, cast = ?, image_path = ? WHERE movieID = ?";
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
@@ -247,7 +289,36 @@ public class MovieDAO {
             ps.setString(8, movie.getImagePath());
             ps.setInt(9, movie.getMovieID());
 
-            return ps.executeUpdate() > 0;
+            int updated = ps.executeUpdate();
+
+            if (updated > 0) {
+                // First delete old genres, then insert new ones
+                deleteGenresByMovieID(movie.getMovieID());
+                insertGenres(movie);
+                return true;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public boolean deleteMovie(int movieID) {
+        String deleteGenreSQL = "DELETE FROM movie_genre_table WHERE movieID = ?";
+        String deleteMovieSQL = "DELETE FROM movie WHERE movieID = ?";
+
+        try (PreparedStatement ps1 = conn.prepareStatement(deleteGenreSQL);
+             PreparedStatement ps2 = conn.prepareStatement(deleteMovieSQL)) {
+
+            // First delete the related genres from junction table
+            ps1.setInt(1, movieID);
+            ps1.executeUpdate();
+
+            // Then delete the movie
+            ps2.setInt(1, movieID);
+            int affectedRows = ps2.executeUpdate();
+
+            return affectedRows > 0;
         } catch (SQLException e) {
             e.printStackTrace();
         }

@@ -121,24 +121,27 @@
     .pagination button:hover {
       background-color: var(--dark-red);
     }
+    .success-message {
+    color: green;
+    font-weight: bold;
+    margin-bottom: 10px;
+	}
 
-    footer {
-      background-color: var(--dark-red);
-      color: var(--white);
-      text-align: center;
-      padding: 15px;
-      margin-top: 60px;
-    }
+	.error-message {
+	    color: red;
+	    font-weight: bold;
+	    margin-bottom: 10px;
+	}
   </style>
 </head>
 <body>
 <div class="container">
-  <div class="action-buttons">
-    <form method="post" action="deleteMovies">
-      <button type="submit">DELETE</button>
-    </form>
-  </div>
-
+	<c:if test="${param.success == 'deleted'}">
+	    <p class="success-message">Movie deleted successfully.</p>
+	</c:if>
+	<c:if test="${param.error == 'notdeleted'}">
+	    <p class="error-message">Movie could not be deleted.</p>
+	</c:if>
   <table>
     <thead>
     <tr>
@@ -179,8 +182,11 @@
         <td>${movie.duration}</td>
         <td>${movie.description}</td>
         <td>
-          <a href="${pageContext.request.contextPath}/AdminMoviesServlet?action=edit&movieID=${movie.movieID}">Edit</a>     
-          <a href="deleteMovie?movieID=${movie.movieID}" onclick="return confirm('Are you sure you want to delete this movie?');" style="color:tomato">Delete</a>
+          <a href="${pageContext.request.contextPath}/EditMovieServlet?movieID=${movie.movieID}">Edit</a>
+          <form id= "deleteForm" action="${pageContext.request.contextPath}/DeleteMovieServlet" method="POST" onsubmit="return confirm('Are you sure you want to delete this movie?');">
+		    <input type="hidden" name="movieID" value="${movie.movieID}" />
+		    <button type="submit" style="color:tomato; background:none; border:none; cursor:pointer; text-decoration:underline;">Delete</button>
+		</form>
         </td>
       </tr>
     </c:forEach>

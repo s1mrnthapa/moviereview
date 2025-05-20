@@ -13,7 +13,6 @@
             padding: 0;
             box-sizing: border-box;
         }
-
         h1 {
             font-family: 'Amarante', cursive;
 			font-size: 60px;

@@ -203,7 +203,7 @@
 		<div class="left_header sub_header">
             <a href="Home.jsp" class = "page">HOME</a>
             <a href="Movies.jsp" class = "page">MOVIE</a>
-            <a href="Upcoming.jsp" class = "page">UPCOMING</a>
+            <a href="${pageContext.request.contextPath}/pages/UpcomingMovies.jsp" class = "page">UPCOMING</a>
         </div>
 
 		<div class = "sub_header logo_header logo_wrapper" style="
