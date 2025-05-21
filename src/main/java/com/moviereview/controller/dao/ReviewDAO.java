@@ -207,4 +207,36 @@ public class ReviewDAO {
         }
         return reviews;
     }
+ // Returns total number of reviews by a user
+    public int getTotalReviewsByUser(int userId) {
+        String sql = "SELECT COUNT(*) AS total FROM review WHERE userID = ?";
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, userId);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                return rs.getInt("total");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
+    // Returns list of unique movie IDs reviewed by a user
+    public List<Integer> getReviewedMovieIdsByUser(int userId) {
+        List<Integer> movieIds = new ArrayList<>();
+        String sql = "SELECT DISTINCT movieID FROM review WHERE userID = ?";
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, userId);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                movieIds.add(rs.getInt("movieID"));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return movieIds;
+    }
+
+
 }

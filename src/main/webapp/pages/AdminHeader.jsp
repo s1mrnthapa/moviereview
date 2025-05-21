@@ -210,6 +210,7 @@
             <a href="Dashboard.jsp" class = "page">Dashboard</a>
             <a href="${pageContext.request.contextPath}/pages/AllMovies.jsp" class = "page">Movies</a>
             <a href="${pageContext.request.contextPath}/pages/addMovie.jsp" class = "page">Add Movies</a>
+            <a href="${pageContext.request.contextPath}/pages/AllUsers.jsp" class = "page">Users</a>
         </div>
 		
 

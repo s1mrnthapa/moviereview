@@ -170,7 +170,7 @@
       <div class = "container"> 
             <div class="video-play">
                   <video autoplay muted loop id="bg-video">
-                      <source src="resources/video/background.mp4" type="video/mp4">  
+                      <source src="video/background.mp4" type="video/mp4">  
                   </video>
             </div>
             <div class="contents">

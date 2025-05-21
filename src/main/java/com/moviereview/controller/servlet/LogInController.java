@@ -24,15 +24,17 @@ public class LogInController extends HttpServlet {
         try (Connection conn = DatabaseConnection.getConnection()) {
             UserDAO userDAO = new UserDAO(conn);
             String hashedPassword = hashPassword(password); // hash input password
+            
             User loggedInUser = userDAO.loginUser(username, hashedPassword);
 
             HttpSession session = request.getSession();
 
             if (loggedInUser != null) {
                 session.removeAttribute("error");
-                session.setMaxInactiveInterval(30 * 50); // Set session timeout to 30 mins
+                session.setMaxInactiveInterval(30 * 60); // Set session timeout to 30 mins
                 session.setAttribute("userID", loggedInUser.getUserId());
                 session.setAttribute("username", loggedInUser.getUsername());
+                session.setAttribute("role", loggedInUser.getRole());
 
                 if ("Admin".equalsIgnoreCase(loggedInUser.getRole())) {
                     session.setAttribute("Admin", loggedInUser);

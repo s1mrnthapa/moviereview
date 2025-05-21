@@ -1,5 +1,7 @@
 package com.moviereview.model;
 
+import java.util.List;
+
 public class User {
     private int userId;
     private String username;
@@ -10,6 +12,9 @@ public class User {
     private String role;
     private java.sql.Timestamp registerDate;
     private String profilePicturePath;
+    private int totalReviews;
+    private List<Integer> reviewedMovieIds;
+
 
 
     // Empty constructor
@@ -99,5 +104,19 @@ public class User {
 
 	public void setProfilePicturePath(String profilePicturePath) {
 		this.profilePicturePath = profilePicturePath;
+	}
+	// Getter & Setter
+	public int getTotalReviews() {
+	    return totalReviews;
+	}
+	public void setTotalReviews(int totalReviews) {
+	    this.totalReviews = totalReviews;
+	}
+
+	public List<Integer> getReviewedMovieIds() {
+	    return reviewedMovieIds;
+	}
+	public void setReviewedMovieIds(List<Integer> reviewedMovieIds) {
+	    this.reviewedMovieIds = reviewedMovieIds;
 	}
 }
