@@ -31,7 +31,6 @@
 			  gap: 1rem;
 			  flex-wrap: wrap;
 			  align-items: center;
-			  justify-content: space-between;
 			  margin-top: 1rem;
 			}
 		
@@ -43,10 +42,6 @@
 		    border-radius: 6px;
 		    font-size: 14px;
 		    font-family: 'Bodoni Moda', serif;
-		}
-		/* Search Box */
-		.search-box {
-			margin-left: 51em;
 		}
 		
 		.search-input {
@@ -60,6 +55,9 @@
 		    font-family:  Cinzel Decorative, Bodoni Moda, Amarante,  Viaoda Libre, arial;
 	        font-style: italic;
 		}
+		.search-box {        
+  			  margin-left: 51em;
+			}
 		
 		.search-button {
 		    padding: 8px 10px;

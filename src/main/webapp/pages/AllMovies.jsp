@@ -7,15 +7,18 @@
   <meta charset="UTF-8" />
   <title>Admin Profile – CineCritique</title>
   <style>
-    :root {
+     :root {
       --black: #0f0f0f;
       --dark-red: #8b0000;
       --gray-bg: #1a1a1a;
       --white: #fff;
+      --soft-gray: #2a2a2a;
+      --light-border: #333;
+      --cyan: #00ffff;
     }
 
     body {
-      font-family: Arial, sans-serif;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       background-color: var(--black);
       color: var(--white);
       margin: 0;
@@ -23,18 +26,22 @@
     }
 
     header {
-      background-color: var(--dark-red);
+      background-color: var(--black);
       text-align: center;
-      padding: 20px;
+      padding: 25px 0;
+      border-bottom: 2px solid var(--dark-red);
     }
 
     header h1 {
-      font-size: 26px;
-      color: var(--white);
+      font-family: 'Cinzel Decorative', cursive;
+      font-size: 32px;
+      margin: 0;
+      color: var(--cyan);
+      text-shadow: 0 0 10px var(--cyan);
     }
 
     nav {
-      background-color: var(--black);
+      background-color: var(--dark-red);
       padding: 14px 40px;
     }
 
@@ -47,63 +54,95 @@
     }
 
     nav a:hover {
-      color: var(--dark-red);
+      color: var(--cyan);
     }
 
     .container {
-      max-width: 1000px;
-      margin: 40px auto;
-      padding: 30px;
+      max-width: 95%;
+      margin: 30px auto;
+      padding: 20px;
       background-color: var(--gray-bg);
-      border-radius: 12px;
-      box-shadow: 0 4px 10px rgba(255, 0, 0, 0.1);
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(255, 255, 255, 0.05);
+      overflow-x: auto;
     }
 
-    .action-buttons {
-      margin-bottom: 20px;
-      text-align: right;
-    }
-
-    .action-buttons button {
-      padding: 8px 14px;
-      margin-left: 8px;
-      background-color: var(--dark-red);
-      color: var(--white);
-      border: none;
-      cursor: pointer;
+    .success-message {
+      color: #39e639;
       font-weight: bold;
-      border-radius: 6px;
-      transition: background-color 0.3s;
+      margin-bottom: 10px;
     }
 
-    .action-buttons button:hover {
-      background-color: #a30000;
+    .error-message {
+      color: #ff4d4d;
+      font-weight: bold;
+      margin-bottom: 10px;
     }
 
     table {
       width: 100%;
       border-collapse: collapse;
-      margin-bottom: 20px;
+      font-size: 14px;
+      min-width: 1000px;
     }
 
     th, td {
-      padding: 10px;
-      border: 1px solid #444;
-      text-align: center;
+      padding: 10px 8px;
+      text-align: left;
+      vertical-align: top;
+      border: 1px solid var(--light-border);
+      max-width: 160px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
 
     th {
       background-color: #222;
+      color: var(--white);
+      text-transform: uppercase;
+    }
+
+    tbody tr:nth-child(even) {
+      background-color: var(--soft-gray);
     }
 
     .poster img {
-      width: 40px;
-      height: 60px;
+      width: 50px;
+      height: 75px;
       border-radius: 4px;
       object-fit: cover;
     }
 
+    td input[type="checkbox"] {
+      transform: scale(1.2);
+    }
+
+    a {
+      color: #00b7ff;
+      text-decoration: none;
+      margin-right: 6px;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    button[type="submit"] {
+      background: none;
+      color: tomato;
+      border: none;
+      cursor: pointer;
+      text-decoration: underline;
+      padding: 0;
+    }
+
+    button[type="submit"]:hover {
+      color: red;
+    }
+
     .pagination {
+      margin-top: 20px;
       text-align: right;
     }
 
@@ -121,17 +160,22 @@
     .pagination button:hover {
       background-color: var(--dark-red);
     }
-    .success-message {
-    color: green;
-    font-weight: bold;
-    margin-bottom: 10px;
-	}
 
-	.error-message {
-	    color: red;
-	    font-weight: bold;
-	    margin-bottom: 10px;
-	}
+    @media (max-width: 768px) {
+      table {
+        font-size: 12px;
+      }
+
+      .poster img {
+        width: 40px;
+        height: 60px;
+      }
+
+      th, td {
+        padding: 8px 6px;
+      }
+    }
+  </style>
   </style>
 </head>
 <body>
@@ -192,13 +236,6 @@
     </c:forEach>
     </tbody>
   </table>
-
-  <div class="pagination">
-    <button>&laquo;</button>
-    <button>1</button>
-    <button>2</button>
-    <button>&raquo;</button>
-  </div>
 </div>
 <script>
   console.log("Movies loaded:", ${fn:length(movies)});
