@@ -18,60 +18,12 @@
       color: #fff;
     }
 
-    header {
-      background: #1a1a1a;
-      padding: 10px 20px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      border-bottom: 2px solid #ff3c3c;
-    }
-
-    .logo-container, nav, .profile {
-      display: flex;
-      align-items: center;
-    }
-
-    .logo {
-      width: 40px;
-      height: 40px;
-      margin-right: 10px;
-    }
-
-    h1 {
-      font-size: 18px;
-      margin: 0;
-    }
-
-    nav a {
-      color: white;
-      text-decoration: none;
-      margin: 0 8px;
-    }
-
-    nav a:hover {
-      color: #ff3c3c;
-    }
-
-    nav a.active {
-      color: #ff3c3c;
-      border-bottom: 2px solid #ff3c3c;
-    }
-
-    .profile img {
-      width: 30px;
-      height: 30px;
-      border-radius: 50%;
-      margin-left: 5px;
-    }
-
     .container {
       max-width: 800px;
       margin: 30px auto;
       padding: 20px;
       background: #1a1a1a;
       border-radius: 10px;
-      border: 1px solid #ff3c3c;
     }
 
     .form-group {
@@ -114,7 +66,7 @@
     }
 
     .submit-btn {
-      background-color: #ff3c3c;
+      background-color: #1f1f1f;
       border: none;
       padding: 10px 20px;
       color: #fff;
@@ -124,7 +76,7 @@
     }
 
     .submit-btn:hover {
-      background-color: #e23434;
+      background-color: #24d4ec;
     }
 
     .error-message {
@@ -163,7 +115,6 @@
       height: 80px;
       border-radius: 50%;
       overflow: hidden;
-      border: 2px solid #ff3c3c;
     }
 
     .profile-picture-preview img {
@@ -179,24 +130,6 @@
   </style>
 </head>
 <body>
-
-<!-- Header -->
-<header>
-  <div class="logo-container">
-    <img src="${pageContext.request.contextPath}/resources/login/cinecritique-logo-only.png" alt="Logo" class="logo">
-    <h1>CINECRITIQUE</h1>
-  </div>
-  <nav>
-    <a href="${pageContext.request.contextPath}/pages/films.jsp">Films</a>
-    <a href="#">Upcoming</a>
-    <a href="${pageContext.request.contextPath}/WatchlistServlet">Watchlist</a>
-    <a href="${pageContext.request.contextPath}/LikesServlet">Likes</a>
-    <a href="${pageContext.request.contextPath}/ProfileServlet" class="profile">
-      <span><c:out value="${userProfile.username}" /></span>
-      <img src="${pageContext.request.contextPath}/${not empty userProfile.profilePicturePath ? userProfile.profilePicturePath : 'images/default-profile.png'}" alt="User Icon">
-    </a>
-  </nav>
-</header>
 
 <!-- Main Container -->
 <div class="container">

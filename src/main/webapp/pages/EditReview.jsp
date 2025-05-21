@@ -11,106 +11,106 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Edit Review - CineCritique</title>
   <style>
-    body {
-      font-family: Cinzel Decorative, Viaoda Libre, Bodoni Moda,  Amarante, arial;
-      margin: 0;
-      background-color: #0b0b0b;
-      color: #fff;
-    }
- 
-    .edit-container {
-      max-width: 100wh;
-      padding-top: 120px;
-      background-color: #1a1a1a;
-      border-radius: 5px;
-      border-left: 4px solid #ff3c3c;
-    }
-    
-    .edit-title {
-      color: #ff3c3c;
-      margin-bottom: 20px;
-      border-bottom: 1px solid #333;
-      padding-bottom: 10px;
-    }
-    
-    .form-group {
-      margin-bottom: 20px;
-    }
-    
-    label {
-      display: block;
-      margin-bottom: 8px;
-      font-weight: bold;
-    }
-    
-    .form-control {
-      width: 100%;
-      padding: 10px;
-      background-color: #2c2c2c;
-      border: 1px solid #444;
-      border-radius: 4px;
-      color: #fff;
-    }
-    
-    textarea.form-control {
-      min-height: 150px;
-      resize: vertical;
-    }
-    
-    .rating-options {
-      display: flex;
-      gap: 10px;
-    }
-    
-    .rating-options input[type="radio"] {
-      display: none;
-    }
-    
-    .rating-options label {
-      cursor: pointer;
-      padding: 5px 10px;
-      background-color: #2c2c2c;
-      border: 1px solid #444;
-      border-radius: 4px;
-    }
-    
-    .rating-options input[type="radio"]:checked + label {
-      background-color: #ff3c3c;
-      color: white;
-    }
-    
-    .btn {
-      padding: 10px 20px;
-      border: none;
-      border-radius: 4px;
-      cursor: pointer;
-      font-weight: bold;
-      text-decoration: none;
-      display: inline-block;
-    }
-    
-    .btn-primary {
-      background-color: #ff3c3c;
-      color: white;
-    }
-    
-    .btn-secondary {
-      background-color: #2c2c2c;
-      color: #fff;
-      border: 1px solid #444;
-    }
-    
-    .btn:hover {
-      opacity: 0.9;
-    }
-    
-    .error-message {
-      color: #ff6b6b;
-      margin-bottom: 20px;
-      padding: 10px;
-      background-color: #2c2c2c;
-      border-left: 3px solid #ff3c3c;
-    }
+	 body {
+	  font-family: Cinzel Decorative, Viaoda Libre, Bodoni Moda, Amarante, arial;
+	  margin: 0;
+	  background-color: #0b0b0b;
+	  color: #fff;
+	}
+	
+	.edit-container {
+	  max-width: 100wh;
+	  padding-top: 120px;
+	  background-color: #1a1a1a;
+	  border-radius: 5px;
+	  border-left: 4px solid #24d4ec;
+	}
+	
+	.edit-title {
+	  color: #24d4ec;
+	  margin-bottom: 20px;
+	  border-bottom: 1px solid #333;
+	  padding-bottom: 10px;
+	}
+	
+	.form-group {
+	  margin-bottom: 20px;
+	}
+	
+	label {
+	  display: block;
+	  margin-bottom: 8px;
+	  font-weight: bold;
+	}
+	
+	.form-control {
+	  width: 100%;
+	  padding: 10px;
+	  background-color: #2c2c2c;
+	  border: 1px solid #444;
+	  border-radius: 4px;
+	  color: #fff;
+	}
+	
+	textarea.form-control {
+	  min-height: 150px;
+	  resize: vertical;
+	}
+	
+	.rating-options {
+	  display: flex;
+	  gap: 10px;
+	}
+	
+	.rating-options input[type="radio"] {
+	  display: none;
+	}
+	
+	.rating-options label {
+	  cursor: pointer;
+	  padding: 5px 10px;
+	  background-color: #2c2c2c;
+	  border: 1px solid #444;
+	  border-radius: 4px;
+	}
+	
+	.rating-options input[type="radio"]:checked + label {
+	  background-color: #24d4ec;
+	  color: white;
+	}
+	
+	.btn {
+	  padding: 10px 20px;
+	  border: none;
+	  border-radius: 4px;
+	  cursor: pointer;
+	  font-weight: bold;
+	  text-decoration: none;
+	  display: inline-block;
+	}
+	
+	.btn-primary {
+	  background-color: #24d4ec;
+	  color: white;
+	}
+	
+	.btn-secondary {
+	  background-color: #2c2c2c;
+	  color: #fff;
+	  border: 1px solid #444;
+	}
+	
+	.btn:hover {
+	  opacity: 0.9;
+	}
+	
+	.error-message {
+	  color: #ff6b6b;
+	  margin-bottom: 20px;
+	  padding: 10px;
+	  background-color: #2c2c2c;
+	  border-left: 3px solid #24d4ec;
+	}
   </style>
 </head>
 <body>

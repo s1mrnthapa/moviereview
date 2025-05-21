@@ -15,217 +15,248 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Profile - CineCritique</title>
   <style>
-    body {
-      font-family:Cinzel Decorative, Viaoda Libre, Bodoni Moda,  Amarante, arial;
-      margin: 0;
-      background-color: #0b0b0b;
-      color: #fff;
-    }
-
-    /* Profile Section */
-    .profile-section {
-      display: flex;
-      padding: 20px;
-      align-items: center;
-      border-bottom: 2px solid #ff3c3c;
-      margin-bottom: 20px;
-      padding-top: 80px;
-    }
-
-    .avatar {
-      width: 80px;
-      height: 80px;
-      border-radius: 50%;
-      background-color: #1f1f1f;
-      margin-right: 20px;
-      border: 2px solid #ff3c3c;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      overflow: hidden;
-    }
-
-    .profile-pic {
-       width: 100%;
-       height: 100%;
-       object-fit: cover;
-       background-color: #1a1a1a; 
-       background-image: url('../../../images/default-profile.png');
-       background-size: cover;
-       background-position: center;
-       background-repeat: no-repeat;
-    }
-
-    .user-info h1 {
-      margin: 0 0 10px 0;
-      font-size: 24px;
-    }
-
-    .bio, .location {
-      color: #ccc;
-    }
-
-    .edit-btn {
-      background-color: #1f1f1f;
-      color: #ff3c3c;
-      border: 1px solid #ff3c3c;
-      padding: 5px 10px;
-      margin-top: 10px;
-      border-radius: 4px;
-      cursor: pointer;
-      display: inline-block;
-      text-decoration: none;
-    }
-
-    .error-message {
-      background-color: #ffdddd;
-      padding: 10px;
-      border-radius: 4px;
-      border-left: 4px solid #ff3c3c;
-      margin: 20px;
-      color: #000;
-    }
-
-    /* Filter Bar */
-    .tabs {
-      display: flex;
-      margin-bottom: 20px;
-      border-bottom: 2px solid #ff3c3c;
-      padding-bottom: 10px;
-    }
-
-    .tab {
-      color: white;
-      text-decoration: none;
-      margin-right: 40px;
-      padding-bottom: 10px;
-      text-transform: uppercase;
-      font-size: 15px;
-      font-weight: bold;
-      transition: color 0.3s, border-bottom 0.3s;
-    }
-
-    .tab:hover {
-      color: #ff3c3c;
-    }
-
-    .tab.active {
-      color: #ff3c3c;
-      border-bottom: 3px solid #ff3c3c;
-    }
-
-    /* Sidebar */
-    .sidebar {
-      display: flex;
-      flex-direction: column;
-      width: 300px;
-      margin-left: auto;
-      padding: 20px;
-      background-color: #1f1f1f;
-      border-left: 2px solid #ff3c3c;
-    }
-
-    .sidebar-section {
-      margin-bottom: 30px;
-    }
-
-    .sidebar-title {
-      color: #ff3c3c;
-      font-size: 16px;
-      margin-bottom: 10px;
-    }
-
-    .watchlist-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-      gap: 10px;
-    }
-
-    .watchlist-item {
-      width: 120px;
-      height: 180px;
-      background-color: #2c3440;
-      border-radius: 4px;
-      border: 1px solid #ff3c3c;
-    }
-
-    /* Recent Activity Section */
-    .activity-section {
-      margin: 0 20px 30px;
-    }
-
-    .activity-title {
-      color: #ff3c3c;
-      font-size: 22px;
-      margin-bottom: 20px;
-      padding-bottom: 8px;
-      border-bottom: 2px solid #ff3c3c;
-    }
-
-    .activity-list {
-      display: flex;
-      flex-direction: column;
-      gap: 15px;
-    }
-
-    .activity-item {
-	    display: flex;
-	    gap: 15px;
-	    padding-bottom: 15px;
-	    border-bottom: 1px solid #333;
-	}
+	  body {
+	    font-family:Cinzel Decorative, Viaoda Libre, Bodoni Moda,  Amarante, arial;
+	    margin: 0;
+	    background-color: #0b0b0b;
+	    color: #fff;
+	  }
 	
-	.activity-poster {
-	    width: 60px;
-	    height: 90px;
+	  /* Profile Section */
+	  .profile-section {
+	    display: flex;
+	    padding: 20px;
+	    align-items: center;
+	    border-bottom: 2px solid #24d4ec;
+	    margin-bottom: 20px;
+	    padding-top: 80px;
+	  }
+	
+	  .avatar {
+	    width: 120px;
+	    height: 120px;
+	    border-radius: 50%;
+	    background-color: #1f1f1f;
+	    margin-right: 30px;
+	    display: flex;
+	    align-items: center;
+	    justify-content: center;
+	    overflow: hidden;
+	  }
+	
+	  .profile-pic {
+	     width: 100%;
+	     height: 100%;
+	     object-fit: cover;
+	     background-color: #1a1a1a; 
+	     background-image: url('../../../images/default-profile.png');
+	     background-size: cover;
+	     background-position: center;
+	     background-repeat: no-repeat;
+	  }
+	
+	  .user-info h1 {
+	    margin: 0 0 10px 0;
+	    font-size: 28px;
+	  }
+	
+	  .bio, .location {
+	    color: #ccc;
+	    font-size: 16px;
+	  }
+	
+	  .edit-btn {
+	    background-color: #1f1f1f;
+	    color: #24d4ec;
+	    padding: 8px 15px;
+	    margin-top: 15px;
+	    border-radius: 4px;
+	    cursor: pointer;
+	    display: inline-block;
+	    text-decoration: none;
+	    font-size: 16px;
+	    transition: all 0.3s;
+	  }
+	
+	  .edit-btn:hover {
+	    background-color: #24d4ec;
+	    color: #fff;
+	  }
+	
+	  .error-message {
+	    background-color: #ffdddd;
+	    padding: 10px;
+	    border-radius: 4px;
+	    border-left: 4px solid #24d4ec;
+	    margin: 20px;
+	    color: #000;
+	  }
+	
+	  /* Filter Bar */
+	  .tabs {
+	    display: flex;
+	    margin-bottom: 20px;
+	    border-bottom: 2px solid #24d4ec;
+	    padding-bottom: 10px;
+	  }
+	
+	  .tab {
+	    color: white;
+	    text-decoration: none;
+	    margin-right: 40px;
+	    padding-bottom: 10px;
+	    text-transform: uppercase;
+	    font-size: 16px;
+	    font-weight: bold;
+	    transition: color 0.3s, border-bottom 0.3s;
+	  }
+	
+	  .tab:hover {
+	    color: #24d4ec;
+	  }
+	
+	  .tab.active {
+	    color: #24d4ec;
+	    border-bottom: 3px solid #24d4ec;
+	  }
+	
+	  /* Main Content Layout */
+	  .main-content {
+	    display: flex;
+	    justify-content: center;
+	    padding: 0 20px;
+	    max-width: 1200px;
+	    margin: 0 auto;
+	  }
+	
+	  .content {
+	    width: 100%;
+	    max-width: 800px;
+	  }
+	
+	  /* Recent Activity Section */
+	  .activity-section {
+	    margin-bottom: 30px;
+	  }
+	
+	  .activity-title {
+	    color: #24d4ec;
+	    font-size: 24px;
+	    margin-bottom: 25px;
+	    padding-bottom: 10px;
+	    border-bottom: 2px solid #24d4ec;
+	  }
+	
+	  .activity-list {
+	    display: flex;
+	    flex-direction: column;
+	    gap: 25px;
+	  }
+	
+	  .activity-item {
+	    display: flex;
+	    gap: 25px;
+	    padding: 20px;
+	    border-radius: 8px;
+	    background-color: #1a1a1a;
+	    transition: transform 0.3s, box-shadow 0.3s;
+	  }
+	
+	  .activity-poster {
+	    width: 150px;
+	    height: 225px;
 	    flex-shrink: 0;
 	    overflow: hidden;
-	    border-radius: 4px;
-	}
+	    border-radius: 6px;
+	    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+	  }
 	
-	.activity-poster img {
+	  .activity-poster img {
 	    width: 100%;
 	    height: 100%;
 	    object-fit: cover;
-	}
+	    transition: transform 0.3s;
+	  }
 	
-	.activity-details {
+	  .activity-details {
 	    flex: 1;
-	}
+	    display: flex;
+	    flex-direction: column;
+	  }
+	
+	  .movie-title {
+	    color: #24d4ec;
+	    font-size: 22px;
+	    font-weight: bold;
+	    margin-bottom: 10px;
+	  }
+	
+	  .activity-date {
+	    color: #999;
+	    font-size: 16px;
+	    margin-bottom: 15px;
+	    display: flex;
+	    align-items: center;
+	  }
+	
+	  .rating-badge {
+	    margin-left: 15px;
+	    padding: 3px 10px;
+	    color: white;
+	    border-radius: 12px;
+	    font-size: 14px;
+	  }
+	
+	  .activity-content {
+	    color: #ddd;
+	    line-height: 1.6;
+	    font-size: 16px;
+	  }
+	
+	  .view-more {
+	    text-align: right;
+	    margin-top: 30px;
+	  }
+	
+	  .view-more-link {
+	    color: #24d4ec;
+	    text-decoration: none;
+	    font-weight: bold;
+	    font-size: 16px;
+	    padding: 8px 15px;
+	    border-radius: 4px;
+	    transition: all 0.3s;
+	  }
+	
+	  .view-more-link:hover {
+	    background-color: #24d4ec;
+	    color: white;
+	    text-decoration: none;
+	  }
+	
+	  @media (max-width: 768px) {
+	    .profile-section {
+	      flex-direction: column;
+	      text-align: center;
+	    }
+	
+	    .avatar {
+	      margin-right: 0;
+	      margin-bottom: 20px;
+	    }
+	
+	    .activity-item {
+	      flex-direction: column;
+	    }
+	
+	    .activity-poster {
+	      width: 100%;
+	      height: auto;
+	      aspect-ratio: 2/3;
+	    }
+	  }
+	</style>
 
-    .movie-title {
-      color: #ff3c3c;
-      font-size: 18px;
-      font-weight: bold;
-      margin-bottom: 5px;
-    }
-
-    .activity-date {
-      color: #999;
-      font-size: 14px;
-      margin-bottom: 8px;
-    }
-
-    .activity-content {
-      color: #ccc;
-      line-height: 1.5;
-    }
-
-    .view-more {
-      text-align: right;
-      margin-top: 20px;
-    }
-
-    .view-more-link {
-      color: #ff3c3c;
-      text-decoration: none;
-      font-weight: bold;
-    }
-
-    .view-more-link:hover {
-      text-decoration: underline;
-    }
-  </style>
 </head>
 <body>
 
@@ -235,7 +266,6 @@
   </header>
 
   <!-- Dynamic Profile Section -->
-
 	<div class="profile-section">
 	  <div class="avatar">
     	<img src="${pageContext.request.contextPath}/${not empty userProfile.profilePicturePath ? userProfile.profilePicturePath : 'images/default-profile.png'}" class="profile-pic"
@@ -252,7 +282,6 @@
 	    <a href="${pageContext.request.contextPath}/UpdateProfileServlet" class="edit-btn">EDIT PROFILE</a>
 	  </div>
 	</div>
-  
 
   <!-- Error Display -->
   <c:if test="${not empty error}">
@@ -264,12 +293,12 @@
   <!-- Navigation -->
   <div class="tabs filters">
     <a class="tab active">Profile</a>
-    <a href="${pageContext.request.contextPath}/ReviewReportServlet" class="tab">Films</a>
+    <a href="${pageContext.request.contextPath}/ReviewReportServlet" class="tab">Review</a>
   </div>
 
   <!-- Main Content -->
-  <div class="main-content" style="display: flex; justify-content: space-between;">
-	<div class="content" style="flex: 3;">
+  <div class="main-content">
+	<div class="content">
 	  <!-- Recent Activity Section -->
 	  <div class="activity-section">
 	    <h2 class="activity-title">Recent Activity</h2>
@@ -279,8 +308,7 @@
 	        <c:when test="${not empty recentReviews}">
 	          <!-- Show last 4 reviews (remove 'end' attribute to show all fetched reviews) -->
 	          <c:forEach items="${recentReviews}" var="review">
-	            <!-- Inside the activity-item div in UserProfile.jsp -->
-				<div class="activity-item" style="display: flex; gap: 15px;">
+	            <div class="activity-item">
 				    <div class="activity-poster">
 				        <img src="${pageContext.request.contextPath}/${review.movieImage}" 
 				             onerror="this.src='${pageContext.request.contextPath}/images/default-movie.png'">
@@ -321,21 +349,7 @@
 	    </div>
 	  </div>
 	</div>
-
-    <!-- Sidebar (Watchlist) -->
-    <div class="sidebar">
-      <div class="sidebar-section">
-        <div class="sidebar-title">WATCHLIST</div>
-        <div class="watchlist-grid">
-          <div class="watchlist-item"></div>
-          <div class="watchlist-item"></div>
-          <div class="watchlist-item"></div>
-          <div class="watchlist-item"></div>
-        </div>
-      </div>
-    </div>
   </div>
-
 
   <footer>
   	<%@ include file = "footer.jsp" %>
