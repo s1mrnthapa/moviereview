@@ -4,6 +4,9 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Types;
+
+import com.moviereview.controller.database.DatabaseConnection;
 import com.moviereview.model.User;
 public class UserDAO {
         private Connection conn;
@@ -107,5 +110,48 @@ public class UserDAO {
                 }
             }
             return null;
+        }
+     // Updates an existing user's profile details including username
+        public boolean updateUser(User user) throws SQLException {
+            // Validate profile picture path format if present
+        	if (user.getProfilePicturePath() != null && !user.getProfilePicturePath().isEmpty()) {        
+        	        // Check path format
+        		if (!user.getProfilePicturePath().matches("images/\\w+(\\.\\w+)+")) {
+        			throw new SQLException("Invalid profile picture path format");
+        	    }
+        	}
+
+            String query = "UPDATE user SET username=?, firstName=?, lastName=?, email=?, profilePicturePath=? WHERE userID=?";
+            
+            try (PreparedStatement ps = conn.prepareStatement(query)) {    
+                // Set parameters with null checks
+                ps.setString(1, user.getUsername());
+                ps.setString(2, user.getFirstName());
+                ps.setString(3, user.getLastName());
+                ps.setString(4, user.getEmail());
+                
+                // Handle potential null profile picture path
+                if (user.getProfilePicturePath() != null && !user.getProfilePicturePath().isEmpty()) {
+                    ps.setString(5, user.getProfilePicturePath());
+                } else {
+                    ps.setNull(5, Types.VARCHAR);
+                }
+                
+                ps.setInt(6, user.getUserId());
+                
+                int rowsAffected = ps.executeUpdate();
+                
+                // Detailed logging
+                System.out.println("Updated user ID: " + user.getUserId() + 
+                                 ", Rows affected: " + rowsAffected +
+                                 ", New profile path: " + user.getProfilePicturePath());
+                
+                return rowsAffected > 0;
+                
+            } catch (SQLException e) {
+                // Enhanced error logging
+                System.err.println("Error updating user ID " + user.getUserId() + ": " + e.getMessage());
+                throw e; // Re-throw to let caller handle
+            }
         }
     }

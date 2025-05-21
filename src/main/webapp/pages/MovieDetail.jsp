@@ -7,6 +7,7 @@
 	<link rel="preconnect" href="https://fonts.googleapis.com">
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 	<link href="https://fonts.googleapis.com/css2?family=Aboreto&family=Amarante&family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..900;1,6..96,400..900&family=Bona+Nova+SC:ital,wght@0,400;0,700;1,400&family=Cinzel+Decorative:wght@400;700;900&family=Cinzel:wght@400..900&family=Cormorant+Unicase:wght@300;400;500;600;700&family=Eagle+Lake&family=El+Messiri:wght@400..700&family=Julius+Sans+One&family=Kalnia:wght@100..700&family=Metamorphous&family=Slackey&family=Texturina:ital,opsz,wght@0,12..72,100..900;1,12..72,100..900&family=Viaoda+Libre&display=swap" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500&display=swap" rel="stylesheet">
     <title>${movie.title} | Movie Detail</title>
     <style>
         body {
@@ -55,6 +56,8 @@
 		}
         .movie-info h1 {
             font-size: 2em;
+            font-family: 'Cinzel Decorative', serif;
+            color: rgba(34, 255, 244, 0.7);
         }
         .info-item {
             font-size: 1em;
@@ -118,39 +121,222 @@
         .watchlist-section, .review-section {
             margin-top: 20px;
         }
-        .user-review {
-            background-color: #2c2c2c;
-            padding: 15px;
-            border-radius: 8px;
-            margin-top: 20px;
-        }
-        .review-author strong {
-            color: #00a86b;
-        }
+        .reviews {
+		    display: grid;
+		    place-items: start;
+		    margin-left: 370px;
+		    max-width: 800px;
+		}
+		
+		.user-review {
+		    background-color: #2c2c2c;
+		    padding: 20px;
+		    border-radius: 10px;
+		    margin-top: 25px;
+		    color: white;
+		    font-family: 'El Messiri', sans-serif;
+		    box-shadow: 0 0 10px rgba(34, 255, 244, 0.1);
+		}
+		
+		.review-header {
+		    display: flex;
+		    align-items: center;
+		    gap: 15px;
+		    margin-bottom: 12px;
+		}
+		
+		.profile-pic img {
+		    width: 60px;
+		    height: 60px;
+		    border-radius: 50%;
+		    border: 2px solid rgba(34, 255, 244, 0.6);
+		    object-fit: cover;
+		}
+		
+		.user-info {
+		    display: flex;
+		    flex-direction: column;
+		    justify-content: center;
+		}
+		
+		.user-name {
+			font-family: 'El Messiri', sans-serif;
+		    font-size: 24px;
+		    color: rgba(34, 255, 244, 0.85);
+		}
+		
+		.rating {
+		    color: #00ffd5;
+		    font-size: 14px;
+		    margin-top: 4px;
+		}
+		.star-display {
+		    display: flex;
+		    gap: 4px;
+		    font-size: 1.2em;
+		    margin-top: 4px;
+		}
+		
+		.star {
+		    color: #444;
+		}
+		
+		.star.filled {
+		    color: yellow; /* Cyan-filled stars */
+		}	
+		
+		.review-body {
+		    margin-top: 10px;
+		}
+		
+		.review-body p {
+		    font-size: 16px;
+		    line-height: 1.4;
+		    margin-bottom: 8px;
+		}
+		
+		.review-date {
+		    font-size: 13px;
+		    color: #aaa;
+		}
+        
         .modal {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.7);
-            display: none;
-            justify-content: center;
-            align-items: center;
-        }
-        .modal-content {
-            background: #1c1c1c;
-            padding: 20px;
-            border-radius: 10px;
-            width: 700px;
-        }
-        .close {
-            position: absolute;
-            top: 10px;
-            right: 15px;
-            font-size: 28px;
-            cursor: pointer;
-        }
+        	display: flex;
+		    position: fixed;
+		    top: 0;
+		    left: 0;
+		    width: 100%;
+		    height: 100%;
+		    background: rgba(0, 0, 0, 0.7);
+		    display: none;
+		    justify-content: center;
+		    align-items: center;
+		    z-index: 1000;
+		}
+		
+		.modal-content {
+		    background: black;
+		    border: 1px solid rgba(34, 255, 244, 0.2);
+		    border-radius: 15px;
+		    padding: 30px;
+		    width: 800px; /* increased width for side-by-side layout */
+		    position: relative;
+		    font-family: 'Cormorant Unicase', serif;
+		    color: white;
+		    animation: fadeIn 0.3s ease-in-out;
+		}
+		
+		/* Flex container */
+		.modal-body {
+		    display: flex;
+		    gap: 30px;
+		}
+		
+		/* Left poster */
+		.poster img {
+		    width: 200px;
+		    height: auto;
+		    border-radius: 10px;
+		}
+		
+		/* Right content */
+		.right-content {
+		    flex: 1;
+		}
+
+		/* Title styling */
+		.title {
+		    text-align: left;
+		    font-size: 15px;
+		    font-family: 'Cinzel Decorative', serif;
+		    margin-bottom: 20px;
+		    color: rgb(34, 255, 244);
+		    letter-spacing: 1px;
+		}
+		.modal-content textarea {
+		    width: 100%;
+		    height: 120px;
+		    padding: 12px;
+		    font-size: 1em;
+		    font-family: 'El Messiri', sans-serif;
+		    border: 1px solid #555;
+		    border-radius: 10px;
+		    background-color: #121212;
+		    color: white;
+		    resize: vertical;
+		    margin-bottom: 15px;
+		}
+		.star-rating {
+		    direction: rtl;
+		    display: inline-flex;
+		    gap: 5px;
+		    font-size: 1.8em;
+		    unicode-bidi: bidi-override;
+		  }
+		
+		  .star-rating input[type="radio"] {
+		    display: none;
+		  }
+		
+		  .star-rating label {
+		    color: #444;
+		    cursor: pointer;
+		    transition: color 0.2s;
+		  }
+		
+		  .star-rating label:hover,
+		  .star-rating label:hover ~ label,
+		  .star-rating input[type="radio"]:checked ~ label {
+		    color: yellow; 
+		  }
+		.button-container{
+			text-align: right;
+    		padding-top: 20px;
+		}
+		.modal-content button[type="submit"] {
+			text-align: right;
+		    background-color: transparent;
+		    border: 1px solid rgb(34, 255, 244);
+		    color: rgb(34, 255, 244);
+		    padding: 8px 20px;
+		    border-radius: 8px;
+		    font-family: 'Cinzel Decorative', serif;
+		    font-size: 1em;
+		    cursor: pointer;
+		    transition: background-color 0.3s ease, transform 0.2s ease;
+		}
+		
+		.modal-content button[type="submit"]:hover {
+		    background-color: rgba(34, 255, 244, 0.1);
+		    transform: scale(1.03);
+		}
+		
+		.modal-content label {
+		    font-size: 1em;
+		    margin-right: 10px;
+		    color: #ccc;
+		}
+		
+		.close {
+		    position: absolute;
+		    top: 10px;
+		    right: 15px;
+		    font-size: 28px;
+		    color: rgb(34, 255, 244);
+		    cursor: pointer;
+		}
+		
+		@keyframes fadeIn {
+		    from {
+		        transform: scale(0.95);
+		        opacity: 0;
+		    }
+		    to {
+		        transform: scale(1);
+		        opacity: 1;
+		    }
+		}
+        
     </style>
 </head>
 <body>
@@ -175,7 +361,7 @@
 		        <c:out value="${firstSentence}" />
 		    </div>
 		    <div>
-		        <c:out value="${restDescription}" />
+		        <c:out value="${restDescription}"/>
 		    </div>
 		</div>
 	    
@@ -191,7 +377,7 @@
 	    </c:forEach>
 	</div>
 
-    <div id="details" class="tab-pane">
+    <div id="details" class="tab-pane  movie-details">
         <div class="info-item"><b>Release Date:</b> <fmt:formatDate value="${movie.releaseDate}" pattern="yyyy-MM-dd" /></div>
         <div class="info-item"><b>Country:</b> ${movie.country}</div>
         <div class="info-item"><b>Director:</b> ${movie.director}</div>
@@ -203,35 +389,69 @@
         </c:forEach>
     </div>
   </div>
-
-    <div id="reviewModal" class="modal">
-        <div class="modal-content">
-            <span class="close" onclick="closeReviewModal()">&times;</span>
-            <form action="${pageContext.request.contextPath}/ReviewServlet" method="post">
-                <input type="hidden" name="movieID" value="${movie.movieID}" />
-                <input type="hidden" name="userID" value="${sessionScope.user.userId}" />
-                <textarea name="reviewDescription" placeholder="Write your review here..." required></textarea>
-                <div>
-                    <label>Rating: <input type="number" name="rating" min="1" max="5" required></label>
+	    <div id="reviewModal" class="modal">
+		    <div class="modal-content">
+		        <span class="close" onclick="closeReviewModal()">&times;</span>
+		        <form action="${pageContext.request.contextPath}/ReviewServlet" method="post">
+		            <input type="hidden" name="movieID" value="${movie.movieID}" />
+		            <input type="hidden" name="userID" value="${sessionScope.user.userId}" />
+		            
+		            <!-- Flex container for left and right content -->
+		            <div class="modal-body">
+		                <!-- Left: Poster -->
+		                <div class="poster">
+		                    <img src="${movie.imagePath}" alt="${movie.title}" />
+		                </div>
+		
+		                <!-- Right: Title, textarea, rating, button -->
+		                <div class="right-content">
+		                    <div class="title"><h1>${movie.title}</h1></div>
+		                    <div>
+		                        <textarea name="reviewDescription" placeholder="Write your review here..." required></textarea>
+		                    </div>
+		                    <div style="margin-bottom: 8px;">Rating:</div>
+		                    <div class="star-rating">
+		                        <input type="radio" id="star5" name="rating" value="5" required>
+		                        <label for="star5">&#9733;</label>
+		                        <input type="radio" id="star4" name="rating" value="4">
+		                        <label for="star4">&#9733;</label>
+		                        <input type="radio" id="star3" name="rating" value="3">
+		                        <label for="star3">&#9733;</label>
+		                        <input type="radio" id="star2" name="rating" value="2">
+		                        <label for="star2">&#9733;</label>
+		                        <input type="radio" id="star1" name="rating" value="1">
+		                        <label for="star1">&#9733;</label>
+		                    </div>
+		                    <div class="button-container"><button type="submit">Save</button></div>
+		                </div>
+		            </div>
+		        </form>
+		    </div>
+		</div>
+	    </div>
+	<div class="reviews">
+    <h2 style="margin-top: 50px;">Rating and Reviews</h2>
+    <c:forEach var="review" items="${movie.reviews}">
+        <div class="user-review">
+            <div class="review-header">
+                <div class="profile-pic">      
                 </div>
-                <button type="submit">Save</button>
-            </form>
+                <div class="user-info">
+                    <div class="user-name">${review.username}</div>
+                    <div class="star-display">
+                        <c:forEach begin="1" end="5" var="i">
+                            <span class="${i <= review.rating ? 'star filled' : 'star'}">&#9733;</span>
+                        </c:forEach>
+                    </div>
+                </div>
+            </div>
+            <div class="review-body">
+                <p>${review.reviewDescription}</p>
+                <span class="review-date">Reviewed on <fmt:formatDate value="${review.reviewDate}" pattern="yyyy-MM-dd" /></span>
+            </div>
         </div>
-    </div>
+    </c:forEach>
 </div>
-<div class= "reviews">
-	    <h2>User Reviews</h2>
-	    <c:forEach var="review" items="${movie.reviews}">
-	        <div class="user-review">
-	            <div class="review-author">
-	                <strong>User ${review.userID}</strong>
-	                <div>Reviewed on <fmt:formatDate value="${review.reviewDate}" pattern="yyyy-MM-dd" /></div>
-	            </div>
-	            <div><strong>Rated:</strong> ${review.rating} / 5</div>
-	            <div>${review.reviewDescription}</div>
-	        </div>
-	    </c:forEach>
-    </div>
 
 <script>
 	function switchTab(evt, tabName) {

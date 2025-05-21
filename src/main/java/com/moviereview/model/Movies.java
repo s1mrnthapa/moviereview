@@ -14,6 +14,7 @@ public class Movies {
     private String director;
     private String description;
     private List<Review> reviews;
+    private double averageRating;
     
     // Lists to hold associated genre and casts
     private List<String> genre;
@@ -173,6 +174,12 @@ public class Movies {
 
     public void addCast(String castMember) {
         this.cast.add(castMember);
+    }
+    public double getAverageRating() {
+        return averageRating;
+    }
+    public void setAverageRating(double averageRating) {
+        this.averageRating = averageRating;
     }
     private List<String> splitGenreString(String genreString) {
         if (genreString != null && !genreString.trim().isEmpty()) {
