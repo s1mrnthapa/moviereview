@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.moviereview.model.Movies;
 import com.moviereview.model.Review;
 
 public class ReviewDAO {
@@ -112,5 +113,36 @@ public class ReviewDAO {
             e.printStackTrace();
         }
         return result;
+    }
+    
+    public List<Movies> getTrendingMovies() {
+        List<Movies> trending = new ArrayList<>();
+
+        String sql = "SELECT m.movieID, m.title, m.image_path, ROUND(AVG(r.rating), 2) AS avg_rating " +
+                     "FROM movie m " +
+                     "JOIN review r ON m.movieID = r.movieID " +
+                     "WHERE r.review_date >= CURDATE() - INTERVAL 7 DAY " +
+                     "GROUP BY m.movieID, m.title, m.image_path " +
+                     "ORDER BY avg_rating DESC " +
+                     "LIMIT 10";
+
+        try (PreparedStatement ps = conn.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+
+            while (rs.next()) {
+                Movies movie = new Movies();
+                movie.setMovieID(rs.getInt("movieID"));
+                movie.setTitle(rs.getString("title"));
+                movie.setImagePath(rs.getString("image_path"));
+                movie.setAverageRating(rs.getDouble("avg_rating")); // ⚠️ Make sure this field exists in your Movies class
+
+                trending.add(movie);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return trending;
     }
 }

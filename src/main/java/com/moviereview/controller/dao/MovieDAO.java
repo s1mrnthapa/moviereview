@@ -294,4 +294,29 @@ public class MovieDAO {
         }
         return topMovies;
     }
+    
+    public List<Movies> getUpcomingMovies() {
+        List<Movies> upcomingMovies = new ArrayList<>();
+        String sql = "SELECT * FROM movie WHERE release_date > CURDATE() ORDER BY release_date ASC LIMIT 10";
+
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+
+            while (rs.next()) {
+                Movies movie = new Movies();
+                movie.setMovieID(rs.getInt("movieID"));
+                movie.setTitle(rs.getString("title"));
+                movie.setReleaseDate(rs.getDate("release_date"));
+                movie.setImagePath(rs.getString("image_path"));
+                upcomingMovies.add(movie);
+            }
+
+        } catch (SQLException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        return upcomingMovies;
+    }
+
 }
