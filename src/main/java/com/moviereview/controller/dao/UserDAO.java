@@ -95,11 +95,12 @@ public class UserDAO {
         // Updates an existing user's profile details including username
         public boolean updateUser(User user) throws SQLException {
             // Validate profile picture path format if present
-            if (user.getProfilePicturePath() != null && 
-                !user.getProfilePicturePath().isEmpty() &&
-                !user.getProfilePicturePath().contains(".")) {
-                throw new SQLException("Invalid profile picture path - missing file extension");
-            }
+        	if (user.getProfilePicturePath() != null && !user.getProfilePicturePath().isEmpty()) {        
+        	        // Check path format
+        		if (!user.getProfilePicturePath().matches("images/\\w+(\\.\\w+)+")) {
+        			throw new SQLException("Invalid profile picture path format");
+        	    }
+        	}
 
             String query = "UPDATE user SET username=?, firstName=?, lastName=?, email=?, profilePicturePath=? WHERE userID=?";
             
@@ -148,7 +149,8 @@ public class UserDAO {
                         user.setFirstName(rs.getString("firstName"));
                         user.setLastName(rs.getString("lastName"));
                         user.setEmail(rs.getString("email"));
-                        // Add other fields as needed
+                        user.setRegisterDate(rs.getTimestamp("registerDate"));
+                        user.setProfilePicturePath(rs.getString("profilePicturePath")); 
                         return user;
                     }
                 }

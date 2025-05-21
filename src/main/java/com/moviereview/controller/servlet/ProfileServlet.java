@@ -5,14 +5,19 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.sql.Connection;
+import java.util.List;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+
+import com.moviereview.controller.dao.ReviewDAO;
 import com.moviereview.controller.dao.UserDAO;
 import com.moviereview.controller.database.DatabaseConnection;
+import com.moviereview.model.Review;
 import com.moviereview.model.User;
 
 @WebServlet("/ProfileServlet")
@@ -24,82 +29,60 @@ public class ProfileServlet extends HttpServlet {
         
         HttpSession session = request.getSession();
         User user = (User) session.getAttribute("user");
-
-        //  Try to get user from session
+        
         if (user == null) {
-            // If not in session, load from database
-            String userId = request.getParameter("userId");
-            if (userId != null) {
-                try (Connection conn = DatabaseConnection.getConnection()) {
-                    UserDAO userDAO = new UserDAO(conn);
-                    user = userDAO.getUserById(Integer.parseInt(userId));
-                    
-                    if (user != null) {
-                        // Process profile picture path before storing in session
-                        processProfilePicturePath(user, request);
-                        session.setAttribute("user", user);
-                        session.setAttribute("userProfile", user);
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    response.sendRedirect(request.getContextPath() + "/pages/Login.jsp?error=db_error");
-                    return;
-                }
-            }
-        }
-
-        // Final check - if still no user, redirect to login
-        if (user == null) {
-            response.sendRedirect(request.getContextPath() + "/pages/Login.jsp");
+            response.sendRedirect("login.jsp");
             return;
         }
 
-        // Process profile picture path for existing session user
-        processProfilePicturePath(user, request);
-
-        // Handle error messages
-        if (request.getParameter("error") != null) {
-            request.setAttribute("error", request.getParameter("error"));
+        try (Connection conn = DatabaseConnection.getConnection()) {
+            // Load fresh user data from database
+            UserDAO userDAO = new UserDAO(conn);
+            User currentUser = userDAO.getUserById(user.getUserId());
+            
+            // Process profile picture path
+            processProfilePicturePath(currentUser, request);
+            
+            // Store in session and request
+            session.setAttribute("user", currentUser);
+            request.setAttribute("userProfile", currentUser);
+            
+            // Load reviews
+            ReviewDAO reviewDAO = new ReviewDAO(conn);
+            List<Review> recentReviews = reviewDAO.getRecentReviewsByUser(user.getUserId(), 4);
+            request.setAttribute("recentReviews", recentReviews);
+            
+            // Forward to profile page
+            request.getRequestDispatcher("/pages/UserProfile.jsp").forward(request, response);
+            
+        } catch (Exception e) {
+            request.setAttribute("error", "Error loading profile: " + e.getMessage());
+            request.getRequestDispatcher("/pages/UserProfile.jsp").forward(request, response);
         }
-
-        // Forward to profile page
-        request.setAttribute("userProfile", user);
-        request.getRequestDispatcher("/pages/UserProfile.jsp").forward(request, response);
     }
 
-    /**
-     * Validates and processes the profile picture path
-     */
     private void processProfilePicturePath(User user, HttpServletRequest request) {
         if (user.getProfilePicturePath() == null || user.getProfilePicturePath().isEmpty()) {
             user.setProfilePicturePath(DEFAULT_PROFILE_IMAGE);
             return;
         }
 
-        // Sanitize the path
-        String sanitizedPath = user.getProfilePicturePath()
-                .replaceAll("\\.$", "") // Remove trailing dots
-                .replaceAll("\\.\\.", ".") // Remove double dots
-                .trim();
+        // Validate path format first
+        if (!user.getProfilePicturePath().matches("images/\\w+(\\.\\w+)+")) {
+            System.err.println("Invalid path format: " + user.getProfilePicturePath());
+            user.setProfilePicturePath(DEFAULT_PROFILE_IMAGE);
+            return;
+        }
 
         // Verify file exists
         try {
-            String realPath = request.getServletContext().getRealPath(sanitizedPath);
+            String realPath = request.getServletContext().getRealPath("/" + user.getProfilePicturePath());
             if (realPath == null || !Files.exists(Paths.get(realPath))) {
-                // Check if path is already context-relative
-                if (sanitizedPath.startsWith(request.getContextPath())) {
-                    realPath = request.getServletContext().getRealPath(
-                        sanitizedPath.substring(request.getContextPath().length()));
-                }
-                
-                if (realPath == null || !Files.exists(Paths.get(realPath))) {
-                    throw new IOException("File not found");
-                }
+                System.err.println("Profile picture not found at: " + realPath);
+                user.setProfilePicturePath(DEFAULT_PROFILE_IMAGE);
             }
         } catch (Exception e) {
-            // Log the error for debugging
-            System.err.println("Profile picture not found: " + sanitizedPath);
-            System.err.println("Falling back to default image. Error: " + e.getMessage());
+            System.err.println("Error checking profile picture: " + e.getMessage());
             user.setProfilePicturePath(DEFAULT_PROFILE_IMAGE);
         }
     }

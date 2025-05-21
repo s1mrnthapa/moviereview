@@ -1,23 +1,12 @@
 package com.moviereview.controller.servlet;
 
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
-import java.sql.Connection;
-import java.sql.SQLException;
-import java.util.Arrays;
+import java.io.*;
+import javax.servlet.*;
+import javax.servlet.annotation.*;
+import javax.servlet.http.*;
+import java.sql.*;
+import java.util.*;
 
-import javax.servlet.ServletException;
-import javax.servlet.annotation.MultipartConfig;
-import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-import javax.servlet.http.Part;
 import com.moviereview.controller.dao.UserDAO;
 import com.moviereview.controller.database.DatabaseConnection;
 import com.moviereview.model.User;
@@ -25,176 +14,172 @@ import com.moviereview.model.User;
 @WebServlet("/UpdateProfileServlet")
 @MultipartConfig(
     fileSizeThreshold = 1024 * 1024,    // 1MB
-    maxFileSize = 1024 * 1024 * 5,     // 5MB
-    maxRequestSize = 1024 * 1024 * 10  // 10MB
+    maxFileSize = 5 * 1024 * 1024,      // 5MB
+    maxRequestSize = 10 * 1024 * 1024   // 10MB
 )
 public class UpdateProfileServlet extends HttpServlet {
-    private static final long serialVersionUID = 1L;
-    private static final String UPLOAD_DIR = "uploads/profile-pictures";
 
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) 
+    private static final String IMAGE_FOLDER = "images";
+
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+
+        // Handle showing the edit form (GET request)
+        HttpSession session = request.getSession();
+        User user = (User) session.getAttribute("user");
+
+        if (user == null) {
+            response.sendRedirect("login.jsp");
+            return;
+        }
+
+        try (Connection conn = DatabaseConnection.getConnection()) {
+            // Always get FRESH data from database
+            UserDAO userDAO = new UserDAO(conn);
+            User currentUser = userDAO.getUserById(user.getUserId());
+
+            // Update session with fresh data
+            session.setAttribute("user", currentUser);
+            request.setAttribute("userProfile", currentUser);
+
+            request.getRequestDispatcher("/pages/EditProfile.jsp").forward(request, response);
+
+        } catch (Exception e) {
+            request.setAttribute("error", "Error loading profile: " + e.getMessage());
+            request.getRequestDispatcher("/pages/EditProfile.jsp").forward(request, response);
+        }
+    }
+
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
         HttpSession session = request.getSession();
         User user = (User) session.getAttribute("user");
 
         if (user == null) {
-            response.sendRedirect(request.getContextPath() + "/pages/Login.jsp");
+            response.sendRedirect("login.jsp");
             return;
         }
 
-        // Get form parameters
-        String newUsername = request.getParameter("username");
-        String firstName = request.getParameter("firstName");
-        String lastName = request.getParameter("lastName");
-        String email = request.getParameter("email");
-        boolean removePicture = "true".equals(request.getParameter("removePicture"));
-
-        // Validate username if changed
-        if (!newUsername.equals(user.getUsername())) {
-            try (Connection conn = DatabaseConnection.getConnection()) {
-                UserDAO userDAO = new UserDAO(conn);
-                if (userDAO.isUsernameExist(newUsername)) {
-                    request.setAttribute("error", "Username already taken");
-                    request.getRequestDispatcher("/pages/EditProfile.jsp").forward(request, response);
-                    return;
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
-                request.setAttribute("error", "Database error checking username: " + e.getMessage());
-                request.getRequestDispatcher("/pages/EditProfile.jsp").forward(request, response);
-                return;
-            }
-        }
-
-        // Handle profile picture upload
-        String profilePicturePath = user.getProfilePicturePath();
-        Part filePart = request.getPart("profilePicture");
-
         try {
-            // Remove existing picture if requested
-            if (removePicture) {
-                deleteProfilePicture(user.getProfilePicturePath(), request);
-                profilePicturePath = null;
-            }
-            // Upload new picture if provided
-            else if (filePart != null && filePart.getSize() > 0) {
-                // Delete old picture if exists
-                if (profilePicturePath != null && !profilePicturePath.isEmpty()) {
-                    deleteProfilePicture(profilePicturePath, request);
-                }
-                // Upload new picture
-                profilePicturePath = uploadProfilePicture(filePart, request);
+            // Get form parameters
+            String username = request.getParameter("username");
+            String firstName = request.getParameter("firstName");
+            String lastName = request.getParameter("lastName");
+            String email = request.getParameter("email");
+            boolean removePic = "true".equals(request.getParameter("removePicture"));
+
+            // Handle profile picture upload
+            String picturePath = handleProfilePicture(request, user, removePic);
+
+            // Validate inputs
+            if (username == null || username.trim().isEmpty() ||
+                firstName == null || firstName.trim().isEmpty() ||
+                lastName == null || lastName.trim().isEmpty() ||
+                email == null || email.trim().isEmpty()) {
+                throw new Exception("All fields are required");
             }
 
-            // Update user information
             try (Connection conn = DatabaseConnection.getConnection()) {
-                if (conn == null) {
-                    throw new SQLException("Database connection is null");
-                }
-                
                 UserDAO userDAO = new UserDAO(conn);
 
-                // Update user object
-                user.setUsername(newUsername);
+                if (!username.equals(user.getUsername())) {
+                    if (userDAO.isUsernameExist(username)) {
+                        throw new Exception("Username already taken");
+                    }
+                }
+
+                user.setUsername(username);
                 user.setFirstName(firstName);
                 user.setLastName(lastName);
                 user.setEmail(email);
-                user.setProfilePicturePath(profilePicturePath);
-
-                // Execute update
-                boolean success = userDAO.updateUser(user);
-                
-                if (success) {
-                    // Update session and redirect
-                    session.setAttribute("user", user);
-                    session.setAttribute("userProfile", user); // Ensure both attributes are updated
-                    response.sendRedirect(request.getContextPath() + "/ProfileServlet");
-                } else {
-                    request.setAttribute("error", "Failed to update profile in database. No rows affected.");
-                    request.getRequestDispatcher("/pages/EditProfile.jsp").forward(request, response);
+                if (picturePath != null) {
+                    user.setProfilePicturePath(picturePath);
+                } else if (removePic) {
+                    user.setProfilePicturePath(null);
                 }
+
+                boolean updated = userDAO.updateUser(user);
+
+                if (!updated) {
+                    throw new Exception("Failed to update profile");
+                }
+
+                User updatedUser = userDAO.getUserById(user.getUserId());
+                session.setAttribute("user", updatedUser);
+                request.setAttribute("userProfile", updatedUser);
+
+                session.setAttribute("successMessage", "Profile updated successfully");
+
+                response.sendRedirect("ProfileServlet");
+                return;
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
-            request.setAttribute("error", "Database error: " + e.getMessage());
-            request.getRequestDispatcher("/pages/EditProfile.jsp").forward(request, response);
         } catch (Exception e) {
             e.printStackTrace();
-            request.setAttribute("error", "Error processing request: " + e.getMessage());
+            request.setAttribute("error", e.getMessage());
             request.getRequestDispatcher("/pages/EditProfile.jsp").forward(request, response);
         }
     }
 
-    private String uploadProfilePicture(Part filePart, HttpServletRequest request) throws IOException {
-        // Validate file part first
+    private String handleProfilePicture(HttpServletRequest request, User user, boolean removePic)
+            throws IOException, ServletException {
+
+        if (removePic) {
+            deleteFile(user.getProfilePicturePath(), request);
+            return null;
+        }
+
+        Part filePart = request.getPart("profilePicture");
         if (filePart == null || filePart.getSize() == 0) {
-            throw new IOException("No file was uploaded");
+            return user.getProfilePicturePath();
         }
 
-        // Get original filename and validate
-        String originalFileName = Paths.get(filePart.getSubmittedFileName()).getFileName().toString();
-        if (originalFileName == null || originalFileName.isEmpty()) {
-            throw new IOException("Invalid file name");
-        }
-
-        // Validate file extension
-        int lastDotIndex = originalFileName.lastIndexOf('.');
-        if (lastDotIndex <= 0) {
-            throw new IOException("File must have an extension");
-        }
-        String fileExtension = originalFileName.substring(lastDotIndex).toLowerCase();
-
-        // Validate allowed extensions (adjust as needed)
-        if (!Arrays.asList(".jpg", ".jpeg", ".png", ".gif").contains(fileExtension)) {
-            throw new IOException("Only JPG, PNG, or GIF images are allowed");
-        }
-
-        // Set up upload directory
-        String applicationPath = request.getServletContext().getRealPath("");
-        String uploadPath = applicationPath + File.separator + UPLOAD_DIR;
+        String fileName = filePart.getSubmittedFileName();
+        String fileExtension = fileName.substring(fileName.lastIndexOf(".")).toLowerCase();
         
-        // Create upload directory if it doesn't exist
-        File uploadDir = new File(uploadPath);
-        if (!uploadDir.exists()) {
-            boolean created = uploadDir.mkdirs();
-            if (!created) {
-                throw new IOException("Failed to create upload directory: " + uploadPath);
-            }
+        if (!Arrays.asList(".jpg", ".jpeg", ".png", ".gif").contains(fileExtension)) {
+            throw new ServletException("Only JPG, JPEG, PNG, or GIF images are allowed");
         }
 
-        // Generate clean filename with preserved extension
-        String baseName = "user_" + System.currentTimeMillis();
-        String cleanFileName = baseName + fileExtension;
-
-        // Ensure filename is URL-safe
-        cleanFileName = cleanFileName.replaceAll("[^a-zA-Z0-9.-]", "_");
-
-        // Save file
-        Path filePath = Paths.get(uploadPath + File.separator + cleanFileName);
-        try {
-            Files.copy(filePart.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
-        } catch (IOException e) {
-            throw new IOException("Failed to save file: " + e.getMessage(), e);
+        if (user.getProfilePicturePath() != null && !user.getProfilePicturePath().isEmpty()) {
+            deleteFile(user.getProfilePicturePath(), request);
         }
 
-        // Verify file was actually saved
-        if (!Files.exists(filePath) || Files.size(filePath) == 0) {
-            throw new IOException("Failed to verify uploaded file");
-        }
-
-        // Return relative path for database storage
-        return UPLOAD_DIR + "/" + cleanFileName;
+        return saveUploadedFile(filePart, request);
     }
 
-    private void deleteProfilePicture(String picturePath, HttpServletRequest request) {
-        if (picturePath != null && !picturePath.isEmpty()) {
-            try {
-                String applicationPath = request.getServletContext().getRealPath("");
-                Path filePath = Paths.get(applicationPath + File.separator + picturePath);
-                Files.deleteIfExists(filePath);
-            } catch (IOException e) {
-                e.printStackTrace();
+    private String saveUploadedFile(Part filePart, HttpServletRequest request) throws IOException {
+        String appPath = request.getServletContext().getRealPath("");
+        String imagesPath = appPath + File.separator + IMAGE_FOLDER;
+
+        File imagesDir = new File(imagesPath);
+        if (!imagesDir.exists()) {
+            imagesDir.mkdirs();
+        }
+
+        // Get the original filename and extension
+        String originalFileName = filePart.getSubmittedFileName();
+        String fileExtension = originalFileName.substring(originalFileName.lastIndexOf('.'));
+        
+        // Create new filename with proper extension
+        String fileName = "user_" + System.currentTimeMillis() + fileExtension;
+        String filePath = imagesPath + File.separator + fileName;
+        
+        filePart.write(filePath);
+
+        return IMAGE_FOLDER + "/" + fileName;
+    }
+
+    private void deleteFile(String filePath, HttpServletRequest request) {
+        if (filePath != null && !filePath.isEmpty() && !filePath.equals("images/default-profile.png")) {
+            String realPath = request.getServletContext().getRealPath(filePath);
+            if (realPath != null) {
+                File file = new File(realPath);
+                if (file.exists()) {
+                    file.delete();
+                }
             }
         }
     }
