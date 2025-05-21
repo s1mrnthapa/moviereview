@@ -89,4 +89,14 @@ public class UserDAO {
             }
             return false;
         }
+
+		public boolean updateUser(User user) {
+			// TODO Auto-generated method stub
+			return false;
+		}
+
+		public User getUserById(int int1) {
+			// TODO Auto-generated method stub
+			return null;
+		}
     }

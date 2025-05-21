@@ -58,7 +58,10 @@ public class UpdateProfileServlet extends HttpServlet {
                 request.setAttribute("error", "Database error checking username availability");
                 request.getRequestDispatcher("/pages/EditProfile.jsp").forward(request, response);
                 return;
-            }
+            } catch (ClassNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
         }
 
         // Update user information
@@ -69,6 +72,7 @@ public class UpdateProfileServlet extends HttpServlet {
             user.setUsername(newUsername);
             user.setFirstName(firstName);
             user.setLastName(lastName);
+            
             user.setEmail(email);
 
             // Execute update
@@ -87,6 +91,9 @@ public class UpdateProfileServlet extends HttpServlet {
             e.printStackTrace();
             request.setAttribute("error", "Database error: " + e.getMessage());
             request.getRequestDispatcher("/pages/EditProfile.jsp").forward(request, response);
-        }
+        } catch (ClassNotFoundException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
     }
 }

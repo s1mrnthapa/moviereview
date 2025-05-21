@@ -189,3 +189,4 @@ public class Movies {
                 + ", cast=" + cast + ", imagePath=" + imagePath + "]";
     }
 }
+

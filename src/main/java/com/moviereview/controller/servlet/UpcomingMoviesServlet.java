@@ -12,8 +12,8 @@ import javax.servlet.http.*;
 import com.moviereview.model.Movies;
 import com.moviereview.controller.database.DatabaseConnection;
 
-@WebServlet("/MovieListServlet")
-public class MovieListServlet extends HttpServlet {
+@WebServlet("/UpcomingMovieServlet")
+public class UpcomingMoviesServlet extends HttpServlet {
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {

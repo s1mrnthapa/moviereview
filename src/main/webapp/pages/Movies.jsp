@@ -140,52 +140,66 @@
 <div class="search-section">
  <!-- Left filters -->
     <div class="filters">
-		<h4 style= "color: white;"> Browse By </h4>
-		<div class="filters-sec">
-		<form action="${pageContext.request.contextPath}/MovieListServlet" method="get">
-			<select class="filter-select" id="year" name="year">
-	          <option value="" ${empty param.year ? 'selected' : ''}>All Years</option>
-	          <option value="Upcoming" ${param.year == 'Upcoming' ? 'selected' : ''}>Upcoming</option>
-	          <option value="2020" ${param.year == '2020' ? 'selected' : ''}>2020s</option>
-	          <option value="2010" ${param.year == '2010' ? 'selected' : ''}>2010s</option>
-	          <option value="2000" ${param.year == '2000' ? 'selected' : ''}>2000s</option>
-	          <option value="1990" ${param.year == '1990' ? 'selected' : ''}>1990s</option>
-	          <option value="1980" ${param.year == '1980' ? 'selected' : ''}>1980s</option>
-	          <option value="1970" ${param.year == '1970' ? 'selected' : ''}>1970s</option>
-	          <option value="1960" ${param.year == '1960' ? 'selected' : ''}>1960s</option>
-	          <option value="1950" ${param.year == '1950' ? 'selected' : ''}>1950s</option>
-	          <option value="1940" ${param.year == '1940' ? 'selected' : ''}>1940s</option>
-	          <option value="1930" ${param.year == '1930' ? 'selected' : ''}>1930s</option>
-	          <option value="1920" ${param.year == '1920' ? 'selected' : ''}>1920s</option>
-	          <option value="1910" ${param.year == '1910' ? 'selected' : ''}>1910s</option>
-	          <option value="1900" ${param.year == '1900' ? 'selected' : ''}>1900s</option>
-	          <option value="1890" ${param.year == '1890' ? 'selected' : ''}>1890s</option>
-	          <option value="1880" ${param.year == '1880' ? 'selected' : ''}>1880s</option>
-	          <option value="1870" ${param.year == '1870' ? 'selected' : ''}>1870s</option>
-	          <option value="1860" ${param.year == '1860' ? 'selected' : ''}>1860s</option>
-        </select>
-
-        <select class="filter-select" id="genre" name="genre">
-          <option value="" ${empty param.genre ? 'selected' : ''}>All Genres</option>
-          <option value="Action" ${param.genre == 'Action' ? 'selected' : ''}>Action</option>
-          <option value="Drama" ${param.genre == 'Drama' ? 'selected' : ''}>Drama</option>
-          <option value="Comedy" ${param.genre == 'Comedy' ? 'selected' : ''}>Comedy</option>
-          <option value="Thriller" ${param.genre == 'Thriller' ? 'selected' : ''}>Thriller</option>
-          <option value="Adventure" ${param.genre == 'Adventure' ? 'selected' : ''}>Adventure</option>
-          <option value="Romance" ${param.genre == 'Romance' ? 'selected' : ''}>Romance</option>
-          <option value="Science Fiction" ${param.genre == 'Science Fiction' ? 'selected' : ''}>Science Fiction</option>
-          <option value="Music" ${param.genre == 'Music' ? 'selected' : ''}>Music</option>
-          <option value="Crime" ${param.genre == 'Crime' ? 'selected' : ''}>Crime</option>
-          <option value="Horror" ${param.genre == 'Horror' ? 'selected' : ''}>Horror</option>
-          <option value="Animation" ${param.genre == 'Animation' ? 'selected' : ''}>Animation</option>
-        </select>
-	</div>
+    <h4 style="color: white;">Browse By</h4>
+    <div class="filters-sec">
+        <form action="${pageContext.request.contextPath}/MovieListServlet" method="get">
+            <select class="filter-select" id="year" name="year" onchange="this.form.submit()">
+                <option value="" ${empty param.year ? 'selected' : ''}>All Years</option>
+                <option value="Upcoming" ${param.year == 'Upcoming' ? 'selected' : ''}>Upcoming</option>
+                <option value="2020" ${param.year == '2020' ? 'selected' : ''}>2020s</option>
+                <option value="2010" ${param.year == '2010' ? 'selected' : ''}>2010s</option>
+                <option value="2000" ${param.year == '2000' ? 'selected' : ''}>2000s</option>
+                <option value="1990" ${param.year == '1990' ? 'selected' : ''}>1990s</option>
+                <option value="1980" ${param.year == '1980' ? 'selected' : ''}>1980s</option>
+                <option value="1970" ${param.year == '1970' ? 'selected' : ''}>1970s</option>
+                <option value="1960" ${param.year == '1960' ? 'selected' : ''}>1960s</option>
+                <option value="1950" ${param.year == '1950' ? 'selected' : ''}>1950s</option>
+                <option value="1940" ${param.year == '1940' ? 'selected' : ''}>1940s</option>
+                <option value="1930" ${param.year == '1930' ? 'selected' : ''}>1930s</option>
+                <option value="1920" ${param.year == '1920' ? 'selected' : ''}>1920s</option>
+                <option value="1910" ${param.year == '1910' ? 'selected' : ''}>1910s</option>
+                <option value="1900" ${param.year == '1900' ? 'selected' : ''}>1900s</option>
+                <option value="1890" ${param.year == '1890' ? 'selected' : ''}>1890s</option>
+                <option value="1880" ${param.year == '1880' ? 'selected' : ''}>1880s</option>
+                <option value="1870" ${param.year == '1870' ? 'selected' : ''}>1870s</option>
+                <option value="1860" ${param.year == '1860' ? 'selected' : ''}>1860s</option>
+            </select>
+            <select class="filter-select" id="genre" name="genre" onchange="this.form.submit()">
+                <option value="" ${empty param.genre ? 'selected' : ''}>All Genres</option>
+                <option value="Action" ${param.genre == 'Action' ? 'selected' : ''}>Action</option>
+                <option value="Adventure" ${param.genre == 'Adventure' ? 'selected' : ''}>Adventure</option>
+                <option value="Animation" ${param.genre == 'Animation' ? 'selected' : ''}>Animation</option>
+                <option value="Biography" ${param.genre == 'Biography' ? 'selected' : ''}>Biography</option>
+                <option value="Comedy" ${param.genre == 'Comedy' ? 'selected' : ''}>Comedy</option>
+                <option value="Crime" ${param.genre == 'Crime' ? 'selected' : ''}>Crime</option>
+                <option value="Documentary" ${param.genre == 'Documentary' ? 'selected' : ''}>Documentary</option>
+                <option value="Drama" ${param.genre == 'Drama' ? 'selected' : ''}>Drama</option>
+                <option value="Family" ${param.genre == 'Family' ? 'selected' : ''}>Family</option>
+                <option value="Fantasy" ${param.genre == 'Fantasy' ? 'selected' : ''}>Fantasy</option>
+                <option value="Film-Noir" ${param.genre == 'Film-Noir' ? 'selected' : ''}>Film-Noir</option>
+                <option value="History" ${param.genre == 'History' ? 'selected' : ''}>History</option>
+                <option value="Horror" ${param.genre == 'Horror' ? 'selected' : ''}>Horror</option>
+                <option value="Music" ${param.genre == 'Music' ? 'selected' : ''}>Music</option>
+                <option value="Musical" ${param.genre == 'Musical' ? 'selected' : ''}>Musical</option>
+                <option value="Mystery" ${param.genre == 'Mystery' ? 'selected' : ''}>Mystery</option>
+                <option value="Romance" ${param.genre == 'Romance' ? 'selected' : ''}>Romance</option>
+                <option value="Science Fiction" ${param.genre == 'Science Fiction' ? 'selected' : ''}>Science Fiction</option>
+                <option value="Sport" ${param.genre == 'Sport' ? 'selected' : ''}>Sport</option>
+                <option value="Thriller" ${param.genre == 'Thriller' ? 'selected' : ''}>Thriller</option>
+                <option value="War" ${param.genre == 'War' ? 'selected' : ''}>War</option>
+                <option value="Western" ${param.genre == 'Western' ? 'selected' : ''}>Western</option>
+            </select>
+        </form>
+    </div>
+</div>
 	</div>
 	<!-- Right: Search box -->
-    <div class="search-box">
-        <input type="search" class="search-input" placeholder="Search for a film...">
-        <button class="search-button">Search</button>
-    </div>
+  <div class="search-box">
+    <form action="${pageContext.request.contextPath}/MovieListServlet" method="get">
+        <input type="search" class="search-input" name="search" placeholder="Search for a film...">
+        <button class="search-button" type="submit">Search</button>
+    </form>
+</div>
 </div>
 
 <!-- Loop through movies if not empty -->

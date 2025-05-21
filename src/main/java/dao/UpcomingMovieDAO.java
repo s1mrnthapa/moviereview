@@ -1,8 +1,14 @@
 package dao;
 
-import java.sql.*;
-import java.util.*;
-import model.UpcomingMovie;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+
+import com.moviereview.controller.dao.UpcomingMovie;
 
 public class UpcomingMovieDAO {
     private String jdbcURL = "jdbc:mysql://localhost:3306/cinecritique";
