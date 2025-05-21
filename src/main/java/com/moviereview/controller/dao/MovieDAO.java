@@ -6,22 +6,21 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-
 import com.moviereview.controller.database.DatabaseConnection;
 import com.moviereview.model.Movies;
 
 public class MovieDAO {
-    private Connection conn;
-    private PreparedStatement ps;
 
-    // Constructor: Establishes database connection when MovieDAO is created
-    public MovieDAO() throws SQLException, ClassNotFoundException {
-        this.conn = DatabaseConnection.getConnection();  // Assuming DatabaseConnection provides a getConnection method
+    private Connection conn;
+
+    // Constructor initializes the connection
+    public MovieDAO() throws Exception {
+        this.conn = DatabaseConnection.getConnection();
     }
 
-    public boolean addMovie(Movies movie) {
+    // Add movie to the movie table and insert genres to junction table
+    public boolean addMovie(Movies movie) throws Exception {
         boolean isMovieAdded = false;
-
         String queryMovie = "INSERT INTO movie (title, release_date, duration, country, director, description, cast, image_path) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 
         try (Connection conn = DatabaseConnection.getConnection();
@@ -33,7 +32,8 @@ public class MovieDAO {
             ps.setString(4, movie.getCountry());
             ps.setString(5, movie.getDirector());
             ps.setString(6, movie.getDescription());
-
+            
+            // Join cast list into comma-separated string
             String castString = String.join(", ", movie.getCast());
             ps.setString(7, castString);
             ps.setString(8, movie.getImagePath());
@@ -58,35 +58,29 @@ public class MovieDAO {
         return isMovieAdded;
     }
 
-
-    // Insert genres into the movie_genre junction table (Foreign Key Reference)
-    private void insertGenres(Connection conn, Movies movie) {
+    // Insert genres in junction table for the movie
+    private void insertGenres(Connection conn, Movies movie) throws SQLException {
         String queryGenre = "INSERT INTO movie_genre_table (movieID, genreID) VALUES (?, ?)";
-        try {
-            ps = conn.prepareStatement(queryGenre);
+        try (PreparedStatement ps = conn.prepareStatement(queryGenre)) {
             for (String genreID : movie.getGenre()) {
-                // Ensure genreID exists in the genre table before insertion
-                // Assuming genreID is an integer and present in the genre table
                 if (isValidGenre(genreID)) {
                     ps.setInt(1, movie.getMovieID());
-                    ps.setInt(2, Integer.parseInt(genreID));  // Convert genreID to integer
-                    ps.addBatch();  // Add the insert statement to the batch
+                    ps.setInt(2, Integer.parseInt(genreID));
+                    ps.addBatch();
                 }
             }
-            ps.executeBatch();  // Execute the batch insert for genres
-        } catch (SQLException e) {
-            e.printStackTrace();  // Log the error
+            ps.executeBatch();
         }
     }
 
-    // Helper method to check if the genreID exists in the genre table (for foreign key validation)
+    // Check if genreID exists in genre table
     private boolean isValidGenre(String genreID) {
         String query = "SELECT COUNT(*) FROM genre WHERE genreID = ?";
         try (PreparedStatement stmt = conn.prepareStatement(query)) {
             stmt.setInt(1, Integer.parseInt(genreID));
             try (ResultSet rs = stmt.executeQuery()) {
                 if (rs.next()) {
-                    return rs.getInt(1) > 0;  // Return true if genre exists
+                    return rs.getInt(1) > 0;
                 }
             }
         } catch (SQLException e) {
@@ -95,54 +89,50 @@ public class MovieDAO {
         return false;
     }
 
+    // Fetch genres for a movie by movieID
     private List<String> getGenresByMovieId(int movieId) throws SQLException {
         List<String> genres = new ArrayList<>();
         String sql = "SELECT g.genre FROM movie_genre_table mg JOIN genre g ON mg.genreID = g.genreID WHERE mg.movieID = ?";
 
-        try (Connection conn = DatabaseConnection.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setInt(1, movieId);
             try (ResultSet rs = stmt.executeQuery()) {
                 while (rs.next()) {
                     genres.add(rs.getString("genre"));
                 }
             }
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
         }
         return genres;
     }
 
+    // Fetch cast list (comma-separated in DB) for a movie
     private List<String> getCastFromMovieTable(int movieId) throws SQLException {
         List<String> castList = new ArrayList<>();
         String sql = "SELECT cast FROM movie WHERE movieID = ?";
 
-        try (Connection conn = DatabaseConnection.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setInt(1, movieId);
             try (ResultSet rs = stmt.executeQuery()) {
                 if (rs.next()) {
                     String castString = rs.getString("cast");
                     if (castString != null && !castString.isEmpty()) {
-                        String[] castArray = castString.split("\\s*,\\s*"); // Split by commas
+                        String[] castArray = castString.split("\\s*,\\s*");
                         for (String castMember : castArray) {
                             castList.add(castMember);
                         }
                     }
                 }
             }
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
         }
         return castList;
     }
+
+    // Get a movie by ID with full details
     public Movies getMovieById(int movieId) {
         Movies movie = null;
         String sql = "SELECT * FROM movie WHERE movieID = ?";
 
-        try (Connection conn = DatabaseConnection.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
-
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setInt(1, movieId);
             try (ResultSet rs = stmt.executeQuery()) {
                 if (rs.next()) {
@@ -156,51 +146,52 @@ public class MovieDAO {
                     movie.setDirector(rs.getString("director"));
                     movie.setImagePath(rs.getString("image_path"));
 
-                    // Fetch and set genres and cast
                     movie.setGenre(getGenresByMovieId(movieId));
                     movie.setCast(getCastFromMovieTable(movieId));
                 }
             }
-        } catch (SQLException | ClassNotFoundException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
 
         return movie;
     }
 
-    public List<Movies> getAllMovies() throws SQLException {
+    // Get all movies with their genres and cast
+    public List<Movies> getAllMovies() {
         List<Movies> movies = new ArrayList<>();
-        String sql = "SELECT * FROM movie"; // Select all movies from the movie table
+        String sql = "SELECT * FROM movie";
 
-        try (Connection conn = DatabaseConnection.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql);
+        try (PreparedStatement stmt = conn.prepareStatement(sql);
              ResultSet rs = stmt.executeQuery()) {
 
             while (rs.next()) {
-                Movies movie = new Movies();  // Create an instance of Movies
-                movie.setMovieID(rs.getInt("movieID"));
+                Movies movie = new Movies();
+                int movieId = rs.getInt("movieID");
+
+                movie.setMovieID(movieId);
                 movie.setTitle(rs.getString("title"));
                 movie.setDescription(rs.getString("description"));
                 movie.setDuration(rs.getString("duration"));
                 movie.setReleaseDate(rs.getDate("release_date"));
                 movie.setCountry(rs.getString("country"));
                 movie.setDirector(rs.getString("director"));
-                movie.setImagePath(rs.getString("image_path"));  // Get image path from database
+                movie.setImagePath(rs.getString("image_path"));
 
-                // Fetch and set genres and cast
-                movie.setGenre(getGenresByMovieId(movie.getMovieID())); // Set genre
-                movie.setCast(getCastFromMovieTable(movie.getMovieID()));   // Set cast
+                movie.setGenre(getGenresByMovieId(movieId));
+                movie.setCast(getCastFromMovieTable(movieId));
 
-                movies.add(movie);  // Add movie to the list
+                movies.add(movie);
             }
-        } catch (SQLException | ClassNotFoundException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
 
-        return movies;  // Return the list of movies
+        return movies;
     }
-    
-    public List<Movies> getMoviesByFilter(String yearPrefix, String genre) throws SQLException {
+
+    // Optional: Filter movies by release year prefix and genre
+    public List<Movies> getMoviesByFilter(String yearPrefix, String genre) {
         List<Movies> moviesList = new ArrayList<>();
         String sql = "SELECT DISTINCT m.* FROM movie m " +
                      "JOIN movie_genre_table mg ON m.movieID = mg.movieID " +
@@ -208,9 +199,7 @@ public class MovieDAO {
                      "WHERE (? IS NULL OR YEAR(m.release_date) LIKE ?) " +
                      "AND (? IS NULL OR g.genre = ?)";
 
-        try (Connection conn = DatabaseConnection.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
-
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
             String yearLike = (yearPrefix != null && !yearPrefix.isEmpty()) ? yearPrefix + "%" : null;
             String genreVal = (genre != null && !genre.isEmpty()) ? genre : null;
 
@@ -219,27 +208,27 @@ public class MovieDAO {
             stmt.setString(3, genreVal);
             stmt.setString(4, genreVal);
 
-            ResultSet rs = stmt.executeQuery();
-            while (rs.next()) {
-                Movies movie = new Movies(
-                    rs.getInt("movieID"),
-                    rs.getString("title"),
-                    rs.getDate("release_date"),
-                    rs.getString("duration"),
-                    rs.getString("country"),
-                    rs.getString("director"),
-                    rs.getString("description"),
-                    rs.getString("cast"),
-                    rs.getString("image_path")
-                );
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    Movies movie = new Movies();
+                    int movieId = rs.getInt("movieID");
 
-                // Fetch genres and cast
-                movie.setGenre(getGenresByMovieId(movie.getMovieID()));
-                movie.setCast(getCastFromMovieTable(movie.getMovieID()));
+                    movie.setMovieID(movieId);
+                    movie.setTitle(rs.getString("title"));
+                    movie.setReleaseDate(rs.getDate("release_date"));
+                    movie.setDuration(rs.getString("duration"));
+                    movie.setCountry(rs.getString("country"));
+                    movie.setDirector(rs.getString("director"));
+                    movie.setDescription(rs.getString("description"));
+                    movie.setImagePath(rs.getString("image_path"));
 
-                moviesList.add(movie);
+                    movie.setGenre(getGenresByMovieId(movieId));
+                    movie.setCast(getCastFromMovieTable(movieId));
+
+                    moviesList.add(movie);
+                }
             }
-        } catch (ClassNotFoundException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
 

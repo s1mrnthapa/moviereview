@@ -1,4 +1,5 @@
 package com.moviereview.model;
+import java.sql.Timestamp;
 
 public class User {
     private int userId;
@@ -8,14 +9,14 @@ public class User {
     private String email;
     private String password;
     private String role;
-    private java.sql.Timestamp registerDate;
+    private Timestamp registerDate;
 
     // Empty constructor
     public User() {}
 
     // Constructor 
     public User(int userId, String username, String firstName, String lastName,
-            String email, String password, java.sql.Timestamp registerDate, String role){
+            String email, String password, Timestamp registerDate, String role){
     	this.userId = userId;
         this.username = username;
         this.firstName = firstName;
@@ -75,11 +76,11 @@ public class User {
         this.password = password;
     }
 
-    public java.sql.Timestamp getRegisterDate() {
+    public Timestamp getRegisterDate() {
         return registerDate;
     }
 
-    public void setRegisterDate(java.sql.Timestamp registerDate) {
+    public void setRegisterDate(Timestamp registerDate) {
         this.registerDate = registerDate;
     }
 

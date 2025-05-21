@@ -1,56 +1,64 @@
 package com.moviereview.controller.servlet;
 
-import com.moviereview.controller.dao.*;
-import com.moviereview.model.Admin;
-import java.io.IOException;
-import java.text.SimpleDateFormat;
+import java.io.*;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
+import javax.servlet.http.*;
 
-@WebServlet("/admin-profile")
+import com.moviereview.model.User;
+
+@WebServlet("/AdminProfileServlet")
 public class AdminProfileServlet extends HttpServlet {
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) 
+
+    private static final String UPLOAD_DIR = "/uploads";
+    private static final String USER_IMAGES_DIR = "user_images";
+
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
-        HttpSession session = request.getSession();
-        Integer adminId = (Integer) session.getAttribute("adminId");
-        
-        if (adminId == null) {
-            response.sendRedirect(request.getContextPath() + "/login.jsp");
+
+        HttpSession session = request.getSession(false);
+        if (session == null) {
+            response.sendRedirect(request.getContextPath() + "/pages/Login.jsp?error=session_expired");
             return;
         }
-        
-        AdminDAO adminDAO = new AdminDAO();
-        Admin admin = adminDAO.getAdminById(adminId);
-        
-        if (admin != null) {
-            // Format dates for display
-            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-            
-            session.setAttribute("name", admin.getName());
-            session.setAttribute("email", admin.getEmail());
-            session.setAttribute("username", admin.getUsername());
-            session.setAttribute("role", admin.getRole());
-            session.setAttribute("joined", dateFormat.format(admin.getJoinedDate()));
-            session.setAttribute("lastLogin", dateFormat.format(admin.getLastLogin()));
-            
-            try {
-                session.setAttribute("moviesCount", adminDAO.getMoviesAddedCount(adminId));
-                session.setAttribute("reviewsCount", adminDAO.getReviewsModeratedCount(adminId));
-                session.setAttribute("usersCount", adminDAO.getUsersManagedCount(adminId));
-            } catch (Exception e) {
-                e.printStackTrace();
-                // Set default values if there's an error
-                session.setAttribute("moviesCount", 0);
-                session.setAttribute("reviewsCount", 0);
-                session.setAttribute("usersCount", 0);
+
+        User user = (User) session.getAttribute("user");
+
+        if (user == null || user.getUsername() == null || user.getUsername().trim().isEmpty()) {
+            response.sendRedirect(request.getContextPath() + "/pages/Login.jsp?error=usernotfound");
+            return;
+        }
+
+        // Load saved profile image path for this user if not in session
+        if (session.getAttribute("profileImage") == null) {
+            String savedImage = loadUserProfileImagePath(user.getUsername(), getServletContext());
+            if (savedImage != null) {
+                String relativePath = request.getContextPath() + UPLOAD_DIR + "/" + savedImage;
+                session.setAttribute("profileImage", relativePath);
             }
         }
-        
-        response.sendRedirect(request.getContextPath() + "/pages/adminprofile.jsp");
+
+        // Pass user data to JSP
+        request.setAttribute("adminProfile", user);
+
+        // Forward to JSP
+        request.getRequestDispatcher("/pages/adminprofile.jsp").forward(request, response);
+    }
+
+    private String loadUserProfileImagePath(String username, javax.servlet.ServletContext context) {
+        try {
+            String userImageDirPath = context.getRealPath("/") + USER_IMAGES_DIR;
+            File userFile = new File(userImageDirPath, username + ".txt");
+            if (!userFile.exists()) return null;
+
+            try (BufferedReader br = new BufferedReader(new FileReader(userFile))) {
+                String filename = br.readLine();
+                return filename;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 }

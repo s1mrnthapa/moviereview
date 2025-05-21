@@ -43,11 +43,11 @@ public class AuthenticationFilter implements Filter {
 		}
 		// Skipping filter for login page and login controller
 		if (loggedIn) {
-			// 🚫 If a normal user tries to access an admin-only page
-            if (isAdminPage && session.getAttribute("Admin") == null) {
-                res.sendRedirect(req.getContextPath() + "/pages/Unauthorized.jsp");
-                return;
-            }
+//			// 🚫 If a normal user tries to access an admin-only page
+//            if (isAdminPage && session.getAttribute("Admin") == null) {
+//                res.sendRedirect(req.getContextPath() + "/pages/Unauthorized.jsp");
+//                return;
+//            }
 	        chain.doFilter(request, response); // proceed to requested resource
 	    } else {
 	        // 🚨 Only try to setAttribute if session is not null, else create one

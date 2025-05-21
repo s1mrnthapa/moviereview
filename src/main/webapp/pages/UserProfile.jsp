@@ -1,312 +1,191 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Profile - CineCritique</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Admin Profile – CineCritique</title>
   <style>
+    :root {
+      --black: #0f0f0f;
+      --dark-red: #8b0000;
+      --red-hover: #a30000;
+      --gray-bg: #1a1a1a;
+      --white: #ffffff;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
     body {
       font-family: Arial, sans-serif;
-      margin: 0;
-      background-color: #0b0b0b;
-      color: #fff;
+      background-color: var(--black);
+      color: var(--white);
     }
 
     header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      background-color: #1a1a1a;
-      padding: 15px 20px;
-      border-bottom: 2px solid #ff3c3c;
+      background-color: var(--dark-red);
+      padding: 20px;
+      text-align: center;
     }
 
-    .logo {
-      display: flex;
-      align-items: center;
-    }
-
-    .logo img {
-      width: 40px;
-      height: 40px;
-      margin-right: 10px;
-    }
-
-    .logo h1 {
-      margin: 0;
-      font-size: 24px;
-      white-space: nowrap;
-    }
-
-    .search-bar {
-      display: flex;
-      align-items: center;
-    }
-
-    .search-bar input {
-      padding: 10px;
-      width: 300px;
-      background-color: #1f1f1f;
-      color: #fff;
-      border: 1px solid #ff3c3c;
-      border-radius: 4px;
-      margin-right: 10px;
-    }
-
-    .search-bar button {
-      padding: 10px 15px;
-      background-color: #ff3c3c;
-      color: #fff;
-      border: none;
-      border-radius: 4px;
-      cursor: pointer;
-    }
-
-    .search-bar button:hover {
-      background-color: #e63939;
+    header h1 {
+      font-size: 26px;
+      letter-spacing: 1px;
+      color: var(--white);
     }
 
     nav {
+      background-color: var(--black);
+      padding: 12px 40px;
       display: flex;
-      align-items: center;
-    }
-
-    nav a {
-      color: #fff;
-      text-decoration: none;
-      margin: 0 15px;
-      padding: 5px 10px;
-      border-radius: 4px;
-      transition: background-color 0.3s;
-    }
-
-    nav a:hover {
-      background-color: #ff3c3c;
-    }
-
-    /* Profile Section */
-    .profile-section {
-      display: flex;
-      padding: 20px;
-      align-items: center;
-      border-bottom: 2px solid #ff3c3c;
-      margin-bottom: 20px;
-    }
-
-    .avatar {
-      width: 80px;
-      height: 80px;
-      border-radius: 50%;
-      background-color: #1f1f1f;
-      margin-right: 20px;
-      border: 2px solid #ff3c3c;
-      display: flex;
-      align-items: center;
+      flex-wrap: wrap;
       justify-content: center;
     }
 
-    .profile-pic {
-      width: 80px;
-      height: 80px;
+    nav a {
+      margin: 6px 12px;
+      text-decoration: none;
+      color: var(--white);
+      font-weight: bold;
+      transition: color 0.3s;
+    }
+
+    nav a:hover {
+      color: var(--dark-red);
+    }
+
+    main {
+      max-width: 1000px;
+      margin: 40px auto;
+      background: var(--gray-bg);
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(255, 0, 0, 0.1);
+    }
+
+    .profile-header {
+      display: flex;
+      gap: 30px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .profile-img-placeholder {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      position: relative;
+    }
+
+    .circle-wrapper {
+      width: 130px;
+      height: 130px;
       border-radius: 50%;
-      border: 2px solid #ff3c3c;
+      border: 3px solid var(--dark-red);
+      background-color: var(--black);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .circle-wrapper img {
+      width: 100%;
+      height: 100%;
       object-fit: cover;
     }
 
-    .user-info h1 {
-      margin: 0 0 10px 0;
-      font-size: 24px;
-    }
-
-    .bio, .location {
-      color: #ccc;
-    }
-
-    .edit-btn {
-      background-color: #1f1f1f;
-      color: #ff3c3c;
-      border: 1px solid #ff3c3c;
-      padding: 5px 10px;
-      margin-top: 10px;
-      border-radius: 4px;
-      cursor: pointer;
-    }
-
-    .error-message {
-      background-color: #ffdddd;
-      padding: 10px;
-      border-radius: 4px;
-      border-left: 4px solid #ff3c3c;
-      margin: 20px;
-      color: #000;
-    }
-
-    /* Filter Bar */
-    .tabs {
-      display: flex;
-      margin-bottom: 20px;
-      border-bottom: 2px solid #ff3c3c;
-      padding-bottom: 10px;
-    }
-
-    .tab {
-      color: white;
-      text-decoration: none;
-      margin-right: 40px;
-      padding-bottom: 10px;
-      text-transform: uppercase;
+    .profile-info p {
+      margin: 10px 0;
       font-size: 15px;
+    }
+
+    .profile-info span.label {
       font-weight: bold;
-      transition: color 0.3s, border-bottom 0.3s;
+      color: var(--dark-red);
+      min-width: 100px;
+      display: inline-block;
     }
 
-    .tab:hover {
-      color: #ff3c3c;
-    }
-
-    .tab.active {
-      color: #ff3c3c;
-      border-bottom: 3px solid #ff3c3c;
-    }
-
-    /* Sidebar */
-    .sidebar {
-      display: flex;
-      flex-direction: column;
-      width: 300px;
-      margin-left: auto;
-      padding: 20px;
-      background-color: #1f1f1f;
-      border-left: 2px solid #ff3c3c;
-    }
-
-    .sidebar-section {
-      margin-bottom: 30px;
-    }
-
-    .sidebar-title {
-      color: #ff3c3c;
-      font-size: 16px;
-      margin-bottom: 10px;
-    }
-
-    .watchlist-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-      gap: 10px;
-    }
-
-    .watchlist-item {
-      width: 120px;
-      height: 180px;
-      background-color: #2c3440;
+    .profile-info .value {
+      display: inline-block;
+      margin-left: 10px;
+      padding: 5px 10px;
+      background-color: #2a2a2a;
       border-radius: 4px;
-      border: 1px solid #ff3c3c;
+      min-width: 200px;
     }
 
-    .section-title {
-      color: #ff3c3c;
-      font-size: 18px;
-      margin: 30px 20px 10px;
+    footer {
+      background-color: var(--dark-red);
+      color: var(--white);
+      text-align: center;
+      padding: 15px;
+      margin-top: 60px;
     }
 
-    .movie-grid {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 15px;
-      padding: 0 20px;
-    }
+    @media (max-width: 768px) {
+      .profile-header {
+        flex-direction: column;
+        text-align: center;
+      }
 
-    .movie-poster {
-      width: 120px;
-      height: 180px;
-      background-color: #2c3440;
-      border-radius: 4px;
-      border: 1px solid #ff3c3c;
+      .profile-info .value {
+        min-width: 150px;
+      }
+
+      nav {
+        padding: 12px 20px;
+      }
     }
   </style>
 </head>
 <body>
 
-  <!-- Header -->
   <header>
-	  <div class="logo">
-	    <a href="${pageContext.request.contextPath}/Home.jsp" style="display: flex; align-items: center; text-decoration: none; color: white;">
-	      <img src="${pageContext.request.contextPath}/images/cinecritique-logo-only.png" alt="CineCritique Logo" />
-	      <h1>CINECRITIQUE</h1>
-	    </a>
-	  </div>
-	
-	  <div class="search-bar">
-	    <input type="text" placeholder="Search" />
-	    <button>Search</button>
-	  </div>
-	  
-	  <nav>
-	    <a href="${pageContext.request.contextPath}/Home.jsp">Home</a>
-	    <a href="${pageContext.request.contextPath}/Movies.jsp">Films</a>
-	    <a href="${pageContext.request.contextPath}/UpcomingMovies.jsp">Upcoming</a>
-	    <a href="${pageContext.request.contextPath}/WatchlistServlet">Watchlist</a>
-	  </nav>
-	</header>
+    <h1>CINECRITIQUE ADMIN PROFILE</h1>
+  </header>
 
-  <!-- Dynamic Profile Section -->
-  <div class="profile-section">
-    <div class="avatar">
-  		<img src="images/default-profile.png" alt="Profile Picture" class="profile-pic" />
-	</div>
-    <div class="user-info">
-      <h1><c:out value="${userProfile.username}" /></h1>
-      <div class="bio"><c:out value="${userProfile.firstName} ${userProfile.lastName}" /></div>
-      <div class="location"><c:out value="${userProfile.email}" /></div>
-      <div class="member-since">Member since: <c:out value="${userProfile.registerDate}" /></div>
-      <br>
-      <a href="${pageContext.request.contextPath}/pages/EditProfile.jsp" class="edit-btn">EDIT PROFILE</a>
-    </div>
-  </div>
-
-  <!-- Error Display -->
-  <c:if test="${not empty error}">
-    <div class="error-message">
-      <c:out value="${error}" />
-    </div>
-  </c:if>
-
-  <!-- Navigation -->
-  <div class="tabs filters">
-    <a class="tab active">Profile</a>
-    <a href="${pageContext.request.contextPath}/UserMovie.jsp" class="tab">Films</a>
-    <a href="${pageContext.request.contextPath}/WatchlistServlet" class="tab">Watchlist</a>
-  </div>
-
-  <!-- Main Content -->
-  <div class="main-content" style="display: flex; justify-content: space-between;">
-    <div class="content" style="flex: 3;">
-      <!-- Favorite Films -->
-      <div class="section-title">FAVORITE FILMS</div>
-      <div class="movie-grid">
-        <div class="movie-poster"></div>
-        <div class="movie-poster"></div>
-        <div class="movie-poster"></div>
-        <div class="movie-poster"></div>
-      </div>
-    </div>
-
-    <!-- Sidebar (Watchlist) -->
-    <div class="sidebar">
-      <div class="sidebar-section">
-        <div class="sidebar-title">WATCHLIST</div>
-        <div class="watchlist-grid">
-          <div class="watchlist-item"></div>
-          <div class="watchlist-item"></div>
-          <div class="watchlist-item"></div>
-          <div class="watchlist-item"></div>
+  <nav>
+    <a href="${pageContext.request.contextPath}/pages/dashboard.jsp">Dashboard</a>
+    <a href="${pageContext.request.contextPath}/pages/addMovie.jsp">Add Movies</a>
+    <a href="${pageContext.request.contextPath}/AdminProfileServlet">Admin Profile</a>
+    <a href="${pageContext.request.contextPath}/pages/Movies.jsp">Movies</a>
+    <a href="${pageContext.request.contextPath}/pages/moviedatabase.jsp">Movies Database</a>
+    <a href="${pageContext.request.contextPath}/logout">Logout</a>
+  </nav>
+  
+  <main>
+    <div class="profile-header">
+      <div class="profile-img-placeholder">
+        <div class="circle-wrapper">
+          <% if (session.getAttribute("profileImage") != null) { %>
+            <img src="<%= session.getAttribute("profileImage") %>" alt="User Profile" />
+          <% } else { %>
+            <img src="${pageContext.request.contextPath}/images/default-admin.png" alt="Default Profile" />
+          <% } %>
         </div>
       </div>
+
+      <div class="profile-info">
+        <p><span class="label">User ID:</span> <span class="value"><%= session.getAttribute("userId") %></span></p>
+        <p><span class="label">Username:</span> <span class="value"><%= session.getAttribute("username") %></span></p>
+        <p><span class="label">First Name:</span> <span class="value"><%= session.getAttribute("firstname") %></span></p>
+        <p><span class="label">Last Name:</span> <span class="value"><%= session.getAttribute("lastname") %></span></p>
+        <p><span class="label">Email:</span> <span class="value"><%= session.getAttribute("email") %></span></p>
+        <p><span class="label">Register Date:</span> <span class="value"><%= session.getAttribute("registerDate") %></span></p>
+      </div>
     </div>
-  </div>
+  </main>
+
+  <footer>
+    &copy; 2025 CineCritique. All Rights Reserved.
+  </footer>
 
 </body>
 </html>

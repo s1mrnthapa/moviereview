@@ -1,246 +1,240 @@
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Admin Profile – CineCritique</title>
-  <style>
-    :root {
-      --black: #0f0f0f;
-      --dark-red: #8b0000;
-      --red-hover: #a30000;
-      --gray-bg: #1a1a1a;
-      --white: #ffffff;
-    }
+    <meta charset="UTF-8" />
+    <title>Admin Profile – CineCritique</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700&family=Amarante&display=swap" rel="stylesheet">
 
-    body {
-      font-family: Arial, sans-serif;
-      background-color: var(--black);
-      color: var(--white);
-    }
+    <style>
+        :root {
+            --black: #0f0f0f;
+            --dark-red: #8b0000;
+            --gray-bg: #1a1a1a;
+            --white: #ffffff;
+        }
 
-    header {
-      background-color: var(--dark-red);
-      padding: 20px;
-      text-align: center;
-    }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-    header h1 {
-      font-size: 26px;
-      letter-spacing: 1px;
-      color: var(--white);
-    }
+        body {
+            background-color: var(--black);
+            font-family: 'Amarante', serif;
+            color: var(--white);
+        }
 
-    nav {
-      background-color: var(--black);
-      padding: 12px 40px;
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-    }
+        nav {
+            background-color: var(--black);
+            padding: 12px 20px;
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
 
-    nav a {
-      margin: 6px 12px;
-      text-decoration: none;
-      color: var(--white);
-      font-weight: bold;
-      transition: color 0.3s;
-    }
+        nav a {
+            text-decoration: none;
+            color: var(--white);
+            font-weight: bold;
+            padding: 6px 12px;
+            transition: 0.3s ease;
+        }
 
-    nav a:hover {
-      color: var(--dark-red);
-    }
+        nav a:hover {
+            color: #00ff88;
+        }
 
-    main {
-      max-width: 1000px;
-      margin: 40px auto;
-      background: var(--gray-bg);
-      padding: 30px;
-      border-radius: 12px;
-      box-shadow: 0 4px 10px rgba(255, 0, 0, 0.1);
-    }
+        main {
+            max-width: 850px;
+            margin: 40px auto;
+            background: var(--gray-bg);
+            padding: 40px 50px;
+            border-radius: 12px;
+        }
 
-    .profile-header {
-      display: flex;
-      gap: 30px;
-      align-items: center;
-      flex-wrap: wrap;
-    }
+        .profile-header {
+            display: flex;
+            gap: 40px;
+            align-items: flex-start;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-bottom: 30px;
+        }
 
-    .profile-img-placeholder {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      position: relative;
-    }
+        .profile-img-placeholder {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
 
-    .circle-wrapper {
-      width: 130px;
-      height: 130px;
-      border-radius: 50%;
-      border: 3px solid var(--dark-red);
-      background-color: var(--black);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      position: relative;
-      overflow: hidden;
-    }
+        .circle-wrapper {
+            width: 140px;
+            height: 140px;
+            border-radius: 50%;
+            border: 3px solid var(--dark-red);
+            background-color: var(--black);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            cursor: pointer;
+        }
 
-    .circle-wrapper img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
+        .circle-wrapper img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 50%;
+        }
 
-    .profile-info p {
-      margin: 10px 0;
-      font-size: 15px;
-    }
+        .profile-info {
+            flex-grow: 1;
+            width: 100%;
+            max-width: 500px;
+            display: grid;
+            grid-template-columns: 160px 1fr;
+            row-gap: 20px;
+            column-gap: 20px;
+            background-color: #222;
+            padding: 25px;
+            border-radius: 10px;
+        }
 
-    .profile-info span.label {
-      font-weight: bold;
-      color: var(--dark-red);
-      min-width: 100px;
-      display: inline-block;
-    }
+        .label {
+            font-weight: bold;
+            color: var(--white);
+            align-self: center;
+        }
 
-    .profile-info .value {
-      display: inline-block;
-      margin-left: 10px;
-      padding: 5px 10px;
-      background-color: #2a2a2a;
-      border-radius: 4px;
-      min-width: 200px;
-    }
+        .value {
+            background-color: #2a2a2a;
+            padding: 10px 14px;
+            border-radius: 6px;
+            color: #f0f0f0;
+        }
 
-    .stats {
-      display: flex;
-      justify-content: space-between;
-      margin: 40px 0;
-      flex-wrap: wrap;
-      gap: 20px;
-    }
+        form {
+            margin-top: 25px;
+            text-align: center;
+        }
 
-    .stat-box {
-      flex: 1;
-      min-width: 200px;
-      background: var(--black);
-      padding: 25px;
-      text-align: center;
-      border-radius: 10px;
-      border: 1px solid #333;
-      transition: transform 0.3s, box-shadow 0.3s;
-    }
+        button, input[type="file"] {
+            padding: 10px 20px;
+            background-color: var(--dark-red);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
 
-    .stat-box:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 5px 15px rgba(139, 0, 0, 0.3);
-    }
+        input[type="file"]:disabled, button:disabled {
+            background-color: #444;
+            cursor: default;
+        }
 
-    .stat-box h3 {
-      font-size: 32px;
-      color: var(--dark-red);
-      margin-bottom: 5px;
-    }
+        @media (max-width: 768px) {
+            .profile-header {
+                flex-direction: column;
+                text-align: center;
+            }
 
-    .stat-box p {
-      font-size: 14px;
-      color: #ccc;
-      margin: 0;
-    }
+            .profile-info {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+        }
 
-    footer {
-      background-color: var(--dark-red);
-      color: var(--white);
-      text-align: center;
-      padding: 15px;
-      margin-top: 60px;
-    }
+        #imgModal {
+            display: none;
+            position: fixed;
+            z-index: 999;
+            left: 0; top: 0;
+            width: 100%; height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+        }
 
-    @media (max-width: 768px) {
-      .profile-header {
-        flex-direction: column;
-        text-align: center;
-      }
-
-      .profile-info .value {
-        min-width: 150px;
-      }
-
-      .stats {
-        flex-direction: column;
-      }
-      
-      nav {
-        padding: 12px 20px;
-      }
-    }
-  </style>
+        #imgModal img {
+            display: block;
+            margin: 50px auto;
+            max-width: 90%;
+            max-height: 90%;
+            border: 5px solid var(--dark-red);
+            border-radius: 10px;
+            cursor: pointer;
+        }
+    </style>
 </head>
 <body>
 
-  <header>
-    <h1>CINECRITIQUE ADMIN PROFILE</h1>
-  </header>
-
-  <nav>
+<nav>
     <a href="${pageContext.request.contextPath}/pages/dashboard.jsp">Dashboard</a>
     <a href="${pageContext.request.contextPath}/pages/addMovie.jsp">Add Movies</a>
-    <a href="${pageContext.request.contextPath}/pages/adminprofile.jsp">Admin Profile</a>
+    <a href="${pageContext.request.contextPath}/AdminProfileServlet">Admin Profile</a>
     <a href="${pageContext.request.contextPath}/pages/Movies.jsp">Movies</a>
+    <a href="${pageContext.request.contextPath}/pages/moviedatabase.jsp">Movies Database</a>
     <a href="${pageContext.request.contextPath}/logout">Logout</a>
-  </nav>
-  
-  <main>
+</nav>
+
+<main>
     <div class="profile-header">
-      <div class="profile-img-placeholder">
-        <div class="circle-wrapper">
-          <% if (session.getAttribute("profileImage") != null) { %>
-            <img src="<%= session.getAttribute("profileImage") %>" alt="Admin Profile" />
-          <% } else { %>
-            <img src="${pageContext.request.contextPath}/images/default-admin.png" alt="Default Profile" />
-          <% } %>
+        <div class="profile-img-placeholder">
+            <div class="circle-wrapper" onclick="openModal()">
+                <c:choose>
+                    <c:when test="${not empty sessionScope.profileImage}">
+                        <img src="${sessionScope.profileImage}" alt="Admin Profile" id="profileImg" />
+                    </c:when>
+                    <c:otherwise>
+                        <img src="${pageContext.request.contextPath}/images/default-admin.png" alt="Default Profile" id="profileImg" />
+                    </c:otherwise>
+                </c:choose>
+            </div>
         </div>
-      </div>
 
-      <div class="profile-info">
-        <p><span class="label">Name:</span> <span class="value"><%= session.getAttribute("name") %></span></p>
-        <p><span class="label">Email:</span> <span class="value"><%= session.getAttribute("email") %></span></p>
-        <p><span class="label">Username:</span> <span class="value"><%= session.getAttribute("username") %></span></p>
-        <p><span class="label">Role:</span> <span class="value"><%= session.getAttribute("role") %></span></p>
-        <p><span class="label">Joined:</span> <span class="value"><%= session.getAttribute("joined") %></span></p>
-        <p><span class="label">Last Login:</span> <span class="value"><%= session.getAttribute("lastLogin") != null ? session.getAttribute("lastLogin") : "Never" %></span></p>
-      </div>
+        <div class="profile-info">
+            <span class="label">User ID:</span> <span class="value">${adminProfile.userId}</span>
+            <span class="label">Username:</span> <span class="value">${adminProfile.username}</span>
+            <span class="label">First Name:</span> <span class="value">${adminProfile.firstName}</span>
+            <span class="label">Last Name:</span> <span class="value">${adminProfile.lastName}</span>
+            <span class="label">Email:</span> <span class="value">${adminProfile.email}</span>
+            <span class="label">Register Date:</span> <span class="value">${adminProfile.registerDate}</span>
+        </div>
     </div>
 
-    <div class="stats">
-      <div class="stat-box">
-        <h3><%= session.getAttribute("moviesAdded") != null ? session.getAttribute("moviesAdded") : "0" %></h3>
-        <p>Movies Added</p>
-      </div>
-      <div class="stat-box">
-        <h3><%= session.getAttribute("reviewsModerated") != null ? session.getAttribute("reviewsModerated") : "0" %></h3>
-        <p>Reviews Moderated</p>
-      </div>
-      <div class="stat-box">
-        <h3><%= session.getAttribute("usersManaged") != null ? session.getAttribute("usersManaged") : "0" %></h3>
-        <p>Users Managed</p>
-      </div>
-    </div>
-  </main>
+    <c:if test="${empty sessionScope.profileImage}">
+        <form action="${pageContext.request.contextPath}/UploadProfileImageServlet" method="post" enctype="multipart/form-data">
+            <br>
+            <label for="profileImage"><strong>Upload New Profile Image:</strong></label><br><br>
+            <input type="file" name="profileImage" id="profileImage" accept="image/*" required /><br><br>
+            <button type="submit">Save Changes</button>
+        </form>
+    </c:if>
+</main>
 
-  <footer>
-    &copy; 2025 CineCritique. All Rights Reserved.
-  </footer>
+<div id="imgModal" onclick="closeModal()">
+    <img id="modalImage" src="" alt="Full Image" />
+</div>
+
+<script>
+    function openModal() {
+        const img = document.getElementById("profileImg");
+        const modal = document.getElementById("imgModal");
+        const modalImage = document.getElementById("modalImage");
+        modal.style.display = "block";
+        modalImage.src = img.src;
+    }
+
+    function closeModal() {
+        document.getElementById("imgModal").style.display = "none";
+    }
+</script>
 
 </body>
-
 </html>
-
