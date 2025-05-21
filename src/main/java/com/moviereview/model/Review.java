@@ -7,6 +7,7 @@ public class Review {
     private int reviewID;
     private int movieID;
     private int userID;
+    private String username;
     private String reviewDescription;
     private int rating;
     private Timestamp review_date;
@@ -15,17 +16,19 @@ public class Review {
  // Constructors
     public Review() {}
 
-    public Review(int movieID, int userID, String reviewDescription, int rating) {
+    public Review(int movieID, int userID, String username, String reviewDescription, int rating) {
         this.movieID = movieID;
         this.userID = userID;
+        this.username = username;
         this.reviewDescription = reviewDescription;
         this.rating = rating;
     }
 
-    public Review(int reviewID, int movieID, int userID, String reviewDescription, int rating, Timestamp review_date) {
+    public Review(int reviewID, int movieID, int userID, String username, String reviewDescription, int rating, Timestamp review_date) {
         this.reviewID = reviewID;
         this.movieID = movieID;
         this.userID = userID;
+        this.username = username;
         this.reviewDescription = reviewDescription;
         this.rating = rating;
         this.review_date = review_date;
@@ -55,6 +58,16 @@ public class Review {
     public void setUserID(int userID) {
         this.userID = userID;
     }
+    public String getUsername() {
+        return user != null ? user.getUsername() : username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+        if (this.user != null) {
+            this.user.setUsername(username);
+        }
+    }
 
     public String getReviewDescription() {
         return reviewDescription;
@@ -79,12 +92,12 @@ public class Review {
     public void setReviewDate(Timestamp date) {
         this.review_date= date;
     }
-    public String getUsername() {
-        return user != null ? user.getUsername() : null; // Return username from User object
-    }
-
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public User getUser() {
+        return this.user;
     }
 }
 

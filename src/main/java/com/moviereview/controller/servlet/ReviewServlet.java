@@ -2,15 +2,16 @@ package com.moviereview.controller.servlet;
 
 import java.io.IOException;
 import java.sql.Connection;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.*;
 
 import com.moviereview.controller.dao.ReviewDAO;
+import com.moviereview.controller.dao.UserDAO;
 import com.moviereview.controller.database.DatabaseConnection;
 import com.moviereview.model.Review;
+import com.moviereview.model.User;
 
 @WebServlet("/ReviewServlet")
 public class ReviewServlet extends HttpServlet {
@@ -20,24 +21,57 @@ public class ReviewServlet extends HttpServlet {
         super();
     }
 
+    @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
         System.out.println("[DEBUG] Received POST request for submitting review.");
 
+        HttpSession session = request.getSession(false);
+
+        if (session == null || session.getAttribute("userID") == null) {
+            System.out.println("[ERROR] User not logged in. Redirecting to login page.");
+            response.sendRedirect(request.getContextPath() + "/pages/login.jsp");
+            return;
+        }
+
+        // Retrieve session user data
+        int userID = (int) session.getAttribute("userID");
+        String username = (String) session.getAttribute("username");
+
+        if (username == null || username.isEmpty()) {
+            // If username not found in session, fetch from DB
+            try (Connection connection = DatabaseConnection.getConnection()) {
+                UserDAO userDAO = new UserDAO(connection);
+                User user = userDAO.getUserById(userID);
+                if (user != null) {
+                    username = user.getUsername();
+                    session.setAttribute("username", username);
+                } else {
+                    System.out.println("[ERROR] Failed to retrieve user from DB.");
+                    response.sendRedirect(request.getContextPath() + "/pages/login.jsp");
+                    return;
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+                response.sendRedirect(request.getContextPath() + "/pages/login.jsp");
+                return;
+            }
+        }
+
         // Get form data
         String movieIdParam = request.getParameter("movieID");
-        String userIdParam = request.getParameter("userID");
         String reviewDescription = request.getParameter("reviewDescription");
         String ratingParam = request.getParameter("rating");
 
         System.out.println("[DEBUG] movieID = " + movieIdParam);
-        System.out.println("[DEBUG] userID = " + userIdParam);
+        System.out.println("[DEBUG] userID = " + userID);
+        System.out.println("[DEBUG] username = " + username);
         System.out.println("[DEBUG] reviewDescription = " + reviewDescription);
         System.out.println("[DEBUG] rating = " + ratingParam);
 
-        if (movieIdParam == null || userIdParam == null || ratingParam == null || 
-            movieIdParam.isEmpty() || userIdParam.isEmpty() || ratingParam.isEmpty()) {
+        if (movieIdParam == null || ratingParam == null ||
+                movieIdParam.isEmpty() || ratingParam.isEmpty()) {
             System.out.println("[ERROR] Missing form data. Redirecting to Movies.jsp");
             response.sendRedirect(request.getContextPath() + "/pages/Movies.jsp");
             return;
@@ -45,17 +79,16 @@ public class ReviewServlet extends HttpServlet {
 
         try {
             int movieID = Integer.parseInt(movieIdParam);
-            int userID = Integer.parseInt(userIdParam);
             int rating = Integer.parseInt(ratingParam);
 
             // Create Review object
             Review review = new Review();
             review.setMovieID(movieID);
             review.setUserID(userID);
+            review.setUsername(username);
             review.setReviewDescription(reviewDescription);
             review.setRating(rating);
 
-            // Establish connection and insert review via DAO
             try (Connection connection = DatabaseConnection.getConnection()) {
                 ReviewDAO reviewDAO = new ReviewDAO(connection);
                 boolean isInserted = reviewDAO.addReview(review);

@@ -1,6 +1,7 @@
 package com.moviereview.controller.servlet;
 
 import java.io.IOException;
+import java.net.URLEncoder;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
@@ -38,32 +39,31 @@ public class RegisterController extends HttpServlet {
 
         // Validation
         if (firstName == null || !Pattern.matches(nameRegex, firstName)) {
-            request.setAttribute("error", "First name must contain only letters.");
-            request.getRequestDispatcher("/pages/Register.jsp").forward(request, response);
+        	String errorMessage = "First name must contain only letters.";
+        	response.sendRedirect(request.getContextPath() + "/pages/Register.jsp?error=" + URLEncoder.encode(errorMessage, "UTF-8"));
             return;
         }
 
         if (lastName == null || !Pattern.matches(nameRegex, lastName)) {
-            request.setAttribute("error", "Last name must contain only letters.");
-            request.getRequestDispatcher("/pages/Register.jsp").forward(request, response);
+        	String errorMessage = "Last name must contain only letters.";
+        	response.sendRedirect(request.getContextPath() + "/pages/Register.jsp?error=" + URLEncoder.encode(errorMessage, "UTF-8"));
             return;
         }
 
         if (username == null || !Pattern.matches(usernameRegex, username)) {
-            request.setAttribute("error", "Username must be at least 6 characters and contain only letters and numbers.");
-            request.getRequestDispatcher("/pages/Register.jsp").forward(request, response);
+        	String errorMessage = "Username must be at least 6 characters and contain only letters and numbers.";
+        	response.sendRedirect(request.getContextPath() + "/pages/Register.jsp?error=" + URLEncoder.encode(errorMessage, "UTF-8"));
             return;
         }
 
         if (password == null || !Pattern.matches(passwordRegex, password)) {
-            request.setAttribute("error", "Password must be at least 7 characters long, contain one uppercase letter, one number, and one special character.");
-            request.getRequestDispatcher("/pages/Register.jsp").forward(request, response);
+        	String errorMessage = "Password must be at least 7 characters long, contain one uppercase letter, one number, and one special character.";
+        	response.sendRedirect(request.getContextPath() + "/pages/Register.jsp?error=" + URLEncoder.encode(errorMessage, "UTF-8"));
             return;
         }
 
         if (!password.equals(confirmPassword)) {
-            request.setAttribute("error", "Passwords do not match.");
-            request.getRequestDispatcher("/pages/Register.jsp").forward(request, response);
+        	response.sendRedirect(request.getContextPath() + "/pages/Register.jsp?error=" + URLEncoder.encode("Passwords do not match", "UTF-8"));
             return;
         }
 
@@ -81,14 +81,14 @@ public class RegisterController extends HttpServlet {
 
             // Check if email or username exists
             if (userDAO.isEmailExist(email)) {
-                request.setAttribute("error", "Email is already registered.");
-                request.getRequestDispatcher("/pages/Register.jsp").forward(request, response);
+            	String errorMessage = "Email is already registered.";
+            	response.sendRedirect(request.getContextPath() + "/pages/Register.jsp?error=" + URLEncoder.encode(errorMessage, "UTF-8"));
                 return;
             }
 
             if (userDAO.isUsernameExist(username)) {
-                request.setAttribute("error", "Username is already taken.");
-                request.getRequestDispatcher("/pages/Register.jsp").forward(request, response);
+            	String errorMessage = "Username is already taken.";
+            	response.sendRedirect(request.getContextPath() + "/pages/Register.jsp?error=" + URLEncoder.encode(errorMessage, "UTF-8"));
                 return;
             }
 
@@ -100,15 +100,15 @@ public class RegisterController extends HttpServlet {
                 response.sendRedirect(request.getContextPath() + "/pages/Login.jsp");
             } else {
                 // Error message if registration failed
-                request.setAttribute("error", "Registration failed. Please try again later.");
-                request.getRequestDispatcher("/pages/Register.jsp").forward(request, response);
+            	String errorMessage = "Registration failed. Please try again later.";
+            	response.sendRedirect(request.getContextPath() + "/pages/Register.jsp?error=" + URLEncoder.encode(errorMessage, "UTF-8"));
             }
 
         } catch (Exception e) {
             // Handle unexpected exceptions
             e.printStackTrace();
-            request.setAttribute("error", "An unexpected error occurred. Please try again later.");
-            request.getRequestDispatcher("/pages/Register.jsp").forward(request, response);
+            String errorMessage = "An unexpected error occurred. Please try again later.";
+        	response.sendRedirect(request.getContextPath() + "/pages/Register.jsp?error=" + URLEncoder.encode(errorMessage, "UTF-8"));
         }
         
     }

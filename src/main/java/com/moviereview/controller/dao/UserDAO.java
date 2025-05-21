@@ -89,4 +89,38 @@ public class UserDAO {
             }
             return false;
         }
+        public User getUserById(int userId) throws SQLException {
+            String query = "SELECT * FROM user WHERE userID = ?";
+            try (PreparedStatement ps = conn.prepareStatement(query)) {
+                ps.setInt(1, userId);
+                try (ResultSet rs = ps.executeQuery()) {
+                    if (rs.next()) {
+                        User user = new User();
+                        user.setUserId(rs.getInt("userID"));
+                        user.setUsername(rs.getString("username"));
+                        user.setFirstName(rs.getString("firstName"));
+                        user.setLastName(rs.getString("lastName"));
+                        user.setEmail(rs.getString("email"));
+                        // Add other fields as needed
+                        return user;
+                    }
+                }
+            }
+            return null;
+        }
+        
+     // ✅ Method to get total users
+        public int getTotalUsers() {
+            String sql = "SELECT COUNT(*) FROM user";
+            try (PreparedStatement ps = conn.prepareStatement(sql)) {
+                ResultSet rs = ps.executeQuery();
+                if (rs.next()) {
+                    return rs.getInt(1);
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            return 0;
+        }
     }
+    

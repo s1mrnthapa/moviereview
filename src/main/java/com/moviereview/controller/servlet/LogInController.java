@@ -30,14 +30,16 @@ public class LogInController extends HttpServlet {
 
             if (loggedInUser != null) {
                 session.removeAttribute("error");
-                session.setMaxInactiveInterval(30 * 60); // Set session timeout to 30 mins
+                session.setMaxInactiveInterval(30 * 50); // Set session timeout to 30 mins
+                session.setAttribute("userID", loggedInUser.getUserId());
+                session.setAttribute("username", loggedInUser.getUsername());
 
                 if ("Admin".equalsIgnoreCase(loggedInUser.getRole())) {
                     session.setAttribute("Admin", loggedInUser);
-                    response.sendRedirect(request.getContextPath() + "/pages/adminprofile.jsp");
+                    response.sendRedirect(request.getContextPath() + "/DashboardServlet");
                 } else {
                     session.setAttribute("user", loggedInUser);
-                    response.sendRedirect(request.getContextPath() + "/pages/Home.jsp");
+                    response.sendRedirect(request.getContextPath() + "/MovieListServlet");
                 }
 
             } else {
