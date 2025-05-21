@@ -1,5 +1,3 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -204,7 +202,7 @@
 		<div class = "sub_header logo_header logo_wrapper" style="
 		position:relative;
 		">
-			<img src = "resources/index/icon/logo.png" class="logo">
+			<img src = "${pageContext.request.contextPath}/resources/index/icon/logo.png" class="logo">
 			<p class="logo_text">CINECRITIQUE</p>
 		</div>
 

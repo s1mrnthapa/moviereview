@@ -16,6 +16,7 @@ import java.util.List;
 
 @WebServlet("/MovieDetail")
 public class MovieDetailServlet extends HttpServlet {
+	private static final long serialVersionUID = 1L;
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 

@@ -1,11 +1,14 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 
 <html>
 <head>
 	<link rel="preconnect" href="https://fonts.googleapis.com">
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 	<link href="https://fonts.googleapis.com/css2?family=Aboreto&family=Amarante&family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..900;1,6..96,400..900&family=Bona+Nova+SC:ital,wght@0,400;0,700;1,400&family=Cinzel+Decorative:wght@400;700;900&family=Cinzel:wght@400..900&family=Cormorant+Unicase:wght@300;400;500;600;700&family=Eagle+Lake&family=El+Messiri:wght@400..700&family=Julius+Sans+One&family=Kalnia:wght@100..700&family=Metamorphous&family=Slackey&family=Texturina:ital,opsz,wght@0,12..72,100..900;1,12..72,100..900&family=Viaoda+Libre&display=swap" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css2?family=Aboreto&family=Amarante&family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..900;1,6..96,400..900&family=Bona+Nova+SC:ital,wght@0,400;0,700;1,400&family=Cinzel+Decorative:wght@400;700;900&family=Cinzel:wght@400..900&family=Cormorant+Unicase:wght@300;400;500;600;700&family=Eagle+Lake&family=El+Messiri:wght@400..700&family=Julius+Sans+One&family=Kalnia:wght@100..700&family=Metamorphous&family=Slackey&family=Texturina:ital,opsz,wght@0,12..72,100..900;1,12..72,100..900&family=Viaoda+Libre&display=swap" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500&display=swap" rel="stylesheet">
     <title>Movies List</title>
     <style>
       body {
@@ -116,6 +119,15 @@
 	         font-size: 14px;
 	         color: #888;
 	     }
+	     .star-filled{
+		     font-family: Bodoni Moda;
+		     color: yellow;
+		     font-size: 13px;
+	     }
+	     .rating-value{
+		     color: #888;
+		     font-family: Bodoni Moda;
+	     }
  </style>
 </head>
 <body>
@@ -188,11 +200,19 @@
 	        	</a>
 	        	<div class="movie-details">
 		            <div class="title">${movie.title}</div>
-		            <div class="release-year"><fmt:formatDate value="${movie.releaseDate}" pattern="yyyy" /></div>
+		            <div class="movie-meta">
+					    <span class="star-filled">&#9733;</span>
+    					<span class="rating-value">${movie.averageRating}</span>
+					    &nbsp;|&nbsp;
+					    <span class="release-year">
+					        <fmt:formatDate value="${movie.releaseDate}" pattern="yyyy" />
+					    </span>
+					</div>    
 	        </div>
 	    </div>
 	</c:forEach>
 	</div>
+	
 	<script>
 	  // Get references to the selects
 	  const yearSelect = document.getElementById('year');

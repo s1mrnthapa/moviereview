@@ -324,4 +324,61 @@ public class MovieDAO {
         }
         return false;
     }
+    public List<Movies> getTrendingMovies() {
+        List<Movies> trending = new ArrayList<>();
+
+        String sql = "SELECT m.movieID, m.title, m.image_path, ROUND(AVG(r.rating), 2) AS avg_rating " +
+                     "FROM movie m " +
+                     "JOIN review r ON m.movieID = r.movieID " +
+                     "WHERE r.review_date >= CURDATE() - INTERVAL 7 DAY " +
+                     "GROUP BY m.movieID, m.title, m.image_path " +
+                     "ORDER BY avg_rating DESC " +
+                     "LIMIT 10";
+
+        try (PreparedStatement ps = conn.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+
+            while (rs.next()) {
+                Movies movie = new Movies();
+                movie.setMovieID(rs.getInt("movieID"));
+                movie.setTitle(rs.getString("title"));
+                movie.setImagePath(rs.getString("image_path"));
+                movie.setAverageRating(rs.getDouble("avg_rating")); // ⚠️ Make sure this field exists in your Movies class
+
+                trending.add(movie);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return trending;
+    }
+    public List<Movies> getTopRatedMovies(int limit) {
+        List<Movies> topMovies = new ArrayList<>();
+        String sql = "SELECT m.movieID, m.title, AVG(r.rating) as avgRating " +
+                     "FROM movie m JOIN review r ON m.movieID = r.movieID " +
+                     "GROUP BY m.movieID, m.title " +
+                     "ORDER BY avgRating DESC LIMIT ?";
+
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setInt(1, limit);
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                Movies movie = new Movies();
+                movie.setMovieID(rs.getInt("movieID"));
+                movie.setTitle(rs.getString("title"));
+                movie.setAverageRating(rs.getDouble("avgRating"));
+                topMovies.add(movie);
+            }
+
+        } catch (SQLException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        return topMovies;
+    }
+
 }

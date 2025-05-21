@@ -195,7 +195,7 @@
   </style>
 </head>
 <body>
-  <%@ include file ="header.jsp" %>
+  
 
   <!-- Background Image -->
   <div class="blurry-bg">
@@ -240,7 +240,7 @@
           %>
         </div>
 
-        <form class="form-container" action="/LogInController" method="post">
+        <form class="form-container" action="${pageContext.request.contextPath}/LogInController" method="post">
           <div class="form-group">
             <label>UserName:</label>
             <input class="placeholder" type="text" name="username" required>

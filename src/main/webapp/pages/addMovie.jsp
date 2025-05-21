@@ -41,10 +41,16 @@
 	  main {
 	    position: relative;
   	 	z-index: 1;
-	    padding-top: 120px;
+	    padding-top: 100px;
 	    width: 70%;
 	    margin-left: 200px;
 	  }
+	   main h1{
+    	font-family: Cinzel Decorative;
+    	margin-bottom: 25px;
+    	font-size: 30px;
+    	}
+	  
 	
 	  .movie-form {
 	  display: flex;
@@ -65,6 +71,7 @@
 	  margin-bottom: 20px;
 	  color: var(--primary);
 	  font-weight: 500;
+	  font-family: Cinzel Decorative;
 	}
 	
 	input, textarea {
@@ -133,6 +140,7 @@
 	<%@ include file ="AdminHeader.jsp" %>
 	</header>
   <main>
+  	<h1> CineCritique | Add Movies </h1>
     <form class="movie-form" action="${pageContext.request.contextPath}/AddMovieServlet" method="post" enctype="multipart/form-data">
   <div class="form-grid">
     <div class="form-group">

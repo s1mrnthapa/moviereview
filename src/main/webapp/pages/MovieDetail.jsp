@@ -377,7 +377,7 @@
 	    </c:forEach>
 	</div>
 
-    <div id="details" class="tab-pane">
+    <div id="details" class="tab-pane  movie-details">
         <div class="info-item"><b>Release Date:</b> <fmt:formatDate value="${movie.releaseDate}" pattern="yyyy-MM-dd" /></div>
         <div class="info-item"><b>Country:</b> ${movie.country}</div>
         <div class="info-item"><b>Director:</b> ${movie.director}</div>

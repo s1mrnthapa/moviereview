@@ -9,6 +9,8 @@ public class User {
     private String password;
     private String role;
     private java.sql.Timestamp registerDate;
+    private String profilePicturePath;
+
 
     // Empty constructor
     public User() {}
@@ -24,6 +26,7 @@ public class User {
         this.password = password;
         this.registerDate = registerDate;
         this.role = role;
+        this.profilePicturePath = profilePicturePath;
     }
 
     // Getters and Setters
@@ -90,4 +93,11 @@ public class User {
     public void setRole(String role) {
         this.role = role;
     }
+    public String getProfilePicturePath() {
+		return profilePicturePath;
+	}
+
+	public void setProfilePicturePath(String profilePicturePath) {
+		this.profilePicturePath = profilePicturePath;
+	}
 }

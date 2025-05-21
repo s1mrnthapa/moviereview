@@ -12,6 +12,9 @@ public class Review {
     private int rating;
     private Timestamp review_date;
     private User user;
+    private String movieTitle;
+    private String releaseYear;
+    private String movieImage;
     
  // Constructors
     public Review() {}
@@ -99,5 +102,28 @@ public class Review {
     public User getUser() {
         return this.user;
     }
+    public String getMovieTitle() {
+        return movieTitle;
+    }
+
+    public void setMovieTitle(String movieTitle) {
+        this.movieTitle = movieTitle;
+    }
+
+    public String getReleaseYear() {
+        return releaseYear;
+    }
+
+    public void setReleaseYear(String releaseYear) {
+        this.releaseYear = releaseYear;
+    }
+    public String getMovieImage() {
+        return movieImage;
+    }
+    
+    public void setMovieImage(String movieImage) {
+        this.movieImage = movieImage;
+    }
+    
 }
 

@@ -100,6 +100,21 @@ public class MovieListServlet extends HttpServlet {
                     }
                     movie.setGenre(genres);
                 }
+                String ratingSql = "SELECT AVG(rating) AS avg_rating FROM review WHERE movieID = ?";
+                try (PreparedStatement ratingStmt = connection.prepareStatement(ratingSql)) {
+                    ratingStmt.setInt(1, movieID);
+                    ResultSet ratingRs = ratingStmt.executeQuery();
+
+                    if (ratingRs.next()) {
+                        double avgRating = ratingRs.getDouble("avg_rating");
+                        if (ratingRs.wasNull()) {
+                            avgRating = 0.0;
+                        }
+                        movie.setAverageRating(avgRating);
+                    } else {
+                        movie.setAverageRating(0.0);
+                    }
+                }
 
                 moviesList.add(movie);
             }
