@@ -219,7 +219,7 @@
       
       .drop-box-nav1:hover, .drop-box-nav2:hover{
         background: white;
-        color: black;
+        color: color: rgb(34, 255, 244);;
       }
       
       
@@ -238,7 +238,6 @@
 		position:relative;
 		">
 			<img src="${pageContext.request.contextPath}/pages/resources/index/icon/logo.png" class="logo">
-			<img src = "resources/index/icon/logo.png" class="logo">
 			<p class="logo_text">CINECRITIQUE</p>
 		</div>
 		
@@ -271,7 +270,7 @@
 				</svg>
 				<% if (!isLoginOrRegister) { %>
                 <div class="drop-box">
-                    <a href="<%= request.getContextPath() %>/Something" class="drop-box-nav1"><p>Profile</p></a>
+                    <a href="<%= request.getContextPath() %>/ProfileServlet" class="drop-box-nav1"><p>Profile</p></a>
                     <a href="<%= request.getContextPath() %>/LogOutController" class="drop-box-nav2"><p>Logout</p></a> 
                 </div>
                 <% } %>

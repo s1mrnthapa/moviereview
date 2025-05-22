@@ -8,6 +8,7 @@ public class User {
     private String email;
     private String password;
     private String role;
+    private String profilePicturePath;
     private java.sql.Timestamp registerDate;
 
     // Empty constructor
@@ -90,4 +91,12 @@ public class User {
     public void setRole(String role) {
         this.role = role;
     }
+    
+	public String getProfilePicturePath() {
+		return profilePicturePath;
+	}
+
+	public void setProfilePicturePath(String profilePicturePath) {
+		this.profilePicturePath = profilePicturePath;
+	}
 }

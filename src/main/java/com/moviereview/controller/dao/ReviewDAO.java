@@ -147,4 +147,114 @@ public class ReviewDAO {
 
         return trending;
     }
+    
+    
+    
+    public List<Review> getAllReviewsByUser(int userId, String sortOption) {
+        List<Review> reviews = new ArrayList<>();
+        
+        String baseSql = "SELECT r.*, m.title as movieTitle, m.image_path as movieImage FROM review r " +
+                "JOIN movie m ON r.movieID = m.movieID " +
+                "WHERE r.userID = ? ";
+        
+        // Add sorting based on the option (keep existing sort logic)
+        String orderBy;
+        switch (sortOption) {
+            case "newest":
+                orderBy = "ORDER BY r.review_date DESC";
+                break;
+            case "oldest":
+                orderBy = "ORDER BY r.review_date ASC";
+                break;
+            case "highest":
+                orderBy = "ORDER BY r.rating DESC";
+                break;
+            case "lowest":
+                orderBy = "ORDER BY r.rating ASC";
+                break;
+            default:
+                orderBy = "ORDER BY r.review_date DESC";
+        }
+        
+        String sql = baseSql + orderBy;
+        
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, userId);
+            ResultSet rs = ps.executeQuery();
+            
+            while (rs.next()) {
+                Review review = new Review();
+                review.setReviewID(rs.getInt("reviewID"));
+                review.setMovieID(rs.getInt("movieID"));
+                review.setRating(rs.getInt("rating"));
+                review.setReviewDate(rs.getTimestamp("review_date"));
+                review.setReviewDescription(rs.getString("reviewDescription"));
+                review.setMovieTitle(rs.getString("movieTitle"));
+                review.setMovieImage(rs.getString("movieImage"));
+                reviews.add(review);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return reviews;
+    }
+    
+    
+    // In ReviewDAO.java
+    public List<Review> getRecentReviewsByUser(int userId, int limit) {
+        System.out.println("DEBUG: Fetching reviews for userID=" + userId); // Add this
+        List<Review> reviews = new ArrayList<>();
+        String sql = "SELECT r.*, m.title as movieTitle, m.image_path as movieImage " +
+                    "FROM review r JOIN movie m ON r.movieID = m.movieID " +
+                    "WHERE r.userID = ? ORDER BY r.review_date DESC LIMIT ?";
+        
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, userId);
+            ps.setInt(2, limit);
+            
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                System.out.println("DEBUG: Found review - Rating=" + rs.getInt("rating") + 
+                                 ", Title=" + rs.getString("movieTitle")); // Add this
+                
+                Review review = new Review();
+                review.setReviewID(rs.getInt("reviewID"));
+                review.setRating(rs.getInt("rating")); // Make sure this line exists
+                review.setMovieTitle(rs.getString("movieTitle"));
+                review.setReviewDescription(rs.getString("reviewDescription"));
+                review.setMovieImage(rs.getString("movieImage"));
+                review.setReviewDate(rs.getTimestamp("review_date"));
+                
+                reviews.add(review);
+            }
+        } catch (SQLException e) {
+            System.out.println("ERROR in getRecentReviewsByUser: " + e.getMessage()); // Add this
+            e.printStackTrace();
+        }
+        return reviews;
+    }
+    
+    
+    public boolean deleteReview(int reviewId) throws SQLException {
+        String sql = "DELETE FROM review WHERE reviewID = ?";
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, reviewId);
+            int rowsAffected = ps.executeUpdate();
+            return rowsAffected > 0;
+        }
+    }
+    
+    
+    public boolean updateReview(Review review) throws SQLException {
+        String sql = "UPDATE review SET reviewDescription = ?, rating = ? WHERE reviewID = ?";
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, review.getReviewDescription());
+            ps.setInt(2, review.getRating());
+            ps.setInt(3, review.getReviewID());
+            int rowsAffected = ps.executeUpdate();
+            return rowsAffected > 0;
+        }
+    }
+    
+    
 }
