@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -146,5 +147,10 @@ public class UserDAO {
 	public boolean updateUser(User user) {
 		// TODO Auto-generated method stub
 		return false;
+	}
+
+	public List<User> getAllUsers() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

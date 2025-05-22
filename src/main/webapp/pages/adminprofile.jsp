@@ -180,6 +180,7 @@
     <a href="${pageContext.request.contextPath}/AdminProfileServlet">Admin Profile</a>
     <a href="${pageContext.request.contextPath}/pages/Movies.jsp">Movies</a>
     <a href="${pageContext.request.contextPath}/pages/moviedatabase.jsp">Movies Database</a>
+    <a href="${pageContext.request.contextPath}/pages/ManagerUsers.jsp">Manage Users</a>
     <a href="${pageContext.request.contextPath}/logout">Logout</a>
 </nav>
 
