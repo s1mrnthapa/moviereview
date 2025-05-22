@@ -16,7 +16,7 @@
      }
 	     .title h1{
 	     	padding-top: 100px;
-	     	color: white;
+	     	color: cyan;
 	     	text-align: center;
 	     	font-family: Cinzel Decorative;
 	     	font-size: 30px;

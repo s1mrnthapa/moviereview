@@ -325,6 +325,11 @@
 		    color: rgb(34, 255, 244);
 		    cursor: pointer;
 		}
+		.reviews h2{
+			font-size: 25px;
+		    font-family: 'Cinzel Decorative', serif;
+		    color: rgb(34, 255, 244);
+		}
 		
 		@keyframes fadeIn {
 		    from {

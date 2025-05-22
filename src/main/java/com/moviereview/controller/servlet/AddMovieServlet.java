@@ -100,7 +100,7 @@ public class AddMovieServlet extends HttpServlet {
             String[] castArray = castInput.split("\\s*,\\s*");
             for (String castName : castArray) {
                 if (!castName.matches("[a-zA-Z\\s]+")) {
-                    errors.add("Each cast name should only contain letters and spaces.");
+                    errors.add("Each cast name should be comma seperated & only contain letters and spaces.");
                     break;
                 }
                 cast.add(castName);
