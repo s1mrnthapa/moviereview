@@ -1,289 +1,240 @@
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Admin Profile – CineCritique</title>
-  <style>
-    :root {
-      --black: #0f0f0f;
-      --dark-red: #8b0000;
-      --red-hover: #a30000;
-      --gray-bg: #1a1a1a;
-      --white: #ffffff;
-    }
+    <meta charset="UTF-8" />
+    <title>Admin Profile – CineCritique</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700&family=Amarante&display=swap" rel="stylesheet">
 
-    body {
-      font-family: Arial, sans-serif;
-      background-color: var(--black);
-      color: var(--white);
-    }
+    <style>
+        :root {
+            --black: #0f0f0f;
+            --dark-red: #8b0000;
+            --gray-bg: #1a1a1a;
+            --white: #ffffff;
+        }
 
-    header {
-      background-color: var(--dark-red);
-      padding: 20px;
-      text-align: center;
-    }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-    header h1 {
-      font-size: 26px;
-      letter-spacing: 1px;
-      color: var(--white);
-    }
+        body {
+            background-color: var(--black);
+            font-family: 'Amarante', serif;
+            color: var(--white);
+        }
 
-    nav {
-      background-color: var(--black);
-      padding: 12px 40px;
-    }
+        nav {
+            background-color: var(--black);
+            padding: 12px 20px;
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
 
-    nav a {
-      margin: 6px 12px;
-      text-decoration: none;
-      color: var(--white);
-      font-weight: bold;
-      transition: color 0.3s;
-    }
+        nav a {
+            text-decoration: none;
+            color: var(--white);
+            font-weight: bold;
+            padding: 6px 12px;
+            transition: 0.3s ease;
+        }
 
-    nav a:hover {
-      color: var(--dark-red);
-    }
+        nav a:hover {
+            color: #00ff88;
+        }
 
-    main {
-      max-width: 1000px;
-      margin: 40px auto;
-      background: var(--gray-bg);
-      padding: 30px;
-      border-radius: 12px;
-      box-shadow: 0 4px 10px rgba(255, 0, 0, 0.1);
-    }
+        main {
+            max-width: 850px;
+            margin: 40px auto;
+            background: var(--gray-bg);
+            padding: 40px 50px;
+            border-radius: 12px;
+        }
 
-    .profile-header {
-      display: flex;
-      gap: 30px;
-      align-items: center;
-      flex-wrap: wrap;
-    }
+        .profile-header {
+            display: flex;
+            gap: 40px;
+            align-items: flex-start;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-bottom: 30px;
+        }
 
-    .profile-img-placeholder {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      position: relative;
-    }
+        .profile-img-placeholder {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
 
-    .circle-wrapper {
-      width: 130px;
-      height: 130px;
-      border-radius: 50%;
-      border: 3px dashed var(--dark-red);
-      background-color: var(--black);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      position: relative;
-      overflow: hidden;
-    }
+        .circle-wrapper {
+            width: 140px;
+            height: 140px;
+            border-radius: 50%;
+            border: 3px solid var(--dark-red);
+            background-color: var(--black);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            cursor: pointer;
+        }
 
-    .circle-wrapper span {
-      position: absolute;
-      color: var(--white);
-      text-align: center;
-      font-size: 14px;
-      padding: 10px;
-      z-index: 1;
-    }
+        .circle-wrapper img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 50%;
+        }
 
-    .circle-wrapper img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      display: none;
-      z-index: 2;
-    }
+        .profile-info {
+            flex-grow: 1;
+            width: 100%;
+            max-width: 500px;
+            display: grid;
+            grid-template-columns: 160px 1fr;
+            row-gap: 20px;
+            column-gap: 20px;
+            background-color: #222;
+            padding: 25px;
+            border-radius: 10px;
+        }
 
-    .profile-img-placeholder input[type="file"] {
-      margin-top: 12px;
-      color: var(--white);
-      font-size: 13px;
-    }
+        .label {
+            font-weight: bold;
+            color: var(--white);
+            align-self: center;
+        }
 
-    .profile-info p {
-      margin: 10px 0;
-      font-size: 15px;
-    }
+        .value {
+            background-color: #2a2a2a;
+            padding: 10px 14px;
+            border-radius: 6px;
+            color: #f0f0f0;
+        }
 
-    .profile-info span {
-      font-weight: bold;
-    }
+        form {
+            margin-top: 25px;
+            text-align: center;
+        }
 
-    .profile-info input,
-    .profile-info select {
-      margin-top: 6px;
-      padding: 8px;
-      width: 100%;
-      border: 1px solid #444;
-      border-radius: 6px;
-      background-color: #1c1c1c;
-      color: var(--white);
-    }
+        button, input[type="file"] {
+            padding: 10px 20px;
+            background-color: var(--dark-red);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
 
-    .profile-info input:focus,
-    .profile-info select:focus {
-      border-color: var(--dark-red);
-      outline: none;
-    }
+        input[type="file"]:disabled, button:disabled {
+            background-color: #444;
+            cursor: default;
+        }
 
-    .stats {
-      display: flex;
-      justify-content: space-between;
-      margin: 40px 0;
-      flex-wrap: wrap;
-      gap: 20px;
-    }
+        @media (max-width: 768px) {
+            .profile-header {
+                flex-direction: column;
+                text-align: center;
+            }
 
-    .stat-box {
-      flex: 1;
-      min-width: 200px;
-      background: var(--black);
-      padding: 25px;
-      text-align: center;
-      border-radius: 10px;
-      border: 1px solid #333;
-    }
+            .profile-info {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+        }
 
-    .stat-box h3 {
-      font-size: 32px;
-      color: var(--dark-red);
-    }
+        #imgModal {
+            display: none;
+            position: fixed;
+            z-index: 999;
+            left: 0; top: 0;
+            width: 100%; height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+        }
 
-    .stat-box p {
-      font-size: 14px;
-      color: #ccc;
-    }
-
-    .actions {
-      text-align: center;
-      margin-top: 20px;
-    }
-
-    .actions button,
-    .actions a {
-      background: var(--dark-red);
-      color: var(--white);
-      padding: 10px 20px;
-      margin: 5px;
-      border-radius: 6px;
-      text-decoration: none;
-      border: none;
-      cursor: pointer;
-      font-weight: bold;
-    }
-
-    .actions button:hover,
-    .actions a:hover {
-      background-color: var(--red-hover);
-    }
-
-    footer {
-      background-color: var(--dark-red);
-      color: var(--white);
-      text-align: center;
-      padding: 15px;
-      margin-top: 60px;
-    }
-
-    @media (max-width: 768px) {
-      .profile-header {
-        flex-direction: column;
-        text-align: center;
-      }
-
-      .stats {
-        flex-direction: column;
-      }
-    }
-  </style>
+        #imgModal img {
+            display: block;
+            margin: 50px auto;
+            max-width: 90%;
+            max-height: 90%;
+            border: 5px solid var(--dark-red);
+            border-radius: 10px;
+            cursor: pointer;
+        }
+    </style>
 </head>
 <body>
 
-  <header>
-    <h1>CINECRITIQUE  ADMIN PROFILE</h1>
-  </header>
-
-  <nav>
+<nav>
     <a href="${pageContext.request.contextPath}/pages/dashboard.jsp">Dashboard</a>
     <a href="${pageContext.request.contextPath}/pages/addMovie.jsp">Add Movies</a>
-    <a href="${pageContext.request.contextPath}/pages/adminprofile.jsp">Admin Profile</a>
+    <a href="${pageContext.request.contextPath}/AdminProfileServlet">Admin Profile</a>
     <a href="${pageContext.request.contextPath}/pages/Movies.jsp">Movies</a>
-    <a href="#">Logout</a>
-  </nav>
-    <main>
-    <form action="#" method="POST" enctype="multipart/form-data">
-      <div class="profile-header">
+    <a href="${pageContext.request.contextPath}/pages/moviedatabase.jsp">Movies Database</a>
+    <a href="${pageContext.request.contextPath}/logout">Logout</a>
+</nav>
+
+<main>
+    <div class="profile-header">
         <div class="profile-img-placeholder">
-          <div class="circle-wrapper">
-            <span id="upload-label">Upload Photo</span>
-            <img id="preview" alt="Preview" />
-          </div>
-          <input type="file" id="profile-photo" name="profile-photo" accept="image/*" onchange="loadPreview(event)" />
+            <div class="circle-wrapper" onclick="openModal()">
+                <c:choose>
+                    <c:when test="${not empty sessionScope.profileImage}">
+                        <img src="${sessionScope.profileImage}" alt="Admin Profile" id="profileImg" />
+                    </c:when>
+                    <c:otherwise>
+                        <img src="${pageContext.request.contextPath}/images/default-admin.png" alt="Default Profile" id="profileImg" />
+                    </c:otherwise>
+                </c:choose>
+            </div>
         </div>
 
         <div class="profile-info">
-          <p><span>Name:</span> <input type="text" name="name" value="<%= session.getAttribute("name") %>" /></p>
-          <p><span>Email:</span> <input type="email" name="email" value="<%= session.getAttribute("email") %>" /></p>
-          <p><span>Username:</span> <input type="text" name="username" value="<%= session.getAttribute("username") %>" /></p>
-          <p><span>Role:</span> 
-            <select name="role">
-              <option value="admin" <%= "admin".equals(session.getAttribute("role")) ? "selected" : "" %>>Admin</option>
-              <option value="user" <%= "user".equals(session.getAttribute("role")) ? "selected" : "" %>>User</option>
-            </select>
-          </p>
-          <p><span>Joined:</span> <input type="date" name="joined" value="<%= session.getAttribute("joined") %>" /></p>
-          <p><span>Last Login:</span> <input type="date" name="last-login" value="<%= session.getAttribute("lastLogin") %>" /></p>
+            <span class="label">User ID:</span> <span class="value">${adminProfile.userId}</span>
+            <span class="label">Username:</span> <span class="value">${adminProfile.username}</span>
+            <span class="label">First Name:</span> <span class="value">${adminProfile.firstName}</span>
+            <span class="label">Last Name:</span> <span class="value">${adminProfile.lastName}</span>
+            <span class="label">Email:</span> <span class="value">${adminProfile.email}</span>
+            <span class="label">Register Date:</span> <span class="value">${adminProfile.registerDate}</span>
         </div>
-      </div>
+    </div>
 
-      <div class="stats">
-        <div class="stat-box">
-          <h3>[#]</h3>
-          <p>Movies Added</p>
-        </div>
-        <div class="stat-box">
-          <h3>[#]</h3>
-          <p>Reviews Moderated</p>
-        </div>
-        <div class="stat-box">
-          <h3>[#]</h3>
-          <p>Users Managed</p>
-        </div>
-      </div>
+    <c:if test="${empty sessionScope.profileImage}">
+        <form action="${pageContext.request.contextPath}/UploadProfileImageServlet" method="post" enctype="multipart/form-data">
+            <br>
+            <label for="profileImage"><strong>Upload New Profile Image:</strong></label><br><br>
+            <input type="file" name="profileImage" id="profileImage" accept="image/*" required /><br><br>
+            <button type="submit">Save Changes</button>
+        </form>
+    </c:if>
+</main>
 
-      <div class="actions">
-        <button type="submit">Save Changes</button>
-      </div>
-    </form>
-  </main>
+<div id="imgModal" onclick="closeModal()">
+    <img id="modalImage" src="" alt="Full Image" />
+</div>
 
-  <footer>
-    &copy; 2025 CineCritique. All Rights Reserved.
-  </footer>
-
-  <script>
-    function loadPreview(event) {
-      const img = document.getElementById('preview');
-      const label = document.getElementById('upload-label');
-      img.src = URL.createObjectURL(event.target.files[0]);
-      img.style.display = "block";
-      label.style.display = "none";
+<script>
+    function openModal() {
+        const img = document.getElementById("profileImg");
+        const modal = document.getElementById("imgModal");
+        const modalImage = document.getElementById("modalImage");
+        modal.style.display = "block";
+        modalImage.src = img.src;
     }
-  </script>
+
+    function closeModal() {
+        document.getElementById("imgModal").style.display = "none";
+    }
+</script>
 
 </body>
 </html>
-
