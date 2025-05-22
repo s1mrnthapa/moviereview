@@ -30,23 +30,23 @@ public class LogInController extends HttpServlet {
 
             if (loggedInUser != null) {
                 session.removeAttribute("error");
-                session.setMaxInactiveInterval(30 * 50); // Set session timeout to 30 mins
-                session.setAttribute("userID", loggedInUser.getUserId());
-                session.setAttribute("username", loggedInUser.getUsername());
+                session.setMaxInactiveInterval(30 * 60); // 30 mins timeout
+                
+                // Always set "user"
+                session.setAttribute("user", loggedInUser);
 
                 if ("Admin".equalsIgnoreCase(loggedInUser.getRole())) {
-                    session.setAttribute("Admin", loggedInUser);
+                    session.setAttribute("Admin", loggedInUser);  // Optional for admin-specific use
                     response.sendRedirect(request.getContextPath() + "/DashboardServlet");
                 } else {
-                    session.setAttribute("user", loggedInUser);
                     response.sendRedirect(request.getContextPath() + "/HomeServlet");
                 }
 
             } else {
-            	System.out.println("Username: " + username);
-            	System.out.println("Hashed Password: " + hashedPassword);
-            	System.out.println("User Retrieved: " + (loggedInUser != null ? loggedInUser.getUsername() : "null"));
-            	System.out.println("Role: " + (loggedInUser != null ? loggedInUser.getRole() : "N/A"));
+                System.out.println("Username: " + username);
+                System.out.println("Hashed Password: " + hashedPassword);
+                System.out.println("User Retrieved: " + (loggedInUser != null ? loggedInUser.getUsername() : "null"));
+                System.out.println("Role: " + (loggedInUser != null ? loggedInUser.getRole() : "N/A"));
                 session.setAttribute("error", "Invalid username or password");
                 response.sendRedirect(request.getContextPath() + "/pages/Login.jsp");
             }
@@ -67,6 +67,7 @@ public class LogInController extends HttpServlet {
         }
         return hexString.toString();
     }
+
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {

@@ -36,7 +36,6 @@ public class UpdateProfileServlet extends HttpServlet {
         String lastName = request.getParameter("lastName");
         String email = request.getParameter("email");
 
-        // Debug output
         System.out.println("Attempting to update userID: " + user.getUserId());
         System.out.println("New username: " + newUsername);
         System.out.println("New name: " + firstName + " " + lastName);
@@ -44,10 +43,8 @@ public class UpdateProfileServlet extends HttpServlet {
 
         // Validate username availability if changed
         if (!newUsername.equals(user.getUsername())) {
-            try {
-                Connection conn = DatabaseConnection.getConnection();
+            try (Connection conn = DatabaseConnection.getConnection()) {
                 UserDAO userDAO = new UserDAO(conn);
-                
                 if (userDAO.isUsernameExist(newUsername)) {
                     request.setAttribute("error", "Username already taken");
                     request.getRequestDispatcher("/pages/EditProfile.jsp").forward(request, response);
@@ -58,25 +55,25 @@ public class UpdateProfileServlet extends HttpServlet {
                 request.setAttribute("error", "Database error checking username availability");
                 request.getRequestDispatcher("/pages/EditProfile.jsp").forward(request, response);
                 return;
-            }
+            } catch (Exception e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
         }
 
         // Update user information
         try (Connection conn = DatabaseConnection.getConnection()) {
             UserDAO userDAO = new UserDAO(conn);
 
-            // Update user object
             user.setUsername(newUsername);
             user.setFirstName(firstName);
             user.setLastName(lastName);
             user.setEmail(email);
 
-            // Execute update
             boolean success = userDAO.updateUser(user);
-            
+
             if (success) {
                 System.out.println("Successfully updated userID: " + user.getUserId());
-                // Update session and redirect
                 session.setAttribute("user", user);
                 response.sendRedirect(request.getContextPath() + "/ProfileServlet");
             } else {
@@ -87,6 +84,9 @@ public class UpdateProfileServlet extends HttpServlet {
             e.printStackTrace();
             request.setAttribute("error", "Database error: " + e.getMessage());
             request.getRequestDispatcher("/pages/EditProfile.jsp").forward(request, response);
-        }
+        } catch (Exception e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
     }
 }
