@@ -1,10 +1,10 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8" />
+    <meta charset="UTF-8">
+	<%@ page pageEncoding="UTF-8" contentType="text/html; charset=UTF-8" %>
     <title>Admin Profile – CineCritique</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 
@@ -54,7 +54,6 @@
 
         main {
             max-width: 850px;
-            margin: 40px auto;
             background: var(--gray-bg);
             padding: 40px 50px;
             border-radius: 12px;
@@ -174,14 +173,7 @@
 </head>
 <body>
 
-<nav>
-    <a href="${pageContext.request.contextPath}/pages/dashboard.jsp">Dashboard</a>
-    <a href="${pageContext.request.contextPath}/pages/addMovie.jsp">Add Movies</a>
-    <a href="${pageContext.request.contextPath}/AdminProfileServlet">Admin Profile</a>
-    <a href="${pageContext.request.contextPath}/pages/Movies.jsp">Movies</a>
-    <a href="${pageContext.request.contextPath}/pages/moviedatabase.jsp">Movies Database</a>
-    <a href="${pageContext.request.contextPath}/logout">Logout</a>
-</nav>
+<%@ include file = "AdminHeader.jsp" %>
 
 <main>
     <div class="profile-header">
