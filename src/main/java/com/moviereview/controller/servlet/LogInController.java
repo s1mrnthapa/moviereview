@@ -36,10 +36,10 @@ public class LogInController extends HttpServlet {
 
                 if ("Admin".equalsIgnoreCase(loggedInUser.getRole())) {
                     session.setAttribute("Admin", loggedInUser);
-                    response.sendRedirect(request.getContextPath() + "/pages/Dashboard.jsp");
+                    response.sendRedirect(request.getContextPath() + "/DashboardServlet");
                 } else {
                     session.setAttribute("user", loggedInUser);
-                    response.sendRedirect(request.getContextPath() + "/pages/Home.jsp");
+                    response.sendRedirect(request.getContextPath() + "/HomeServlet");
                 }
 
             } else {

@@ -14,7 +14,7 @@ public class Movies {
     private String director;
     private String description;
     private List<Review> reviews;
-    
+	private double averageRating; /* added averageRating */
     // Lists to hold associated genre and casts
     private List<String> genre;
     private List<String> cast;
@@ -180,6 +180,14 @@ public class Movies {
         } else {
             return new ArrayList<>();
         }
+    }
+    
+    
+    public double getAverageRating() {
+        return averageRating;
+    }
+    public void setAverageRating(double averageRating) {
+        this.averageRating = averageRating;
     }
 
     @Override

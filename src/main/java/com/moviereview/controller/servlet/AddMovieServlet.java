@@ -118,11 +118,11 @@ public class AddMovieServlet extends HttpServlet {
         try {
             List<Movies> movieList = movieDAO.getAllMovies();
             request.setAttribute("movieList", movieList);
-            request.getRequestDispatcher("/pages/Movies.jsp").forward(request, response);
+            request.getRequestDispatcher("/pages/addMovie.jsp").forward(request, response);
         } catch (SQLException e) {
             e.printStackTrace();
             request.setAttribute("errorMessage", "Error occurred while fetching movies.");
-            request.getRequestDispatcher("/pages/Movies.jsp").forward(request, response);
+            request.getRequestDispatcher("/pages/addMovie.jsp").forward(request, response);
         }
     }
 

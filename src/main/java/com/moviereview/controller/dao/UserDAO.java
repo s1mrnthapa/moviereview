@@ -108,4 +108,19 @@ public class UserDAO {
             }
             return null;
         }
+        
+        
+        // ✅ Method to get total users
+        public int getTotalUsers() {
+            String sql = "SELECT COUNT(*) FROM user";
+            try (PreparedStatement ps = conn.prepareStatement(sql)) {
+                ResultSet rs = ps.executeQuery();
+                if (rs.next()) {
+                    return rs.getInt(1);
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            return 0;
+        }
     }

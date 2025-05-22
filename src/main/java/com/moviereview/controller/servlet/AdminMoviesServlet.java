@@ -10,6 +10,7 @@ import java.util.List;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -19,17 +20,15 @@ import com.moviereview.controller.dao.MovieDAO;
 import com.moviereview.controller.database.DatabaseConnection;
 import com.moviereview.model.Movies;
 
-
-/**
- * Servlet implementation class AdminMoviesServlet
- */
 @WebServlet("/AdminMoviesServlet")
+@MultipartConfig
 public class AdminMoviesServlet extends HttpServlet {
 
+    @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-    	
-    	String action = request.getParameter("action");
+
+        String action = request.getParameter("action");
 
         if ("edit".equals(action)) {
             int movieID = Integer.parseInt(request.getParameter("movieID"));
@@ -40,15 +39,15 @@ public class AdminMoviesServlet extends HttpServlet {
                     ResultSet rs = ps.executeQuery();
                     if (rs.next()) {
                         Movies movie = new Movies(
-                            rs.getInt("movieID"),
-                            rs.getString("title"),
-                            rs.getDate("release_date"),
-                            rs.getString("duration"),
-                            rs.getString("country"),
-                            rs.getString("director"),
-                            rs.getString("description"),
-                            rs.getString("cast"),
-                            rs.getString("image_path")
+                                rs.getInt("movieID"),
+                                rs.getString("title"),
+                                rs.getDate("release_date"),
+                                rs.getString("duration"),
+                                rs.getString("country"),
+                                rs.getString("director"),
+                                rs.getString("description"),
+                                rs.getString("cast"),
+                                rs.getString("image_path")
                         );
                         request.setAttribute("movie", movie);
                         RequestDispatcher dispatcher = request.getRequestDispatcher("/pages/EditMovie.jsp");
@@ -63,17 +62,19 @@ public class AdminMoviesServlet extends HttpServlet {
                 return;
             }
         }
-    	
-    	List<Movies> moviesList = new ArrayList<>();
+
+        List<Movies> moviesList = new ArrayList<>();
 
         try (Connection connection = DatabaseConnection.getConnection()) {
-
             String sql = "SELECT * FROM movie";
             try (PreparedStatement ps = connection.prepareStatement(sql);
                  ResultSet rs = ps.executeQuery()) {
-            	while (rs.next()) {
-            		Movies movie = new Movies(
-                            rs.getInt("movieID"),
+
+                while (rs.next()) {
+                    int movieID = rs.getInt("movieID");
+
+                    Movies movie = new Movies(
+                            movieID,
                             rs.getString("title"),
                             rs.getDate("release_date"),
                             rs.getString("duration"),
@@ -82,22 +83,63 @@ public class AdminMoviesServlet extends HttpServlet {
                             rs.getString("description"),
                             rs.getString("cast"),
                             rs.getString("image_path")
-                        );
-                        moviesList.add(movie);
-                    }
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+                    );
 
-            request.setAttribute("movies", moviesList);
-            request.getRequestDispatcher("/pages/AllMovies.jsp").forward(request, response);
+                    // Fetch genres
+                    List<String> genres = getGenresByMovieId(connection, movieID);
+                    movie.setGenre(genres);
+
+                    // Fetch average rating
+                    String ratingSql = "SELECT AVG(rating) AS avg_rating FROM review WHERE movieID = ?";
+                    try (PreparedStatement ratingStmt = connection.prepareStatement(ratingSql)) {
+                        ratingStmt.setInt(1, movieID);
+                        ResultSet ratingRs = ratingStmt.executeQuery();
+
+                        if (ratingRs.next()) {
+                            double avgRating = ratingRs.getDouble("avg_rating");
+                            if (ratingRs.wasNull()) {
+                                avgRating = 0.0;
+                            }
+                            // Round to 2 decimal places
+                            avgRating = Math.round(avgRating * 100.0) / 100.0;
+                            movie.setAverageRating(avgRating);
+                        } else {
+                            movie.setAverageRating(0.0);
+                        }
+                    }
+
+                    moviesList.add(movie);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-                   
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-	 */
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
+        request.setAttribute("movies", moviesList);
+        request.getRequestDispatcher("/pages/AllMovies.jsp").forward(request, response);
+    }
+
+    private List<String> getGenresByMovieId(Connection conn, int movieId) {
+        List<String> genres = new ArrayList<>();
+        String sql = "SELECT g.genre_name FROM movie_genre_table mg JOIN genre g ON mg.genreID = g.genreID WHERE mg.movieID = ?";
+
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, movieId);
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    genres.add(rs.getString("genre_name"));
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return genres;
+    }
+
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
         try {
             int movieID = Integer.parseInt(request.getParameter("movieID"));
             String title = request.getParameter("title");
@@ -109,13 +151,10 @@ public class AdminMoviesServlet extends HttpServlet {
             String imagePath = request.getParameter("imagePath");
             String releaseDateStr = request.getParameter("releaseDate");
 
-            // Parse the release date
-            java.sql.Date releaseDate = java.sql.Date.valueOf(releaseDateStr); // Ensure input is yyyy-MM-dd
+            Date releaseDate = Date.valueOf(releaseDateStr);
 
-            // Construct the movie object
             Movies movie = new Movies(movieID, title, releaseDate, duration, country, director, description, cast, imagePath);
 
-            // Update the movie using DAO
             MovieDAO movieDAO = new MovieDAO();
             if (movieDAO.updateMovie(movie)) {
                 response.sendRedirect("AdminMoviesServlet");
@@ -130,5 +169,4 @@ public class AdminMoviesServlet extends HttpServlet {
             request.getRequestDispatcher("/pages/EditMovie.jsp").forward(request, response);
         }
     }
-
 }

@@ -12,7 +12,7 @@
 <meta charset="UTF-8">
 
 <link rel="stylesheet" href="https://use.typekit.net/your-kit-id.css">
-<!-- <link rel="stylesheet" href="resources/index/header.css"> -->
+
 <title>CINECRITIQUE</title>
 
 <style>
@@ -43,8 +43,7 @@
           background-color: black;
           
       }
-  
-  
+
   
       header{
           display: grid;
@@ -58,7 +57,7 @@
           font-size: small;
           font-weight:100;
           width: 100%;
-          padding-bottom: 150px;
+          padding-bottom: 60px;
           z-index: 1000;
           position: fixed;
           background: linear-gradient(black, transparent);
@@ -196,23 +195,51 @@
           color: rgb(36, 212, 236);
           opacity: 0.5;
       }
+
+	  .drop-box a{
+	      tesxt-decoration: none;
+	      color:inherit;
+	   }      
+      .drop-box p{
+        color: white;
+      }
+
+      .user_icon_wrapper{
+        position: relative;
+      }
+      .drop-box{
+        position: absolute;
+        opacity: 0;
+      }
+      .user_icon_wrapper:hover .drop-box{
+        opacity: 1;
+        transition: linear 0.3s;
+        cursor: pointer;
+      }
+      
+      .drop-box-nav1:hover, .drop-box-nav2:hover{
+        background: white;
+        color: black;
+      }
+      
+      
 </style>
 </head>
 <body>
 	<header>
-	
+
+		<div class="left_header sub_header">
+			<a href="<%= request.getContextPath() %>/DashboardServlet" class ="page"> DASHBOARD</a>			
+            <a href="<%= request.getContextPath() %>/AddMovieServlet" class = "page">ADD MOVIE</a>
+            <a href="<%= request.getContextPath() %>/AdminMoviesServlet" class = "page">MOVIE DATABASE</a>
+        </div>
+
 		<div class = "sub_header logo_header logo_wrapper" style="
 		position:relative;
 		">
-			<img src = "resources/index/icon/logo.png" class="logo">
+			<img src="${pageContext.request.contextPath}/pages/resources/index/icon/logo.png" class="logo">
 			<p class="logo_text">CINECRITIQUE</p>
 		</div>
-
-		<div class="left_header sub_header">
-            <a href="Dashboard.jsp" class = "page">Dashboard</a>
-            <a href="${pageContext.request.contextPath}/pages/AllMovies.jsp" class = "page">Movies</a>
-            <a href="${pageContext.request.contextPath}/pages/addMovie.jsp" class = "page">Add Movies</a>
-        </div>
 		
 
         <div class="sub_header right_header">
@@ -229,7 +256,10 @@
 
 			</div>
 
-
+			<%
+			    String uri = request.getRequestURI();
+			    boolean isLoginOrRegister = uri.contains("Login.jsp") || uri.contains("Register.jsp");
+			%>
             <div class="user_icon_wrapper">
 				<svg class="icon user_icon" width="25" height="25" viewBox="0 0 24 24" fill="none"
 				  xmlns="http://www.w3.org/2000/svg">
@@ -238,6 +268,12 @@
 				  <path d="M20.59 22C20.59 18.13 16.74 15 12 15C7.26 15 3.41 18.13 3.41 22"
 					stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
 				</svg>
+				<% if (!isLoginOrRegister) { %>
+                <div class="drop-box">
+                    <a href="<%= request.getContextPath() %>/Something" class="drop-box-nav1"><p>Profile</p></a>
+                    <a href="<%= request.getContextPath() %>/LogOutController" class="drop-box-nav2"><p>Logout</p></a> 
+                </div>
+                <% } %>
 			  </div>
         </div>
     	</header>
