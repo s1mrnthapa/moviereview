@@ -172,13 +172,16 @@
       font-family: 'Aboreto', cursive;
     }
     .error-message {
-      color: darkred;
-      border: 1px solid #ff4d4d;
+      background-color: rgba(0, 255, 255, 0.15); /* soft cyan glow */
+		border: 1px solid #00ffff; /* bright cyan border */
+		color: white;
+		font-family: 'Cinzel Decorative', serif;
+		border-radius: 10px;
+		box-shadow: 0 0 8px rgba(0, 255, 255, 0.5);
+		text-align: center;    
       padding: 10px 10px;
-      width: 100%;
-      font-weight: bold;
-      text-align: center;
-      background-color: transparent;
+      width: 110%;
+
     }
 
     @media (max-width: 768px) {

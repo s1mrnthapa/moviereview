@@ -45,10 +45,7 @@ public class MovieListServlet extends HttpServlet {
             if (keyword != null) {
                 sql.append("AND LOWER(m.title) LIKE ? ");
                 params.add("%" + keyword + "%");
-            } else {
-            	request.setAttribute("error", "No movies found matching your filters.");
             }
-
             if (year != null && !filterYearByUpcoming) {
                 try {
                     int yearInt = Integer.parseInt(year);
@@ -124,6 +121,13 @@ public class MovieListServlet extends HttpServlet {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        boolean filtersApplied = (keyword != null && !keyword.isEmpty());	
+
+        	if (filtersApplied && moviesList.isEmpty()) {
+        	    request.setAttribute("error", "No movies found matching your search.");
+        	} else if (!filtersApplied && moviesList.isEmpty()) {
+        	    request.setAttribute("error", "No movies found.");
+        	}
 
         request.setAttribute("movies", moviesList);
         RequestDispatcher dispatcher = request.getRequestDispatcher("/pages/Movies.jsp");

@@ -135,16 +135,20 @@
 	    font-size: 16px;
 	  }
 	  .alert {
-        padding: 15px;
+        padding: 8px;
         margin-bottom: 20px;
         border-radius: 5px;
         font-family: sans-serif;
     }
 
     .alert-success {
-        background-color: #d4edda;
-        color: #155724;
-        border: 1px solid #c3e6cb;
+        background-color: rgba(0, 255, 255, 0.15); /* soft cyan glow */
+		border: 1px solid #00ffff; /* bright cyan border */
+		color: white;
+		font-family: 'Cinzel Decorative', serif;
+		border-radius: 10px;
+		box-shadow: 0 0 8px rgba(0, 255, 255, 0.5);
+		text-align: center;   
     }
 
     .alert-danger {

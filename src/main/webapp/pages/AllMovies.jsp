@@ -50,15 +50,20 @@
     }
 
     .success-message {
-      color: #39e639;
+      color: darkred;
       font-weight: bold;
       margin-bottom: 10px;
     }
 
     .error-message {
-      color: #ff4d4d;
-      font-weight: bold;
       margin-bottom: 10px;
+      font-family: 'Cinzel Decorative', serif;
+	  border-radius: 10px;
+	  box-shadow: 0 0 8px rgba(0, 255, 255, 0.5);
+	  text-align: center;	 
+	  background-color: rgba(0, 255, 255, 0.15); /* soft cyan glow */
+	  border: 1px solid #00ffff; /* bright cyan border */
+	  color: white;
     }
 
     table {

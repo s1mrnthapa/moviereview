@@ -82,7 +82,7 @@
 		}
 		
 		.search-button:hover {
-		    background-color: #00b848;
+		    background-color: grey;
 		}
 		     
 	     .movie-container {
@@ -135,24 +135,20 @@
 		     font-family: Bodoni Moda;
 	     }
 	     .error-message {
-		    background-color: #ff4c4c;
+		    background-color: rgba(0, 255, 255, 0.15); /* soft cyan glow */
+		    border: 1px solid #00ffff; /* bright cyan border */
 		    color: white;
-		    padding: 10px 20px;
-		    border-radius: 8px;
-		    margin: 20px auto;
-		    width: fit-content;
-		    font-family: 'Poppins', sans-serif;
-		    font-weight: bold;
-		    box-shadow: 0 0 10px rgba(255, 0, 0, 0.4);
+		    padding: 12px 24px;
+		    font-size: 10px;
+		    font-family: 'Cinzel Decorative', serif;
+		    border-radius: 10px;
+		    box-shadow: 0 0 8px rgba(0, 255, 255, 0.5);
+		    text-align: center;	 
     	}
  </style>
 </head>
 <body>
 <%@ include file ="header.jsp" %>
-<c:if test="${empty movies}">
-    <p>No movies available.</p>
-    <c:redirect url='${request.contextPath}/MovieListServlet'/>
-</c:if>
 <div class="title">
 	<h1>"Cinema is timeless, So are these films"</h1>
 </div>
@@ -196,12 +192,16 @@
 
       <!-- Search Box -->
       <div class="search-box">
-        <input type="search" class="search-input" name="keyword" placeholder="Search for a film...">
-        <button class="search-button">Search</button>
-        <c:if test="${empty error}">
-		    <div class="error-message">${error}</div>
-		</c:if>
-      </div>
+		    <input type="search" class="search-input" name="keyword" placeholder="Search for a film...">
+		    <button class="search-button">Search</button>
+		    <div>
+			    <c:if test="${not empty error}">
+			        <div class="error-message" style="margin-top: 10px; width: 100%;">
+			            ${error}
+			        </div>
+			    </c:if>
+		    </div>
+		</div>     
     </div>
   </form>
 </div>
