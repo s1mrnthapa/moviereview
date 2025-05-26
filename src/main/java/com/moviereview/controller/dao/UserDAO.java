@@ -107,7 +107,8 @@ public class UserDAO {
                         user.setFirstName(rs.getString("firstName"));
                         user.setLastName(rs.getString("lastName"));
                         user.setEmail(rs.getString("email"));
-                        // Add other fields as needed
+                        user.setRegisterDate(rs.getTimestamp("registerDate"));
+                        user.setProfilePicturePath(rs.getString("profilePicturePath")); 
                         return user;
                     }
                 }

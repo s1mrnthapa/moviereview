@@ -203,7 +203,7 @@
 
 		<div class="left_header sub_header">
             <a href="Home.jsp" class = "page">HOME</a>
-            <a href="Movies.jsp" class = "page">MOVIE</a>
+            <a href="${pageContext.request.contextPath}/MovieListServlet" class = "page">MOVIE</a>
             <a href="Upcoming.jsp" class = "page">UPCOMING</a>
         </div>
 
@@ -229,8 +229,8 @@
 
 			</div>
 
-
-            <div class="user_icon_wrapper">
+			<a href="${pageContext.request.contextPath}/ProfileServlet">
+            <div class="user_icon_wrapper">       
 				<svg class="icon user_icon" width="25" height="25" viewBox="0 0 24 24" fill="none"
 				  xmlns="http://www.w3.org/2000/svg">
 				  <path d="M12 12C14.76 12 17 9.76 17 7C17 4.24 14.76 2 12 2C9.24 2 7 4.24 7 7C7 9.76 9.24 12 12 12Z"
@@ -239,6 +239,7 @@
 					stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
 				</svg>
 			  </div>
+			  </a>
         </div>
     	</header>
 

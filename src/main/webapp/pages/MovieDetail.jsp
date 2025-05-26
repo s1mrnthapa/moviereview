@@ -400,7 +400,7 @@
 		        <form action="${pageContext.request.contextPath}/ReviewServlet" method="post">
 		            <input type="hidden" name="movieID" value="${movie.movieID}" />
 		            <input type="hidden" name="userID" value="${sessionScope.user.userId}" />
-		            
+		             
 		            <!-- Flex container for left and right content -->
 		            <div class="modal-body">
 		                <!-- Left: Poster -->
@@ -439,8 +439,8 @@
     <c:forEach var="review" items="${movie.reviews}">
         <div class="user-review">
             <div class="review-header">
-                <div class="profile-pic">      
-                </div>
+                <div class="profile-pic">				
+				</div>
                 <div class="user-info">
                     <div class="user-name">${review.username}</div>
                     <div class="star-display">

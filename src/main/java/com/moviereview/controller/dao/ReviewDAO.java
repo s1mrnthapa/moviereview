@@ -6,6 +6,7 @@ import java.util.List;
 
 import com.moviereview.model.Movies;
 import com.moviereview.model.Review;
+import com.moviereview.model.User;
 
 public class ReviewDAO {
     private Connection conn;
