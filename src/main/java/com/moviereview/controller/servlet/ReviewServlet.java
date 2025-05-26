@@ -31,7 +31,7 @@ public class ReviewServlet extends HttpServlet {
 
         if (session == null || session.getAttribute("userID") == null) {
             System.out.println("[ERROR] User not logged in. Redirecting to login page.");
-            response.sendRedirect(request.getContextPath() + "/pages/login.jsp");
+            response.sendRedirect(request.getContextPath() + "/pages/Login.jsp");
             return;
         }
 

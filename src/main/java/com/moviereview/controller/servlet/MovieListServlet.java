@@ -45,6 +45,8 @@ public class MovieListServlet extends HttpServlet {
             if (keyword != null) {
                 sql.append("AND LOWER(m.title) LIKE ? ");
                 params.add("%" + keyword + "%");
+            } else {
+            	request.setAttribute("error", "No movies found matching your filters.");
             }
 
             if (year != null && !filterYearByUpcoming) {
@@ -121,10 +123,6 @@ public class MovieListServlet extends HttpServlet {
 
         } catch (Exception e) {
             e.printStackTrace();
-        }
-
-        if (moviesList.isEmpty()) {
-            request.setAttribute("error", "No movies found matching your filters.");
         }
 
         request.setAttribute("movies", moviesList);

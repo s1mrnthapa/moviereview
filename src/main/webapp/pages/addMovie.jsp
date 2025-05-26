@@ -1,6 +1,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
-<%@ page contentType="text/html; charset=UTF-8" language="java" %>
+<%@ page language="java" contentType="text/html;charset=UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -216,7 +216,7 @@
         <label><input type="checkbox" name="genre" value="3" /> Drama</label>
         <label><input type="checkbox" name="genre" value="4" /> Thriller</label>
         <label><input type="checkbox" name="genre" value="5" /> Adventure</label>
-        <label><input type="checkbox" name="genre" value="6" /> Romantic</label>
+        <label><input type="checkbox" name="genre" value="6" /> Romance</label>
         <label><input type="checkbox" name="genre" value="7" /> Sci-Fi</label>
         <label><input type="checkbox" name="genre" value="8" /> Music</label>
         <label><input type="checkbox" name="genre" value="9" /> Crime</label>

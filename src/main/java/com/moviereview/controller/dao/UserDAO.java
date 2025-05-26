@@ -270,5 +270,18 @@ public class UserDAO {
             user.setRole(rs.getString("role"));
             return user;
         }
+     // Get total number of users
+        public int getTotalUsers() {
+            String sql = "SELECT COUNT(*) FROM user";
+            try (PreparedStatement ps = conn.prepareStatement(sql)) {
+                ResultSet rs = ps.executeQuery();
+                if (rs.next()) {
+                    return rs.getInt(1);
+                }
+            } catch (SQLException e) {
+                LOGGER.log(Level.SEVERE, "Error getting total users", e);
+            }
+            return 0;
+        }
 
     }

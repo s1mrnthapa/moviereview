@@ -7,8 +7,7 @@
 	<link rel="preconnect" href="https://fonts.googleapis.com">
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 	<link href="https://fonts.googleapis.com/css2?family=Aboreto&family=Amarante&family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..900;1,6..96,400..900&family=Bona+Nova+SC:ital,wght@0,400;0,700;1,400&family=Cinzel+Decorative:wght@400;700;900&family=Cinzel:wght@400..900&family=Cormorant+Unicase:wght@300;400;500;600;700&family=Eagle+Lake&family=El+Messiri:wght@400..700&family=Julius+Sans+One&family=Kalnia:wght@100..700&family=Metamorphous&family=Slackey&family=Texturina:ital,opsz,wght@0,12..72,100..900;1,12..72,100..900&family=Viaoda+Libre&display=swap" rel="stylesheet">
-	<link href="https://fonts.googleapis.com/css2?family=Aboreto&family=Amarante&family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..900;1,6..96,400..900&family=Bona+Nova+SC:ital,wght@0,400;0,700;1,400&family=Cinzel+Decorative:wght@400;700;900&family=Cinzel:wght@400..900&family=Cormorant+Unicase:wght@300;400;500;600;700&family=Eagle+Lake&family=El+Messiri:wght@400..700&family=Julius+Sans+One&family=Kalnia:wght@100..700&family=Metamorphous&family=Slackey&family=Texturina:ital,opsz,wght@0,12..72,100..900;1,12..72,100..900&family=Viaoda+Libre&display=swap" rel="stylesheet">
-	<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500&display=swap" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css2?family=Playball&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Roboto+Serif:ital,opsz,wght@0,8..144,100..900;1,8..144,100..900&display=swap" rel="stylesheet">
     <title>Movies List</title>
     <style>
       body {
@@ -16,10 +15,11 @@
      }
 	     .title h1{
 	     	padding-top: 100px;
-	     	color: cyan;
+	     	color: white;
 	     	text-align: center;
-	     	font-family: Cinzel Decorative;
-	     	font-size: 30px;
+	     	font-family: "Cinzel Decorative";
+	     	font-weight: 500;
+	     	font-style: italic;
 	     }
 	     .search-section {
 		    display: flex;
@@ -44,7 +44,9 @@
 		    padding: 5px 1px;
 		    border-radius: 6px;
 		    font-size: 14px;
-		    font-family: 'Bodoni Moda', serif;
+		    font-family:  Cinzel Decorative, Bodoni Moda, Amarante,  Viaoda Libre, arial;
+	        font-style: italic;
+		    
 		}
 		
 		.search-input {
@@ -59,7 +61,7 @@
 	        font-style: italic;
 		}
 		.search-box {        
-  			  margin-left: 51em;
+  			  margin-left: 48em;
 			}
 		
 		.search-button {
@@ -73,6 +75,10 @@
 		    cursor: pointer;
 		    transition: background-color 0.3s ease;
 		    font-family: 'Cinzel Decorative', serif;
+		}
+		.browse-title h4{
+			font-family: 'Cinzel Decorative';
+			font-size: 14px;
 		}
 		
 		.search-button:hover {
@@ -128,6 +134,17 @@
 		     color: #888;
 		     font-family: Bodoni Moda;
 	     }
+	     .error-message {
+		    background-color: #ff4c4c;
+		    color: white;
+		    padding: 10px 20px;
+		    border-radius: 8px;
+		    margin: 20px auto;
+		    width: fit-content;
+		    font-family: 'Poppins', sans-serif;
+		    font-weight: bold;
+		    box-shadow: 0 0 10px rgba(255, 0, 0, 0.4);
+    	}
  </style>
 </head>
 <body>
@@ -143,7 +160,7 @@
   <form action="${pageContext.request.contextPath}/MovieListServlet" method="get">
     
     <div class="filter-search-wrapper">
-	    <div>
+	    <div class= "browse-title">
 	    	<h4 style="color: white;">Browse By</h4>
 	    </div>
       <!-- Year Filter -->
@@ -157,13 +174,7 @@
         <option value="1990" ${param.year == '1990' ? 'selected' : ''}>1990s</option>
         <option value="1980" ${param.year == '1980' ? 'selected' : ''}>1980s</option>
         <option value="1970" ${param.year == '1970' ? 'selected' : ''}>1970s</option>
-        <option value="1960" ${param.year == '1960' ? 'selected' : ''}>1960s</option>
-        <option value="1950" ${param.year == '1950' ? 'selected' : ''}>1950s</option>
-        <option value="1940" ${param.year == '1940' ? 'selected' : ''}>1940s</option>
-        <option value="1930" ${param.year == '1930' ? 'selected' : ''}>1930s</option>
-        <option value="1920" ${param.year == '1920' ? 'selected' : ''}>1920s</option>
-        <option value="1910" ${param.year == '1910' ? 'selected' : ''}>1910s</option>
-        <option value="1900" ${param.year == '1900' ? 'selected' : ''}>1900s</option>      
+        <option value="1960" ${param.year == '1960' ? 'selected' : ''}>1960s</option>    
       </select>
 
       <!-- Genre Filter -->
@@ -187,6 +198,9 @@
       <div class="search-box">
         <input type="search" class="search-input" name="keyword" placeholder="Search for a film...">
         <button class="search-button">Search</button>
+        <c:if test="${empty error}">
+		    <div class="error-message">${error}</div>
+		</c:if>
       </div>
     </div>
   </form>

@@ -425,4 +425,41 @@ public class MovieDAO {
 
         return moviesList;
     }
+ // Method to get the total number of movies
+    public int getTotalMovies() {
+        String sql = "SELECT COUNT(*) FROM movie";
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                return rs.getInt(1);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 0; // Return 0 if there's an error or no movies found
+    }
+    public List<Movies> getUpcomingMovies() {
+        List<Movies> upcomingMovies = new ArrayList<>();
+        String sql = "SELECT * FROM movie WHERE release_date > CURDATE() ORDER BY release_date ASC LIMIT 10";
+
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+
+            while (rs.next()) {
+                Movies movie = new Movies();
+                movie.setMovieID(rs.getInt("movieID"));
+                movie.setTitle(rs.getString("title"));
+                movie.setReleaseDate(rs.getDate("release_date"));
+                movie.setImagePath(rs.getString("image_path"));
+                upcomingMovies.add(movie);
+            }
+
+        } catch (SQLException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        return upcomingMovies;
+    }
+    
 }

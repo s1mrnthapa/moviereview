@@ -31,26 +31,14 @@
             color: var(--white);
         }
 
-        nav {
-            background-color: var(--black);
-            padding: 12px 20px;
-            display: flex;
-            justify-content: center;
-            flex-wrap: wrap;
-            gap: 10px;
-        }
-
-        nav a {
-            text-decoration: none;
-            color: var(--white);
-            font-weight: bold;
-            padding: 6px 12px;
-            transition: 0.3s ease;
-        }
-
-        nav a:hover {
-            color: #00ff88;
-        }
+            header {
+		  position: fixed;
+		  top: 0;
+		  left: 0;
+		  width: 100%;
+		  height: 40px; /* Set height */
+		  z-index: 1000;
+		}
 
         main {
             max-width: 850px;
@@ -58,9 +46,11 @@
             background: var(--gray-bg);
             padding: 40px 50px;
             border-radius: 12px;
+            padding-top: 100px;
         }
 
         .profile-header {
+        	
             display: flex;
             gap: 40px;
             align-items: flex-start;

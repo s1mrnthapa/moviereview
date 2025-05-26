@@ -2,7 +2,9 @@ package com.moviereview.controller.dao;
 
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.moviereview.model.Movies;
 import com.moviereview.model.Review;
@@ -237,6 +239,38 @@ public class ReviewDAO {
             e.printStackTrace();
         }
         return movieIds;
+    }
+ // ✅ Get total reviews in the database
+    public int getTotalReviews() {
+        String sql = "SELECT COUNT(*) FROM review";
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                return rs.getInt(1);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+    public Map<String, Integer> getTopReviewerWithCount() {
+        String sql = "SELECT u.username, COUNT(r.reviewID) AS review_count " +
+                     "FROM user u " +
+                     "JOIN review r ON u.userID = r.userID " +
+                     "GROUP BY u.username " +
+                     "ORDER BY review_count DESC " +
+                     "LIMIT 1";
+
+        Map<String, Integer> result = new HashMap<>();
+        try (PreparedStatement stmt = conn.prepareStatement(sql);
+             ResultSet rs = stmt.executeQuery()) {
+            if (rs.next()) {
+                result.put(rs.getString("username"), rs.getInt("review_count"));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return result;
     }
 
 
