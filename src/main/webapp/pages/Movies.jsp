@@ -202,8 +202,8 @@
 		            <div class="title">${movie.title}</div>
 		            <div class="movie-meta">
 					    <span class="star-filled">&#9733;</span>
-    					<span class="rating-value">${movie.averageRating}</span>
-					    <!-- &nbsp;|&nbsp; -->
+    					<span class="rating-value">${movie.averageRating} </span>
+					    <span> | </span>
 					    <span class="release-year">
 					        <fmt:formatDate value="${movie.releaseDate}" pattern="yyyy" />
 					    </span>
