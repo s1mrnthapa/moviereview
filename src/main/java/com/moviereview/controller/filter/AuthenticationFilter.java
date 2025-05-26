@@ -35,7 +35,7 @@ public class AuthenticationFilter implements Filter {
 		// Check if logged in
 		HttpSession session = req.getSession(false);
 		boolean loggedIn = session != null && (session.getAttribute("user") != null || session.getAttribute("Admin") != null);
-		boolean isAdminPage = uri.contains("adminprofile");
+		boolean isAdminPage = uri.endsWith("AdminProfileServlet") || uri.endsWith("AdminMoviesServlet") || uri.endsWith("AddMovieServlet") || uri.endsWith("AllUsersServlet") || uri.endsWith("DashboardServlet");
 
 		if (!loggedIn && (uri.endsWith("Register.jsp") || uri.endsWith("RegisterController") || uri.endsWith("Login.jsp") || uri.endsWith("LogInController") || uri.endsWith("background.mp4") || uri.endsWith("logo.png")|| uri.endsWith("photo2.jpg"))) {
 			chain.doFilter(request, response);
@@ -44,7 +44,7 @@ public class AuthenticationFilter implements Filter {
 		// Skipping filter for login page and login controller
 		if (loggedIn) {
 			// 🚫 If a normal user tries to access an admin-only page
-            if (isAdminPage && session.getAttribute("Admin") == null) {
+            if (isAdminPage && session.getAttribute("Admin") != null) {
                 res.sendRedirect(req.getContextPath() + "/pages/Unauthorized.jsp");
                 return;
             }

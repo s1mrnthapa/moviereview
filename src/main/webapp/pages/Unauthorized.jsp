@@ -7,6 +7,6 @@
 <title>Insert title here</title>
 </head>
 <body>
-<img src="images/download.jpg" alt="Image">
+<h4> You can't access this page. </h4>
 </body>
 </html>

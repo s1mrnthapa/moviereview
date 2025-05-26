@@ -7,10 +7,14 @@ import java.sql.SQLException;
 import java.sql.Types;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import com.moviereview.controller.database.DatabaseConnection;
 import com.moviereview.model.User;
 public class UserDAO {
+		private static final Logger LOGGER = Logger.getLogger(UserDAO.class.getName());
+
         private Connection conn;
         private PreparedStatement ps;
 
@@ -237,6 +241,34 @@ public class UserDAO {
                 e.printStackTrace();
             }
             return users;
+        }
+     // Get admin user by username — reuse extractUserFromResultSet
+        public User getAdminUser(String username) {
+            String sql = "SELECT * FROM user WHERE username = ? AND role = 'admin'";
+            try (PreparedStatement ps = conn.prepareStatement(sql)) {
+                ps.setString(1, username);
+                try (ResultSet rs = ps.executeQuery()) {
+                    if (rs.next()) {
+                        return extractUserFromResultSet(rs);
+                    }
+                }
+            } catch (SQLException e) {
+                LOGGER.log(Level.SEVERE, "Error fetching admin user", e);
+            }
+            return null;
+        }
+     // Extract User from ResultSet
+        private User extractUserFromResultSet(ResultSet rs) throws SQLException {
+            User user = new User();
+            user.setUserId(rs.getInt("userID"));
+            user.setUsername(rs.getString("username"));
+            user.setFirstName(rs.getString("firstName"));
+            user.setLastName(rs.getString("lastName"));
+            user.setEmail(rs.getString("email"));
+            user.setPassword(rs.getString("password"));
+            user.setRegisterDate(rs.getTimestamp("registerDate"));
+            user.setRole(rs.getString("role"));
+            return user;
         }
 
     }

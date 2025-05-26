@@ -208,9 +208,9 @@
 
 		<div class="left_header sub_header">
             <a href="Dashboard.jsp" class = "page">Dashboard</a>
-            <a href="${pageContext.request.contextPath}/pages/AllMovies.jsp" class = "page">Movies</a>
-            <a href="${pageContext.request.contextPath}/pages/addMovie.jsp" class = "page">Add Movies</a>
-            <a href="${pageContext.request.contextPath}/pages/AllUsers.jsp" class = "page">Users</a>
+            <a href="${pageContext.request.contextPath}/AdminMoviesServlet" class = "page">Movies</a>
+            <a href="${pageContext.request.contextPath}/AddMovieServlet" class = "page">Add Movies</a>
+            <a href="${pageContext.request.contextPath}/AllUsersServlet" class = "page">Users</a>
         </div>
 		
 
@@ -228,7 +228,7 @@
 
 			</div>
 
-
+			<a href="${pageContext.request.contextPath}/AdminProfileServlet">
             <div class="user_icon_wrapper">
 				<svg class="icon user_icon" width="25" height="25" viewBox="0 0 24 24" fill="none"
 				  xmlns="http://www.w3.org/2000/svg">
@@ -238,6 +238,7 @@
 					stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
 				</svg>
 			  </div>
+			  </a>
         </div>
     	</header>
 
