@@ -41,7 +41,7 @@ public class LogInController extends HttpServlet {
                     response.sendRedirect(request.getContextPath() + "/AdminProfileServlet");
                 } else {
                     session.setAttribute("user", loggedInUser);
-                    response.sendRedirect(request.getContextPath() + "/pages/Home.jsp");
+                    response.sendRedirect(request.getContextPath() + "/HomeServlet");
                 }
 
             } else {

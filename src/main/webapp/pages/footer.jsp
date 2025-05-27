@@ -23,7 +23,10 @@ body{
     padding: 0;
     box-sizing: border-box;
   }
-  
+  a {
+  	text-decoration: none;
+  	color: white;
+  }
   ::-webkit-scrollbar {
       width: 5px;
   }
@@ -105,7 +108,9 @@ body{
 .footer-icon, .footer-icon img{
 		height: 33px;
 	}
-	
+.footer-text{
+	color: black;
+	}
 
 </style>
 </head>
@@ -128,7 +133,7 @@ body{
 	border-radius: 100%;
 	padding: 15px;
 ">
-	<img src="resources/index/icon/logo.png" style="height: 100%; ">
+	<a href="<%= request.getContextPath() %>/HomeServlet"><img src="${pageContext.request.contextPath}/pages/resources/index/icon/logo.png" style="height: 100%; "></a>
 </div>
 		<div class="upper-footer" style="
 		padding-top: 150px;
@@ -174,10 +179,11 @@ body{
 			row-gap: 38px;
 			padding-right:72px">
 				<p style="font-size: 26px; font-weight: 800;">Pages<p>
-				<p class="pages">HOME</p>
-				<p class="pages">MOVIE</p>
-				<p class="pages">UPCOMING</p>
-				<p class="pages">USER PROFILE</p>
+				<a href="<%= request.getContextPath() %>/HomeServlet"><p class="pages">HOME</p></a>
+				<a href="<%= request.getContextPath() %>/MovieListServlet"><p class="pages">MOVIE</p></a>
+				<a href="<%= request.getContextPath() %>/UpcomingServlet"><p class="pages">UPCOMING</p></a>
+				<a href="<%= request.getContextPath() %>/ProfileServlet"><p class="pages">USER PROFILE</p></a>
+
 			</div>
 		</div>
 		<div class="lower-footer" style="
@@ -193,19 +199,19 @@ body{
 				padding-left: 72px;
 				padding-right: 72px;
 			">
-				<div class="footer-icon"><img src="resources/index/icon/instagram.png"></div>
-				<div class="footer-icon"><img src="resources/index/icon/facebook.png"></div>
-				<div class="footer-icon"><img src="resources/index/icon/linkedin (1).png"></div>
-				<div class="footer-icon"><img src="resources/index/icon/twitter.png"></div>
+				<div class="footer-icon"> <a href = "https://instagram.com"><img src="${pageContext.request.contextPath}/pages/resources/index/icon/instagram.png"></a></div>
+				<div class="footer-icon"><a href = "https://facebook.com"><img src="${pageContext.request.contextPath}/pages/resources/index/icon/facebook.png"></a></div>
+				<div class="footer-icon"><a href = "https://linkedin.com"><img src="${pageContext.request.contextPath}/pages/resources/index/icon/linkedin (1).png"></a></div>
+				<div class="footer-icon"><a href = "https://x.com"><img src="${pageContext.request.contextPath}/pages/resources/index/icon/twitter.png"></a></div>
 			</div>
-			<p style="text-align: center; font-size: 200px; ">CINECRITIQUE</p>
+			<p style="text-align: center; font-size: 200px; " class="footer-text">CINECRITIQUE</p>
 			<div class="footer-info" style="
 				padding-left: 72px;
 				padding-right: 72px;
 			">
-				<p class="left-footer">PRIVACY</p>
-				<p class="center-footer">2025 @CINECRITIQUE</p>
-				<p class="right-footer">CODE BY FLIM ENTHUSIASTIC</p>
+				<p class="left-footer footer-text">PRIVACY</p>
+				<p class="center-footer footer-text">2025 @CINECRITIQUE</p>
+				<p class="right-footer footer-text">CODE BY FLIM ENTHUSIASTIC</p>
 			</div>
 
 		</div>

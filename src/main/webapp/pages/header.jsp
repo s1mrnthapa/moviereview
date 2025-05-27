@@ -197,12 +197,13 @@
       }
 
 	  .drop-box a{
-	      tesxt-decoration: none;
+	      text-decoration: none;
 	      color:inherit;
 	   }      
       .drop-box p{
         color: white;
       }
+
 
       .user_icon_wrapper{
         position: relative;
@@ -217,12 +218,19 @@
         cursor: pointer;
       }
       
-      .drop-box-nav1:hover, .drop-box-nav2:hover{
+/*       .drop-box-nav1:hover, .drop-box-nav2:hover{
         background: white;
         color: color: rgb(34, 255, 244);;
+      } */
+      .box-div1:hover{
+      	background: rgb(36, 212, 236);
       }
-      
-      
+       .box-div2:hover{
+      	background: rgb(36, 212, 236);
+      }
+      /* .box-div{
+      	width: 40px;
+      } */
 </style>
 </head>
 <body>
@@ -237,8 +245,8 @@
 		<div class = "sub_header logo_header logo_wrapper" style="
 		position:relative;
 		">
-			<img src="${pageContext.request.contextPath}/pages/resources/index/icon/logo.png" class="logo">
-			<p class="logo_text">CINECRITIQUE</p>
+			<a href="<%= request.getContextPath() %>/HomeServlet"><img src="${pageContext.request.contextPath}/pages/resources/index/icon/logo.png" class="logo"></a>
+			<a href="<%= request.getContextPath() %>/HomeServlet"><p class="logo_text">CINECRITIQUE</p></a>
 		</div>
 		
 
@@ -270,8 +278,9 @@
 				</svg>
 				<% if (!isLoginOrRegister) { %>
                 <div class="drop-box">
-                    <a href="<%= request.getContextPath() %>/ProfileServlet" class="drop-box-nav1"><p>Profile</p></a>
-                    <a href="<%= request.getContextPath() %>/LogOutController" class="drop-box-nav2"><p>Logout</p></a> 
+                    <div class="box-div1 box-div"><a href="<%= request.getContextPath() %>/ProfileServlet" class="drop-box-nav1"><p class="box-profile">Profile</p></a></div>
+                    <div class="box-div2 box-div"><a href="<%= request.getContextPath() %>/UpdateProfileServlet" class="drop-box-nav2"><p class="box-logout">Edit Profile</p></a></div>
+                    <div class="box-div2 box-div"><a href="<%= request.getContextPath() %>/LogOutController" class="drop-box-nav2"><p class="box-logout">Logout</p></a></div>
                 </div>
                 <% } %>
 			  </div>

@@ -10,6 +10,7 @@
 	<title>CINECRITIQUE</title>
 
 	<style>
+	
 		body {
 			background-color: #000;
 			color: white;
@@ -93,11 +94,18 @@
 			transform: scale(1.05);
 		}
 
-		.movie-card img {
+		.movie-card .image-container {
 			width: 100%;
-			height: 270px;
-			object-fit: cover;
+			aspect-ratio: 2 / 3;
+			overflow: hidden;
 			border-radius: 6px;
+		}
+
+		.movie-card .image-container img {
+			width: 100%;
+			height: 100%;
+			object-fit: cover;
+			display: block;
 		}
 
 		.movie-card h4 {
@@ -109,54 +117,107 @@
 			font-size: 0.9rem;
 			color: rgb(34, 255, 244);
 		}
+		
+		section{
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		height: 100vh;
+		position: relative;
+		scroll-snap-align: start;
+		scroll-snap-stop:  normal;
+	}
+		.image_wrapper{
+		position: relative;
+	}
+	.button_wrapper{
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		position: absolute;
+	}
+	.explore_button{
+		padding: 2em 5em;
+		border: none;
+		color:white;
+ 	   font-weight: bold;
+		border-radius: 1000px;
+		background-color: rgb(0, 0, 0);
+		display: flex;
+		justify-content: center;
+		align-items: center;
+        position: relative;
+	}
+	.explore_button::after{
+		content: '';
+		position: absolute;
+		height: 108%;
+		width: 104%;
+		border-radius: 1000px;
+		background-image: linear-gradient(to bottom right, rgb(186, 0, 0), rgb(109, 11, 207));
+		z-index: -1;
+	}
+	.explore_button:hover{
+		background-color: transparent;
+    	z-index: 1;
+    /* background-image: linear-gradient(green, pink); */
+	}
 	</style>
 </head>
 
 <body>
 	<%@ include file="header.jsp" %>
 
-	<!-- 🎞️ Trending Slider -->
-	<div class="slider-container">
-		<div class="slider" id="slider">
-			<c:forEach var="movie" items="${trendingMovies}">
-				<div class="slide">
-					<img src="${movie.imagePath}" alt="${movie.title}">
-					<div class="slide-caption">${movie.title}</div>
-				</div>
-			</c:forEach>
+
+	<section class="container1">
+		<div class="image_wrapper">
+			<img src="${pageContext.request.contextPath}/pages/resources/posters/spiderman.jpg" style="
+				width:100%;
+				height: 100vh;
+				object-fit: cover;
+				">
 		</div>
-	</div>
+		<div class="button_wrapper">
+			<button class="explore_button">EXPLORE</button>
+		</div>
+	</section>
+
 
 	<!-- ⭐ Trending Section -->
-	<section class="trending-section">
+	<container class="trending-section">
 		<h2 class="section-title">Trending This Week</h2>
 		<div class="trending-grid">
 			<c:forEach var="movie" items="${trendingMovies}">
 				<div class="movie-card">
-					<img src="${movie.imagePath}" alt="${movie.title}" />
+					<div class="image-container">
+						<img src="${movie.imagePath}" alt="${movie.title}" />
+					</div>
 					<h4>${movie.title}</h4>
 					<p>⭐ ${movie.averageRating}</p>
 				</div>
 			</c:forEach>
 		</div>
-	</section>
+	</container>
 
 	<!-- 🎬 Upcoming Movies -->
-	<section class="trending-section">
+	<container class="trending-section">
 		<h2 class="section-title">Upcoming Movies</h2>
 		<div class="trending-grid">
 			<c:forEach var="movie" items="${upcomingMovies}">
 				<div class="movie-card">
 					<a href="${pageContext.request.contextPath}/MovieDetail?movieID=${movie.movieID}">
-						<img src="${movie.imagePath}" alt="${movie.title}" />
+						<div class="image-container">
+							<img src="${movie.imagePath}" alt="${movie.title}" />
+						</div>
 					</a>
 					<h4>${movie.title}</h4>
 					<p>📅 <fmt:formatDate value="${movie.releaseDate}" pattern="dd MMM yyyy" /></p>
 				</div>
 			</c:forEach>
 		</div>
-	</section>
-
+	</container>
+	<%@ include file="footer.jsp" %>
+	
 	<!-- 🔄 Slider Script -->
 	<script>
 		let currentIndex = 0;

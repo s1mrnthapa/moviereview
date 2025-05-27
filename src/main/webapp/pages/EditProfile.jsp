@@ -24,6 +24,7 @@
       padding: 20px;
       background: #1a1a1a;
       border-radius: 10px;
+      padding-top:100px;
     }
 
     .form-group {
@@ -95,7 +96,7 @@
     }
 
     .back-link a {
-      color: yellow;
+      color: rgb(36, 212, 236);
       text-decoration: none;
     }
 
@@ -130,10 +131,11 @@
   </style>
 </head>
 <body>
+	<%@ include file="header.jsp" %>
 
 <!-- Main Container -->
 <div class="container">
-  <h2>Edit Profile</h2>
+  <h2 style="color:rgb(36, 212, 236);">Edit Profile</h2>
 
   <form action="${pageContext.request.contextPath}/UpdateProfileServlet" method="post" enctype="multipart/form-data">
     
